@@ -12,35 +12,40 @@ export default function Navbar() {
       .then(data => setPages(data));
   }, []);
 
-  const renderMenuItems = (items) => {
+  const renderMenuItems = (items, drop=false) => {
     return items.map((item, index) => {
       if (item.test) {
         return null;
       }
       if (item.children) {
         return (
-          <li key={index} className='nav-item dropdown'>
-            <a 
-              className="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdownMenuLink"
-              data-bs-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >{item.label}</a>
-            <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              item.children.map((dItem) => {
-                <li><a className="dropdown-item" href={dItem.path}>{dItem.label}</a></li>
-              })
-            </ul>
-          </li>
+          <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                {item.label}
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                {renderMenuItems(item.children,true)}
+              </ul>
+            </li>
         );
       }
+      
+      if (drop == true) {
+        return (
+          <li><a className="dropdown-item" href={item.path}>{item.label}</a></li>
+        );
+      }
+      
       return (
         <li key={index} className='nav-item'>
-          <Link href={item.path} className='nav-link'>
-            <a className='nav-link'>{item.label}</a>
-          </Link>
+            <a className='nav-link' href={item.path}>{item.label}</a>
         </li>
       );
     });
@@ -64,34 +69,6 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
           <ul className="navbar-nav">
             {renderMenuItems(pages)}
-            <li className="nav-item active">
-              <a className="nav-link" href="#">
-                Home <span className="sr-only">(current)</span>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Features</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Pricing</a>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdownMenuLink"
-                data-bs-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                Dropdown link
-              </a>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <li><a className="dropdown-item" href="#">Action</a></li>
-                <li><a className="dropdown-item" href="#">Another action</a></li>
-                <li><a className="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </li>
           </ul>
         </div>
       </nav>
