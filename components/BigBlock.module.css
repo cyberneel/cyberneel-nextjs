@@ -1,0 +1,36 @@
+.customContainer {
+  background-color: #f8d7da;
+  padding: 40px;
+  border-radius: 20px;
+  margin-top: 20px;
+}
+
+.customRow {
+  min-height: 60vh;
+}
+
+.customCard {
+  background-color: #ffffff;
+  padding: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.customCard .card-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.customCard .card-text {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.customCard .btn {
+  font-size: 1rem;
+  padding: 10px 20px;
+}
+
+.image {
+  border-radius: 20px;
+}

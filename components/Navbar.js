@@ -53,7 +53,7 @@ export default function Navbar() {
   
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark rounded-3">
+      <nav className="navbar navbar-expand-lg rounded-3">
         <a className="navbar-brand px-3" href="/">CyberNeel</a>
         <button
           className="navbar-toggler mx-3"
