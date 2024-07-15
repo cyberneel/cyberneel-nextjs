@@ -1,7 +1,28 @@
 import Head from 'next/head'
 import BigBlock from '../components/BigBlock'
+import Masonry from 'react-masonry-css';
+import { fetchBlogPosts } from '../lib/contentApi';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+  
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    async function getPosts() {
+      const blogPosts = await fetchBlogPosts();
+      setPosts(blogPosts);
+    }
+
+    getPosts();
+  }, []);
+
+  const breakpointColumnsObj = {
+    default: 3,
+    1100: 2,
+    700: 1
+  };
+  
   return (
     <>
     <div className='p-3'>
