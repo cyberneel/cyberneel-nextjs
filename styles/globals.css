@@ -11,7 +11,7 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  background-image: url('https://thumbs.dreamstime.com/b/vector-seamless-geometric-pattern-simple-abstract-lines-lattice-repeating-zigzag-shapes-background-tiling-thin-stylish-153469800.jpg'); /* Change to your image path */
+  background-image: url('https://github.com/cyberneel/cyberneel-nextjs/raw/master/public/IMG_0609.webp'); /* Change to your image path */
   mask-image: radial-gradient(circle at var(--mask-x) var(--mask-y), transparent 50px, black 100px);
   -webkit-mask-image: radial-gradient(circle at var(--mask-x) var(--mask-y), transparent 50px, black 100px);
   z-index: -1;
