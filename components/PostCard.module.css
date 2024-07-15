@@ -1,0 +1,47 @@
+        .post-card {
+          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+          transition: transform 0.2s ease-in-out;
+        }
+        .post-card:hover {
+          transform: translateY(-10px);
+        }
+        .post-image {
+          width: 100%;
+          height: auto;
+        }
+        .post-content {
+          padding: 16px;
+        }
+        .post-tags {
+          color: #555;
+          font-size: 0.875rem;
+          margin-bottom: 8px;
+        }
+        .post-title {
+          font-size: 1.25rem;
+          margin-bottom: 8px;
+        }
+        .post-date {
+          color: #999;
+          font-size: 0.875rem;
+          margin-bottom: 16px;
+        }
+        .post-description {
+          font-size: 1rem;
+          margin-bottom: 16px;
+        }
+        .post-button {
+          background: #ff6b6b;
+          border: none;
+          color: #fff;
+          padding: 8px 16px;
+          cursor: pointer;
+          border-radius: 4px;
+          transition: background 0.2s ease-in-out;
+        }
+        .post-button:hover {
+          background: #ff5252;
+        }       
