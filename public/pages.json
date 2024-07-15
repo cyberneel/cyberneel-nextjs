@@ -9,6 +9,7 @@
   },
   {
     "label": "Services",
+    "test": "test",
     "children": [
       {
         "label": "Web Development",

@@ -1,13 +1,18 @@
 import Head from 'next/head'
+import BigBlock from '../components/BigBlock'
 
 export default function Home() {
   return (
     <>
-    <div className="container">
+    <div className='p-3'>
+        <BigBlock/>    
+    </div>
+
+    <div className="container">        
 
       <main>
         <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Welcome to CyberNeel's Blog
         </h1>
 
         <p className="description">
