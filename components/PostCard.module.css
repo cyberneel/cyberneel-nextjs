@@ -1,39 +1,39 @@
-        .post-card {
+        .postCard {
           background: #fff;
           border-radius: 8px;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
           overflow: hidden;
           transition: transform 0.2s ease-in-out;
         }
-        .post-card:hover {
+        .postCard:hover {
           transform: translateY(-10px);
         }
-        .post-image {
+        .postImage {
           width: 100%;
           height: auto;
         }
-        .post-content {
+        .postContent {
           padding: 16px;
         }
-        .post-tags {
+        .postTags {
           color: #555;
           font-size: 0.875rem;
           margin-bottom: 8px;
         }
-        .post-title {
+        .postTitle {
           font-size: 1.25rem;
           margin-bottom: 8px;
         }
-        .post-date {
+        .postDate {
           color: #999;
           font-size: 0.875rem;
           margin-bottom: 16px;
         }
-        .post-description {
+        .postDescription {
           font-size: 1rem;
           margin-bottom: 16px;
         }
-        .post-button {
+        .postButton {
           background: #ff6b6b;
           border: none;
           color: #fff;
@@ -42,6 +42,6 @@
           border-radius: 4px;
           transition: background 0.2s ease-in-out;
         }
-        .post-button:hover {
+        .postButton:hover {
           background: #ff5252;
         }       

@@ -1,20 +1,20 @@
 import React from 'react';
-import styles from 'PostCard.module.css'
+import Styles from './PostCard.module.css';
 
 const PostCard = ({ post }) => {
   //const { title, description, date, tags, image } = post.fields;
+  //<div className="post-tags">{tags.join(', ')}</div>
   const { title, description, date, imageLink } = post.fields;
 
 
   return (
-    <div className={styles.post-card}>
-      <img src={imageLink} alt={title} className={styles.post-image} />
-      <div className={styles.post-content}>
-        //<div className="post-tags">{tags.join(', ')}</div>
-        <h2 className={styles.post-title}>{title}</h2>
-        <div className={styles.post-date}>{new Date(date).toLocaleDateString()}</div>
-        <p className={styles.post-description}>{description}</p>
-        <button className={styles.post-button}>Show More</button>
+    <div className={Styles.postCard}>
+      <img src={imageLink} alt={title} className={Styles.postImage} />
+      <div className={Styles.postContent}>
+        <h2 className={Styles.postTitle}>{title}</h2>
+        <div className={Styles.postDate}>{new Date(date).toLocaleDateString()}</div>
+        <p className={Styles.postDescription}>{description}</p>
+        <button className={Styles.postButton}>Show More</button>
       </div>
     </div>
   );
