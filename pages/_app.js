@@ -4,27 +4,15 @@ import Head from 'next/head'
 import Layout from '../components/Layout'
 import { useRouter } from "next/router"
 import { useEffect } from "react";
+//import Script from 'next/script'
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
+  
   useEffect(() => {
-    
-    // Ensure scripts are only loaded on the client side
-    if (typeof window !== 'undefined') {
-      const loadScript = (src) => {
-        return new Promise((resolve, reject) => {
-          const script = document.createElement('script');
-          script.src = src;
-          script.onload = resolve;
-          script.onerror = reject;
-          document.body.appendChild(script);
-        });
-      };
-
-      // Load scripts in sequence
-      loadScript('../public/bootstrap.min.js');
+    if (typeof document !== undefined) {
+      require('bootstrap/dist/js/bootstrap');
     }
-    
   }, [router.events]);
   
   
