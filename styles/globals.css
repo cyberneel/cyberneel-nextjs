@@ -3,3 +3,18 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   
 }
+
+.background-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: url('https://thumbs.dreamstime.com/b/vector-seamless-geometric-pattern-simple-abstract-lines-lattice-repeating-zigzag-shapes-background-tiling-thin-stylish-153469800.jpg'); /* Change to your image path */
+  mask-image: radial-gradient(circle at var(--mask-x) var(--mask-y), transparent 50px, black 100px);
+  -webkit-mask-image: radial-gradient(circle at var(--mask-x) var(--mask-y), transparent 50px, black 100px);
+  z-index: -1;
+  mask-size: cover;
+  -webkit-mask-size: cover;
+}
