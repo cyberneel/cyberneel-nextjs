@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.css'
-//import '../styles/globals.css'
+import '../styles/globals.css'
 import Head from 'next/head'
 import Layout from '../components/Layout'
 import { useRouter } from "next/router"
