@@ -21,3 +21,21 @@ export async function fetchAllPosts() {
   });
   return response.items;
 }
+
+export async function fetchPostsPagination({ skip = 0, limit = 12 } = {}) {
+  const response = await client.getEntries({
+    content_type: 'cyberneelPost',
+    order: '-sys.createdAt',
+    skip,
+    limit,
+  });
+
+  const totalResponse = await client.getEntries({
+    content_type: 'cyberneelPost',
+  });
+
+  return {
+    posts: response.items,
+    total: totalResponse.total,
+  };
+}
