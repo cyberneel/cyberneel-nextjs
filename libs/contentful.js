@@ -13,3 +13,11 @@ export async function fetchPosts(limit = 4) {
   });
   return response.items;
 }
+
+export async function fetchAllPosts() {
+  const response = await client.getEntries({
+    content_type: 'cyberneelPost',
+    order: '-sys.createdAt',
+  });
+  return response.items;
+}
