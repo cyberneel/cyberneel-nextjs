@@ -22,6 +22,13 @@ export async function fetchAllPosts() {
   return response.items;
 }
 
+export async function fetchAboutPost() {
+  const response = await client.getEntries({
+    content_type: 'aboutPage',
+  });
+  return response.items;
+}
+
 export async function fetchPostsPagination({ skip = 0, limit = 12, search = '' } = {}) {
   const query = {
     content_type: 'cyberneelPost',

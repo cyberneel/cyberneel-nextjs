@@ -1,32 +1,20 @@
 import Head from 'next/head';
 import BigBlock from '../components/BigBlock';
-import Masonry from "react-responsive-masonry"
 import { useEffect, useState } from 'react';
-import { fetchPosts } from '../libs/contentful';
-import PostCard from '../components/PostCard';
-import dynamic from 'next/dynamic';
+import { fetchAboutPost } from '../libs/contentful';
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import styles from './posts/post.module.css';
 
-const ResponsiveMasonry = dynamic(() => import('react-responsive-masonry').then(mod => mod.ResponsiveMasonry), {
-  ssr: false,
-});
-
-export default function Home() {
+export default function About() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     async function getPosts() {
-      const fetchedPosts = await fetchPosts();
-      setPosts(fetchedPosts);
+      const aboutPost = await fetchAboutPost();
+      setPosts(aboutPost);
     }
     getPosts();
   }, []);
-
-  const breakpointColumnsObj = {
-    default: 4,
-    1100: 4,
-    700: 2,
-    500: 1
-  };
 
 
   return (
@@ -35,12 +23,23 @@ export default function Home() {
         <title>About CyberNeel</title>
       </Head>
       <div className='p-3 container'>
-        <BigBlock />
+        <BigBlock 
+          headText='Who is CyberNeel?'
+          description='Read on to find out! '
+          linkText='More'
+          link='#aboutSection'
+        />
       </div>
       
-      <hr class="hr hr-blurry" />
+      <hr class="hr hr-blurry" id="aboutSection"/>
       <h2 class="text-center p-3" style={{backgroundColor: "white"}}>Learn About Me!</h2>
       <hr class="hr hr-blurry" />
+      
+      <div className={styles.postContainer + " rounded-3"}>
+        <div className={styles.postContent}>
+          {documentToReactComponents(posts[0].fields.content)}
+        </div>          
+      </div>
       
      </>
       
