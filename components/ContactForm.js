@@ -1,56 +1,67 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 const ContactForm = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  });
-  const [responseMessage, setResponseMessage] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const formAction = process.env.NEXT_PUBLIC_GOOGLE_FORM_URL;
+  const nameID = process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_NAME;
+  const emailID = process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_EMAIL;
+  const messageID = process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_MESSAGE;
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
+    const form = e.target;
 
-      const result = await response.json();
-      setResponseMessage(result.message);
-    } catch (error) {
-      setResponseMessage('Error submitting form');
-    }
+    fetch(formAction, {
+      method: 'POST',
+      body: new FormData(form),
+      mode: 'no-cors',
+    }).then(() => setSubmitted(true))
+      .catch((error) => console.error('Error:', error));
   };
+
+  if (!formAction || !nameID || !emailID || !messageID) {
+    return <div>Form configuration is missing.</div>;
+  }
+
+  if (submitted) {
+    return <div>Thank you for your message!</div>;
+  }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-          <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-        </label>
-        <label>
-          Email:
-          <input type="email" name="email" value={formData.email} onChange={handleChange} required />
-        </label>
-        <label>
-          Message:
-          <textarea name="message" value={formData.message} onChange={handleChange} required />
-        </label>
-        <button type="submit">Submit</button>
+    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+      <h2>Contact Us</h2>
+      <form action={formAction} method="POST" onSubmit={handleSubmit}>
+        <div style={{ marginBottom: '15px' }}>
+          <label>Name:</label>
+          <input
+            type="text"
+            name={nameID}
+            required
+            style={{ width: '100%', padding: '8px' }}
+          />
+        </div>
+        <div style={{ marginBottom: '15px' }}>
+          <label>Email:</label>
+          <input
+            type="email"
+            name={emailID}
+            required
+            style={{ width: '100%', padding: '8px' }}
+          />
+        </div>
+        <div style={{ marginBottom: '15px' }}>
+          <label>Message:</label>
+          <textarea
+            name={messageID}
+            required
+            rows="4"
+            style={{ width: '100%', padding: '8px' }}
+          ></textarea>
+        </div>
+        <button type="submit" style={{ padding: '10px 15px' }}>
+          Submit
+        </button>
       </form>
-      {responseMessage && <p>{responseMessage}</p>}
     </div>
   );
 };
