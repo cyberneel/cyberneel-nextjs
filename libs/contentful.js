@@ -22,16 +22,23 @@ export async function fetchAllPosts() {
   return response.items;
 }
 
-export async function fetchPostsPagination({ skip = 0, limit = 12 } = {}) {
-  const response = await client.getEntries({
-    content_type: 'cyberneelPost',
+export async function fetchPostsPagination({ skip = 0, limit = 12, search = '' } = {}) {
+  const query = {
+    content_type: 'dermalyzePosts',
     order: '-sys.createdAt',
     skip,
     limit,
-  });
+  };
+
+  if (search) {
+    query['query'] = search;
+  }
+
+  const response = await client.getEntries(query);
 
   const totalResponse = await client.getEntries({
     content_type: 'cyberneelPost',
+    ...(search && { query: search })
   });
 
   return {
