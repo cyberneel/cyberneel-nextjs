@@ -9,17 +9,17 @@ const PostCard = ({ post }) => {
 
 
   return (
+    <Link href={`/posts/${slug}`}>
     <div className={Styles.postCard}>
       <img src={imageLink} alt={title} className={Styles.postImage} />
       <div className={Styles.postContent}>
         <h2 className={Styles.postTitle}>{title}</h2>
         <div className={Styles.postDate}>{new Date(date).toLocaleDateString()}</div>
         <p className={Styles.postDescription}>{description}</p>
-        <Link href={`/posts/${slug}`}>
           <button className={Styles.postButton}>Show More</button>
-        </Link>
       </div>
     </div>
+    </Link>
   );
 };
 
