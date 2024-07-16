@@ -12,17 +12,17 @@ function Footer() {
 
     <section class="mb-4">
 
-      <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+      <a class="btn btn-outline-light btn-floating m-1" href="https://boulderbugle.com/my-google-profile-Qr6XopIM" role="button"
         ><Icon.Google />
       </a>
 
 
-      <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+      <a class="btn btn-outline-light btn-floating m-1" href="https://instagram.com/cyber_neel" role="button"
         ><Icon.Instagram />
        </a>
 
 
-      <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+      <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/cyberneel" role="button"
         ><Icon.Github />
       </a>
     </section>

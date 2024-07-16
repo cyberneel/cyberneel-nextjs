@@ -11,9 +11,19 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  background-image: url('https://github.com/cyberneel/cyberneel-nextjs/raw/master/public/IMG_0609.webp'); /* Change to your image path */
-  mask-image: radial-gradient(circle at var(--mask-x) var(--mask-y), transparent 50px, black 100px);
-  -webkit-mask-image: radial-gradient(circle at var(--mask-x) var(--mask-y), transparent 50px, black 100px);
+  background-image: url('https://github.com/cyberneel/cyberneel-nextjs/raw/master/public/IMG_0609.webp');
+  mask-image: radial-gradient(
+    circle at var(--mask-x) var(--mask-y),
+    rgba(0, 0, 0, 0.375) 50px, /* center */
+    rgba(0, 0, 0, 0.25) 100px, /* mid */
+    rgba(0, 0, 0, 0.05) 150px   /* outer */
+  );
+  -webkit-mask-image: radial-gradient(
+    circle at var(--mask-x) var(--mask-y),
+    rgba(0, 0, 0, 0.375) 50px,
+    rgba(0, 0, 0, 0.25) 100px,
+    rgba(0, 0, 0, 0.05) 150px
+  );
   z-index: -1;
   mask-size: cover;
   -webkit-mask-size: cover;
