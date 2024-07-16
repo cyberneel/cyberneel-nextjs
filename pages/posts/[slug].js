@@ -5,17 +5,20 @@ import client from '../../libs/contentfulPosts';
 import styles from './post.module.css';
 
 export default function Post({ post }) {
-  const { title, date, description, content, imageLink, slug } = post.fields;
+  const { title, date, description, content, imageLink, slug, tags } = post.fields;
 
   return (
     <div className={styles.postContainer + " rounded-3"}>
-      {imageLink && <img src={imageLink} alt={title} className={styles.postImage} />}
+      {tags && <div className={styles.postTags}>Tags: {tags.join(', ')}</div>}
+      
       <h1 className={styles.postTitle}>{title}</h1>
       <p className={styles.postDate}>{new Date(date).toLocaleDateString()}</p>
       <p className={styles.postDescription}>{description}</p>
       <div className={styles.postContent}>
         {documentToReactComponents(content)}
       </div>
+      
+      {imageLink && <img src={imageLink} alt={title} className={styles.postImage} />}
     </div>
   );
 }
