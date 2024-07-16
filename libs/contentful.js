@@ -30,23 +30,29 @@ export async function fetchPostsPagination({ skip = 0, limit = 12, search = '' }
     limit,
   };
 
-  const response = await client.getEntries(query);
-  
-  let filteredPosts = response.items;
+  let response;
+  let totalResponse;
   if (search) {
-    const lowercasedSearch = search.toLowerCase();
-    filteredPosts = response.items.filter(post => 
-      post.fields.title.toLowerCase().includes(lowercasedSearch) ||
-      post.fields.description.toLowerCase().includes(lowercasedSearch)
+    // get all posts and then filter and paginate
+    totalResponse = await client.getEntries({
+      content_type: 'cyberneelPost',
+    });
+    const filteredItems = totalResponse.items.filter(post =>
+      post.fields.title.toLowerCase().includes(search.toLowerCase()) ||
+      post.fields.description.toLowerCase().includes(search.toLowerCase())
     );
+    const paginatedItems = filteredItems.slice(skip, skip + limit);
+    response = { items: paginatedItems, total: filteredItems.length };
+  } else {
+    // get paginated posts directly
+    response = await client.getEntries(query);
+    totalResponse = await client.getEntries({
+      content_type: 'cyberneelPost',
+    });
   }
 
-  const totalResponse = await client.getEntries({
-    content_type: 'cyberneelPost',
-  });
-
   return {
-    posts: filteredPosts,
+    posts: response.items,
     total: totalResponse.total,
   };
 }

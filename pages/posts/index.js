@@ -33,6 +33,7 @@ export default function Home() {
 
   const handleSearch = (term) => {
     setSearchTerm(term);
+    router.push('/posts/?page=1');
   };
 
   const breakpointColumnsObj = {
