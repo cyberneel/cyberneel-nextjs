@@ -22,7 +22,7 @@ export default function About() {
       <Head>
         <title>About CyberNeel</title>
       </Head>
-      <div className='p-3 container'>
+      <div className='p-3 col-9 container'>
         <BigBlock 
           headText='Who is CyberNeel?'
           description='Read on to find out! '
