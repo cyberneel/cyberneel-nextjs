@@ -42,5 +42,7 @@ export default function Home() {
       <h2 class="text-center p-3" style={{backgroundColor: "white"}}>Learn About Me!</h2>
       <hr class="hr hr-blurry" />
       
+     </>
+      
   );
 }
