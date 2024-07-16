@@ -1,0 +1,12 @@
+.navItem {
+  
+  transition: 0.1s ease-in-out;
+  
+}
+
+.navItem:hover {
+  
+  background-color: #f8d7da;
+  font-weight: bold;
+  
+}

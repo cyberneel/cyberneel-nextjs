@@ -39,7 +39,7 @@ export default function Home() {
       </div>
       
       <hr class="hr hr-blurry" />
-      <h2 class="text-center p-3">Latest Posts</h2>
+      <h2 class="text-center p-3" style={{backgroundColor: "white"}}>Latest Posts</h2>
       <hr class="hr hr-blurry" />
       
       <ResponsiveMasonry columnsCountBreakPoints={breakpointColumnsObj}>

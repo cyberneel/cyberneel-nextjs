@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Styles from './Navbar.module.css'
 
 export default function Navbar() {
   
@@ -39,13 +40,13 @@ export default function Navbar() {
       
       if (drop == true) {
         return (
-          <li><a className="dropdown-item" href={item.path}>{item.label}</a></li>
+          <li><a className={Styles.navItem + " dropdown-item rounded-3"} href={item.path}>{item.label}</a></li>
         );
       }
       
       return (
         <li key={index} className='nav-item'>
-            <a className='nav-link' href={item.path}>{item.label}</a>
+            <a className={Styles.navItem + ' nav-link rounded-3'} href={item.path}>{item.label}</a>
         </li>
       );
     });
