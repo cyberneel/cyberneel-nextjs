@@ -15,25 +15,24 @@ const ResponsiveMasonry = dynamic(() => import('react-responsive-masonry').then(
 const POSTS_PER_PAGE = 12;
 
 export default function Home() {
+
   const [posts, setPosts] = useState([]);
   const [totalPosts, setTotalPosts] = useState(0);
-  const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
-  const { page = 1 } = router.query;
+  const { page = 1, search = '' } = router.query;
 
   useEffect(() => {
     async function getPosts() {
       const skip = (page - 1) * POSTS_PER_PAGE;
-      const { posts: fetchedPosts, total } = await fetchPostsPagination({ skip, limit: POSTS_PER_PAGE, search: searchTerm });
+      const { posts: fetchedPosts, total } = await fetchPostsPagination({ skip, limit: POSTS_PER_PAGE, search });
       setPosts(fetchedPosts);
       setTotalPosts(total);
     }
     getPosts();
-  }, [page, searchTerm]);
+  }, [page, search]);
 
   const handleSearch = (term) => {
-    setSearchTerm(term);
-    router.push('/posts/?page=1');
+    router.push(`/posts/?page=1&search=${term}`, undefined, { shallow: true });
   };
 
   const breakpointColumnsObj = {
@@ -61,7 +60,14 @@ export default function Home() {
           ))}
         </Masonry>
       </ResponsiveMasonry>
-      <Pagination currentPage={parseInt(page)} totalPosts={totalPosts} postsPerPage={POSTS_PER_PAGE} />
+      
+      <Pagination
+        currentPage={parseInt(page)}
+        totalPosts={totalPosts}
+        postsPerPage={POSTS_PER_PAGE}
+        searchTerm={search}
+      />
+      
     </>
   );
 }

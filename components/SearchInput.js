@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const SearchInput = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+const SearchInput = ({ onSearch, initialSearchTerm = '' }) => {
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+
+  useEffect(() => {
+    setSearchTerm(initialSearchTerm);
+  }, [initialSearchTerm]);
 
   const handleChange = (e) => {
     setSearchTerm(e.target.value);
