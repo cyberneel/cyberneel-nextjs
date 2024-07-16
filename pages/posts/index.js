@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { fetchPostsPagination } from '../../libs/contentful';
 import PostCard from '../../components/PostCard';
 import Pagination from '../../components/Pagination';
+import SearchInput from '../../components/SearchInput';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
@@ -16,18 +17,23 @@ const POSTS_PER_PAGE = 12;
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [totalPosts, setTotalPosts] = useState(0);
+  const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
   const { page = 1 } = router.query;
 
   useEffect(() => {
     async function getPosts() {
       const skip = (page - 1) * POSTS_PER_PAGE;
-      const { posts: fetchedPosts, total } = await fetchPostsPagination({ skip, limit: POSTS_PER_PAGE });
+      const { posts: fetchedPosts, total } = await fetchPostsPagination({ skip, limit: POSTS_PER_PAGE, search: searchTerm });
       setPosts(fetchedPosts);
       setTotalPosts(total);
     }
     getPosts();
-  }, [page]);
+  }, [page, searchTerm]);
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
 
   const breakpointColumnsObj = {
     default: 4,
@@ -44,6 +50,7 @@ export default function Home() {
       
       <hr class="hr hr-blurry" />
       <h2 class="text-center p-3" style={{backgroundColor: "white"}}>My Posts</h2>
+      <SearchInput onSearch={handleSearch} />
       <hr class="hr hr-blurry" />
 
       <ResponsiveMasonry columnsCountBreakPoints={breakpointColumnsObj}>

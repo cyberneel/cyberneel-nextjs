@@ -24,25 +24,29 @@ export async function fetchAllPosts() {
 
 export async function fetchPostsPagination({ skip = 0, limit = 12, search = '' } = {}) {
   const query = {
-    content_type: 'dermalyzePosts',
+    content_type: 'cyberneelPost',
     order: '-sys.createdAt',
     skip,
     limit,
   };
 
-  if (search) {
-    query['query'] = search;
-  }
-
   const response = await client.getEntries(query);
+  
+  let filteredPosts = response.items;
+  if (search) {
+    const lowercasedSearch = search.toLowerCase();
+    filteredPosts = response.items.filter(post => 
+      post.fields.title.toLowerCase().includes(lowercasedSearch) ||
+      post.fields.description.toLowerCase().includes(lowercasedSearch)
+    );
+  }
 
   const totalResponse = await client.getEntries({
     content_type: 'cyberneelPost',
-    ...(search && { query: search })
   });
 
   return {
-    posts: response.items,
+    posts: filteredPosts,
     total: totalResponse.total,
   };
 }
