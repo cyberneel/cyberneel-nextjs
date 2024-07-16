@@ -26,7 +26,7 @@ export default function About() {
         <BigBlock 
           headText='Who is CyberNeel?'
           description='Read on to find out! '
-          linkText='More'
+          linkText="Let's Go!"
           link='#aboutSection'
         />
       </div>
@@ -36,9 +36,13 @@ export default function About() {
       <hr class="hr hr-blurry" />
       
       <div className={styles.postContainer + " rounded-3"}>
-        <div className={styles.postContent}>
-          {documentToReactComponents(posts[0].fields.content)}
-        </div>          
+        {posts.length > 0 ? (
+          <div className={styles.postContent}>
+            {documentToReactComponents(posts[0].fields.content)}
+          </div>
+        ) : (
+          <p>Loading...</p>
+        )}         
       </div>
       
      </>
