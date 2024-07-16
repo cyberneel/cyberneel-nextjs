@@ -5,6 +5,7 @@
     "start": "next dev -p 3450"
   },
   "dependencies": {
+    "@contentful/rich-text-react-renderer": "^15.22.1",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
     "contentful": "^10.12.8",
