@@ -5,6 +5,7 @@ import Layout from '../components/Layout'
 import { useRouter } from "next/router"
 import { useEffect, useState } from 'react';
 import '../styles/transition.css'; // transition styles
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 //import Script from 'next/script'
 
 function MyApp({ Component, pageProps }) {
@@ -46,8 +47,18 @@ function MyApp({ Component, pageProps }) {
       />
     
       <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <TransitionGroup>
+        <CSSTransition
+          key={router.pathname}
+          timeout={1500}
+          classNames="page"
+        >
+          <div className="page">
+            <Component {...pageProps} />
+          </div>
+        </CSSTransition>
+      </TransitionGroup>
+    </Layout>
       
       <style jsx global>{`
         html,
