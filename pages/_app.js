@@ -5,27 +5,24 @@ import Layout from '../components/Layout'
 import { useRouter } from "next/router"
 import { useEffect, useState } from 'react';
 import '../styles/transition.css'; // transition styles
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { PageTransition } from 'next-page-transitions';
 //import Script from 'next/script'
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
-  
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     if (typeof document !== undefined) {
       require('bootstrap/dist/js/bootstrap');
     }
     
-    const handleMouseMove = (event) => {
-      setMousePosition({ x: event.clientX, y: event.clientY });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
+    const script = document.createElement('script');
+    script.src = '/js/backgroundMaskUpdate.js';
+    script.async = true;
+    document.body.appendChild(script);
+    
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      document.body.removeChild(script);
     };
   }, [router.events]);
   
@@ -41,24 +38,18 @@ function MyApp({ Component, pageProps }) {
     <div
         className="background-mask"
         style={{
-          '--mask-x': `${mousePosition.x}px`,
-          '--mask-y': `${mousePosition.y}px`,
+          '--mask-x': `0px`,
+          '--mask-y': `0px`,
         }}
       />
     
       <Layout>
-      <TransitionGroup>
-        <CSSTransition
-          key={router.pathname}
-          timeout={1500}
-          classNames="page"
-        >
+        <PageTransition timeout={300} classNames="fade">
           <div className="page">
             <Component {...pageProps} />
           </div>
-        </CSSTransition>
-      </TransitionGroup>
-    </Layout>
+        </PageTransition>
+      </Layout>
       
       <style jsx global>{`
         html,
