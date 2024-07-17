@@ -54,7 +54,7 @@ const ContactForm = () => {
 
   return (
     <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-      <h2>Contact Us</h2>
+      <h2>Talk to me!</h2>
       <form action={formAction} method="POST" onSubmit={handleSubmit}>
         <div style={{ marginBottom: '15px' }}>
           <label>Name:</label>
@@ -99,7 +99,7 @@ const ContactForm = () => {
             style={{ width: '100%', padding: '8px' }}
           />
         </div>
-        <button type="submit" style={{ padding: '10px 15px' }}>
+        <button className="btn btn-danger" type="submit" style={{ padding: '10px 15px' }}>
           Submit
         </button>
       </form>

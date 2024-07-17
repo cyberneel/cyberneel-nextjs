@@ -55,7 +55,13 @@ export default function Navbar() {
   return (
     <>
       <nav className="navbar navbar-expand-lg rounded-3">
-        <a className="navbar-brand px-3" href="/">CyberNeel</a>
+        <a className="navbar-brand px-3" href="/">
+        
+          <img className="rounded-2"src="https://cyberneel.design/img/CyberNeelLogoNewOutfit1080p-1400x1400.webp" alt="" width="30" height="30" alt=""></img>
+        
+        &nbsp;&nbsp;CyberNeel
+        
+        </a>
         <button
           className="navbar-toggler mx-3"
           type="button"
