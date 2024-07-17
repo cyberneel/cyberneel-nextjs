@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Layout from '../components/Layout'
 import { useRouter } from "next/router"
 import { useEffect, useState } from 'react';
+import '../styles/transition.css'; // transition styles
 //import Script from 'next/script'
 
 function MyApp({ Component, pageProps }) {

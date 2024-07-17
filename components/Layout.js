@@ -1,33 +1,27 @@
 import Navbar from './Navbar';
 import Footer from './Footer';
-import { motion, AnimatePresence } from 'framer-motion';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useRouter } from 'next/router';
+
 
 const Layout = ({ children }) => {
   const router = useRouter();
-
-  const variants = {
-    hidden: { opacity: 0, x: -200, y: 0 },
-    enter: { opacity: 1, x: 0, y: 0 },
-    exit: { opacity: 0, x: 0, y: -100 },
-  };
 
   return (
     <>
       <div style={{ padding: '5px' }}>
         <Navbar />
-        <AnimatePresence exitBeforeEnter>
-          <motion.main
+        <TransitionGroup>
+          <CSSTransition
             key={router.route}
-            initial="hidden"
-            animate="enter"
-            exit="exit"
-            variants={variants}
-            transition={{ type: 'linear' }}
+            timeout={300}
+            classNames="page"
           >
-            {children}
-          </motion.main>
-        </AnimatePresence>
+            <div>
+              {children}
+            </div>
+          </CSSTransition>
+        </TransitionGroup>
         <Footer />
       </div>
     </>
