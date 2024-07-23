@@ -39,7 +39,7 @@ export default function Home() {
       </div>
       
       <hr class="hr hr-blurry" />
-      <h2 class="text-center p-3" style={{backgroundColor: "white"}}>Latest Posts</h2>
+      <h2 class="text-center p-3 rounded-3 subtleTransparent">Latest Posts</h2>
       <hr class="hr hr-blurry" />
       
       <ResponsiveMasonry columnsCountBreakPoints={breakpointColumnsObj}>
@@ -49,6 +49,9 @@ export default function Home() {
           ))}
         </Masonry>
       </ResponsiveMasonry>
+      <div className="d-flex justify-content-center p-3">
+        <a href={'/posts'} className="btn btn-danger">See All Posts</a>
+      </div>
     </>
   );
 }

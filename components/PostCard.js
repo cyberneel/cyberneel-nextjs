@@ -16,7 +16,7 @@ const PostCard = ({ post }) => {
         <h2 className={Styles.postTitle}>{title}</h2>
         <div className={Styles.postDate}>{new Date(date).toLocaleDateString()}</div>
         <p className={Styles.postDescription}>{description}</p>
-          <button className={Styles.postButton}>Show More</button>
+        <button className={Styles.postButton}>See Post</button>
       </div>
     </div>
     </Link>

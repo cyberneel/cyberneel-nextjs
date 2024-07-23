@@ -45,7 +45,7 @@ function MyApp({ Component, pageProps }) {
     
       <Layout>
         <PageTransition timeout={300} classNames="fade">
-          <div className="page">
+          <div class="page">
             <Component {...pageProps} />
           </div>
         </PageTransition>
