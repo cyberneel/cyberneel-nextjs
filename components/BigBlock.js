@@ -26,7 +26,7 @@ const BigBlock = ({headText = '', description = '', linkText = 'About', link = '
           </div>
         </div>
         <div className="col-md-6 d-flex align-items-center justify-content-center">
-          <img src="https://cyberneel.design/img/CyberNeelLogoNewOutfit1080p-1400x1400.webp" alt="CyberNeel" className={styles.image + " img-fluid"} />
+          <img src="https://cyberneel.github.io/img/CyberNeelLogoNewOutfit1080p-1400x1400.webp" alt="CyberNeel" className={styles.image + " img-fluid"} />
         </div>
       </div>
     </div>
