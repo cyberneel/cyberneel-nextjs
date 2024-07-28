@@ -10,11 +10,11 @@ const BigBlock = ({headText = '', description = '', linkText = 'About', link = '
     description = 'Exploring the fascinating world of technology!\nFollow for art and tech updates! ';
   }
   
-    return (<>
+  return (
     <div className={`container ${styles.customContainer}`}>
       <div className={`row ${styles.customRow}`}>
-        <div className="col-md-6 d-flex align-items-center">
-          <div className={`card ${styles.customCard}` + " rounded-4"}>
+        <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+          <div className={`card ${styles.customCard} rounded-4`}>
             <div className="card-body">
               <h1 className="card-title">{headText}</h1>
               <p className="card-text">
@@ -25,11 +25,12 @@ const BigBlock = ({headText = '', description = '', linkText = 'About', link = '
             </div>
           </div>
         </div>
-        <div className={styles.imageDiv + " col-md-6 align-items-center justify-content-center"}>
-          <img src="https://cyberneel.github.io/img/CyberNeelLogoNewOutfit1080p-1400x1400.webp" alt="CyberNeel" className={styles.image + " img-fluid"} />
+        <div className={`col-12 col-md-6 d-flex align-items-center justify-content-center ${styles.imageDiv}`}>
+          <img src="https://cyberneel.github.io/img/CyberNeelLogoNewOutfit1080p-1400x1400.webp" alt="CyberNeel" className={`${styles.image} img-fluid`} />
         </div>
       </div>
     </div>
-  </>)
+  );
 }
+
 export default BigBlock;

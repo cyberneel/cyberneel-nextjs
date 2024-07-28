@@ -1,50 +1,80 @@
 .customContainer {
   background-color: #f8d7da;
-  padding: 40px;
+  padding: 20px;
   border-radius: 20px;
   margin-top: 20px;
+  overflow: hidden; /* Ensure content stays within container */
 }
 
 .customRow {
   min-height: 60vh;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }
 
 .customCard {
   background-color: #ffffff;
-  padding: 30px;
+  padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
+  width: 100%; /* Ensure card takes full width */
+  max-width: 500px; /* Optional: set a max width for the card */
 }
 
 .customCard .card-title {
-  font-size: 2rem;
-  margin-bottom: 20px;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
 }
 
 .customCard .card-text {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
+  font-size: 1rem;
+  margin-bottom: 15px;
 }
 
 .customCard .btn {
-  font-size: 1rem;
-  padding: 10px 20px;
+  font-size: 0.9rem;
+  padding: 8px 16px;
 }
 
 .image {
   border-radius: 20px;
-}
-
-@media (max-width: 768px) {
-  .image {
-     display: none !important;
-  }
-  
-  .imageDiv {
-    display: none !important !important;
-  }
+  max-width: 100%;
+  height: auto;
 }
 
 .imageDiv {
   display: flex;
+}
+
+@media (max-width: 768px) {
+  .customContainer {
+    padding: 10px;
+  }
+
+  .customRow {
+    flex-direction: column;
+  }
+
+  .customCard .card-title {
+    font-size: 1.5rem;
+  }
+
+  .customCard .card-text {
+    font-size: 0.9rem;
+  }
+
+  .customCard .btn {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  .image {
+    display: none;
+  }
+
+  .imageDiv {
+    display: none;
+  }
 }
