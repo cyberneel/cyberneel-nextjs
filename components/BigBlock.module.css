@@ -34,3 +34,17 @@
 .image {
   border-radius: 20px;
 }
+
+@media (max-width: 768px) {
+  .image {
+     display: none !important;
+  }
+  
+  .imageDiv {
+    display: none !important !important;
+  }
+}
+
+.imageDiv {
+  display: flex;
+}
