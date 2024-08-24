@@ -5,7 +5,7 @@ const client = createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
 });
 
-export async function fetchPosts(limit = 4) {
+export async function fetchPosts(limit = 3) {
   const response = await client.getEntries({
     content_type: 'cyberneelPost',
     order: '-fields.date',

@@ -19,7 +19,7 @@ const BigBlock = ({headText = '', description = '', linkText = 'About', link = '
               <h1 className="card-title">{headText}</h1>
               <p className="card-text">
                 {description}
-                <a href="https://twitter.com/cyber_neel" target="_blank" rel="noopener noreferrer">@cyber_neel</a>
+                <a href="https://instagram.com/cyber_neel" target="_blank" rel="noopener noreferrer">@cyber_neel</a>
               </p>
               <a href={link} className="btn btn-danger">{linkText}</a>
             </div>
