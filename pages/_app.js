@@ -6,6 +6,7 @@ import '../styles/transition.css'; // transition styles
 import { PageTransition } from 'next-page-transitions';
 import 'bootstrap/dist/css/bootstrap.css'
 import '../styles/globals.css'
+import ScrollToTop from '../components/ScrollToTop';
 //import Script from 'next/script'
 
 function MyApp({ Component, pageProps }) {
@@ -47,6 +48,7 @@ function MyApp({ Component, pageProps }) {
         <PageTransition timeout={300} classNames="fade">
           <div class="page">
             <Component {...pageProps} />
+            <ScrollToTop/>
           </div>
         </PageTransition>
       </Layout>
