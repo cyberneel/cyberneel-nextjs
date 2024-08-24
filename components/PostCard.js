@@ -9,7 +9,7 @@ const PostCard = ({ post }) => {
 
 
   return (
-    <Link href={`/posts/${slug}`}>
+    <Link href={`/posts/${slug}`} passHref legacyBehavior>
     <div className={Styles.postCard}>
       <img src={imageLink} alt={title} className={Styles.postImage} />
       <div className={Styles.postContent}>

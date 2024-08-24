@@ -1,11 +1,11 @@
-import 'bootstrap/dist/css/bootstrap.css'
-import '../styles/globals.css'
 import Head from 'next/head'
 import Layout from '../components/Layout'
 import { useRouter } from "next/router"
 import { useEffect, useState } from 'react';
 import '../styles/transition.css'; // transition styles
 import { PageTransition } from 'next-page-transitions';
+import 'bootstrap/dist/css/bootstrap.css'
+import '../styles/globals.css'
 //import Script from 'next/script'
 
 function MyApp({ Component, pageProps }) {

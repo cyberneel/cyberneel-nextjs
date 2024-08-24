@@ -1,14 +1,10 @@
 import Head from 'next/head';
 import BigBlock from '../components/BigBlock';
-import Masonry from "react-responsive-masonry"
+import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import { useEffect, useState } from 'react';
 import { fetchPosts } from '../libs/contentful';
 import PostCard from '../components/PostCard';
 import dynamic from 'next/dynamic';
-
-const ResponsiveMasonry = dynamic(() => import('react-responsive-masonry').then(mod => mod.ResponsiveMasonry), {
-  ssr: false,
-});
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -22,7 +18,6 @@ export default function Home() {
   }, []);
 
   const breakpointColumnsObj = {
-    default: 4,
     1100: 3,
     700: 2,
     500: 1
@@ -42,7 +37,7 @@ export default function Home() {
       <h2 class="text-center p-3 rounded-3 subtleTransparent">Latest Posts</h2>
       <hr class="hr hr-blurry" />
       
-      <ResponsiveMasonry columnsCountBreakPoints={breakpointColumnsObj}>
+      <ResponsiveMasonry >
         <Masonry gutter="1rem">
           {posts.map((post) => (
             <PostCard key={post.sys.id} post={post} />
