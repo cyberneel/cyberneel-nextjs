@@ -39,3 +39,7 @@
   mask-size: cover;
   -webkit-mask-size: cover;
 }
+
+footer {
+  min-height: 30vh;
+}
