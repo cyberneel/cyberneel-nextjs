@@ -28,6 +28,11 @@ export default function BlogPage({ posts }) {
         <title>My Blog</title>
       </Head>
 
+      <hr class="hr hr-blurry" />
+      <h2 class="text-center p-3" style={{backgroundColor: "white"}}>My Posts</h2>
+      {/* <SearchInput onSearch={handleSearch} /> */}
+      <hr class="hr hr-blurry" />
+
       <ResponsiveMasonry columnsCountBreakPoints={breakpointColumnsObj}>
       <Masonry gutter="1rem">
         {posts.map((frontMatter) => {
