@@ -38,12 +38,34 @@ export async function getArticleFromSlug(slug) {
   }
 
   export async function getAllArticles() {
-    const articles = fs.readdirSync(path.join(process.cwd(), 'data/articles'))
+    const articles = fs.readdirSync(path.join(process.cwd(), 'data/blogs'))
   
     return articles.reduce((allArticles, articleSlug) => {
       // get parsed data from mdx files in the "articles" dir
       const source = fs.readFileSync(
-        path.join(process.cwd(), 'data/articles', articleSlug),
+        path.join(process.cwd(), 'data/blogs', articleSlug),
+        'utf-8'
+      )
+      const { data } = matter(source)
+  
+      return [
+        {
+          ...data,
+          slug: articleSlug.replace('.mdx', ''),
+          readingTime: readingTime(source).text,
+        },
+        ...allArticles,
+      ]
+    }, [])
+  }
+
+  export async function getAllPosts() {
+    const articles = fs.readdirSync(path.join(process.cwd(), 'data/posts'))
+  
+    return articles.reduce((allArticles, articleSlug) => {
+      // get parsed data from mdx files in the "articles" dir
+      const source = fs.readFileSync(
+        path.join(process.cwd(), 'data/posts', articleSlug),
         'utf-8'
       )
       const { data } = matter(source)

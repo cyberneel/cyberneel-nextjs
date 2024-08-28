@@ -29,7 +29,10 @@ export default function BlogPage({ posts }) {
       </Head>
 
       <hr class="hr hr-blurry" />
-      <h2 class="text-center p-3" style={{backgroundColor: "white"}}>My Posts</h2>
+      <div style={{backgroundColor: "white"}}>
+        <h2 class="text-center pt-3" >My Blog</h2>
+        <p className='text-center pb-3' >Read longer version of posts, generally with more details</p>
+      </div>
       {/* <SearchInput onSearch={handleSearch} /> */}
       <hr class="hr hr-blurry" />
 
