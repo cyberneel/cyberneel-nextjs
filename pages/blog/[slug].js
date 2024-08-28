@@ -9,7 +9,7 @@ import rehypeCodeTitles from 'rehype-code-titles'
 import { serialize } from 'next-mdx-remote/serialize'
 import 'highlight.js/styles/atom-one-dark-reasonable.css'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import { getSlug, getArticleFromSlug } from '../../src/utils/mdx'
+import { getArticleSlug, getArticleFromSlug } from '../../src/utils/mdx'
 import { SectionTitle, Text } from '../../data/components/mdx-components'
 import styles from './post.module.css';
 
@@ -20,7 +20,7 @@ export default function Blog({ post: { source, frontmatter } }) {
       {/* {tags && <div className={styles.postTags}>Tags: {tags.join(', ')}</div>} */}
       
       <h1 className={styles.postTitle}>{frontmatter.title}</h1>
-      <p className={styles.postDate}>{dayjs(frontmatter.publishedAt).format('MMMM D, YYYY')} &mdash;{' '}</p>
+      <p className={styles.postDate}>{dayjs(frontmatter.publishedAt).format('MMMM D, YYYY')} &mdash;{' '} {frontmatter.readingTime}</p>
       <p className={styles.postDescription}>{frontmatter.excerpt}</p>
       <div className={styles.postContent}>
         <MDXRemote {...source} components={{ Image, SectionTitle, Text }} />
@@ -85,7 +85,7 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
     // getting all paths of each article as an array of
     // objects with their unique slugs
-    const paths = (await getSlug()).map((slug) => ({ params: { slug } }))
+    const paths = (await getArticleSlug()).map((slug) => ({ params: { slug } }))
   
     return {
       paths,

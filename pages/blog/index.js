@@ -28,6 +28,10 @@ export default function BlogPage({ posts }) {
         <title>My Blog</title>
       </Head>
 
+      <div class="alert alert-danger text-center" role="alert">
+        This page is UNDER CONSTRUCTION, you may see placeholder items!
+      </div>
+
       <hr class="hr hr-blurry" />
       <div style={{backgroundColor: "white"}}>
         <h2 class="text-center pt-3" >My Blog</h2>
@@ -41,7 +45,6 @@ export default function BlogPage({ posts }) {
         {posts.map((frontMatter) => {
           return (
             <PostCard key={frontMatter.slug} post={frontMatter} />
-            
           )
         })}
       </Masonry>

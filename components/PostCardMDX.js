@@ -15,7 +15,7 @@ const PostCard = ({ post }) => {
       <img src={post.cover_image_link} alt={post.title} className={Styles.postImage} />
       <div className={Styles.postContent}>
         <h2 className={Styles.postTitle}>{post.title}</h2>
-        <div className={Styles.postDate}>{dayjs(post.publishedAt).format('MMMM D, YYYY')} &mdash;{' '}</div>
+        <div className={Styles.postDate}>{dayjs(post.publishedAt).format('MMMM D, YYYY')} &mdash;{' '} {post.readingTime}</div>
         <p className={Styles.postDescription}>{post.excerpt}</p>
         <button className={Styles.postButton}>See Post</button>
       </div>
