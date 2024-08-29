@@ -33,9 +33,9 @@ export default function Home() {
         <BigBlock />
       </div>
       
-      <hr class="hr hr-blurry" />
-      <h2 class="text-center p-3 rounded-3 subtleTransparent">Latest Posts</h2>
-      <hr class="hr hr-blurry" />
+      <hr className="hr hr-blurry" />
+      <h2 className="text-center p-3 rounded-3 subtleTransparent">Latest Posts</h2>
+      <hr className="hr hr-blurry" />
       
       <ResponsiveMasonry >
         <Masonry gutter="1rem">

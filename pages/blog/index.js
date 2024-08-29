@@ -57,18 +57,16 @@ export default function BlogPage({ posts }) {
 export async function getStaticProps() {
   const articles = await getAllArticles()
 
-  articles
-    .map((article) => article.data)
-    .sort((a, b) => {
-      if (a.data.publishedAt > b.data.publishedAt) return 1
-      if (a.data.publishedAt < b.data.publishedAt) return -1
+  const sortedArticles = articles
+  .filter((article) => article && article.publishedAt)  // Filter to ensure publishedAt exists
+  .sort((a, b) => new Date(a.publishedAt) - new Date(b.publishedAt)).reverse();  // Sort by date
 
-      return 0
-    })
+  // Log sorted dates to confirm the order
+  console.log("Sorted Articles:", sortedArticles.map(article => article.publishedAt));
 
   return {
     props: {
-      posts: articles.reverse(),
+      posts: sortedArticles,
     },
   }
 }

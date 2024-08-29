@@ -1,73 +1,72 @@
-import Head from 'next/head';
+import React from 'react'
+import Head from 'next/head'
+import Link from "next/link"
+import dayjs from 'dayjs'
+import { getAllPosts } from '../../src/utils/mdx'
+
+// My Imports
 import Masonry from 'react-responsive-masonry';
-import { useEffect, useState } from 'react';
-import { fetchPostsPagination } from '../../libs/contentful';
-import PostCard from '../../components/PostCard';
-import Pagination from '../../components/Pagination';
-import SearchInput from '../../components/SearchInput';
-import { useRouter } from 'next/router';
+import PostCard from '../../components/PostCardMDX';
 import dynamic from 'next/dynamic';
+
 
 const ResponsiveMasonry = dynamic(() => import('react-responsive-masonry').then(mod => mod.ResponsiveMasonry), {
   ssr: false,
 });
 
-const POSTS_PER_PAGE = 12;
+const breakpointColumnsObj = {
+  default: 4,
+  1100: 3,
+  700: 2,
+  500: 1
+};
 
-export default function Home() {
-
-  const [posts, setPosts] = useState([]);
-  const [totalPosts, setTotalPosts] = useState(0);
-  const router = useRouter();
-  const { page = 1, search = '' } = router.query;
-
-  useEffect(() => {
-    async function getPosts() {
-      const skip = (page - 1) * POSTS_PER_PAGE;
-      const { posts: fetchedPosts, total } = await fetchPostsPagination({ skip, limit: POSTS_PER_PAGE, search });
-      setPosts(fetchedPosts);
-      setTotalPosts(total);
-    }
-    getPosts();
-  }, [page, search]);
-
-  const handleSearch = (term) => {
-    router.push(`/posts/?page=1&search=${term}`, undefined, { shallow: true });
-  };
-
-  const breakpointColumnsObj = {
-    default: 4,
-    1100: 3,
-    700: 2,
-    500: 1
-  };
-
+export default function BlogPage({ posts }) {
   return (
-    <>
+    <React.Fragment>
       <Head>
-        <title>Posts</title>
+        <title>My Posts</title>
       </Head>
-      
+
+      <div class="alert alert-danger text-center" role="alert">
+        This page is UNDER CONSTRUCTION, you may see placeholder items!
+      </div>
+
       <hr class="hr hr-blurry" />
-      <h2 class="text-center p-3" style={{backgroundColor: "white"}}>My Posts</h2>
-      <SearchInput onSearch={handleSearch} />
+      <div style={{backgroundColor: "white"}}>
+        <h2 class="text-center pt-3" >My Posts</h2>
+        <p className='text-center pb-3' >Quick and short updates</p>
+      </div>
+      {/* <SearchInput onSearch={handleSearch} /> */}
       <hr class="hr hr-blurry" />
 
       <ResponsiveMasonry columnsCountBreakPoints={breakpointColumnsObj}>
-        <Masonry gutter="1rem">
-          {posts.map((post) => (
-            <PostCard key={post.sys.id} post={post} />
-          ))}
-        </Masonry>
+      <Masonry gutter="1rem">
+        {posts.map((frontMatter) => {
+          return (
+            <PostCard key={frontMatter.slug} post={frontMatter} />
+          )
+        })}
+      </Masonry>
       </ResponsiveMasonry>
-      
-      <Pagination
-        currentPage={parseInt(page)}
-        totalPosts={totalPosts}
-        postsPerPage={POSTS_PER_PAGE}
-        searchTerm={search}
-      />
-      
-    </>
-  );
+
+    </React.Fragment>
+  )
+}
+
+export async function getStaticProps() {
+  const articles = await getAllPosts()
+
+  const sortedArticles = articles
+  .filter((article) => article && article.publishedAt)  // Filter to ensure publishedAt exists
+  .sort((a, b) => new Date(a.publishedAt) - new Date(b.publishedAt)).reverse();  // Sort by date
+
+  // Log sorted dates to confirm the order
+  console.log("Sorted Articles:", sortedArticles.map(article => article.publishedAt));
+
+  return {
+    props: {
+      posts: sortedArticles,
+    },
+  }
 }

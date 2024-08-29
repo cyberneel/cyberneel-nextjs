@@ -1,53 +1,96 @@
+import dayjs from 'dayjs'
+import React from 'react'
+import Head from 'next/head'
+import Image from 'next/image'
+import rehypeSlug from 'rehype-slug'
+import { MDXRemote } from 'next-mdx-remote'
+import rehypeHighlight from 'rehype-highlight'
+import rehypeCodeTitles from 'rehype-code-titles'
+import { serialize } from 'next-mdx-remote/serialize'
+import 'highlight.js/styles/atom-one-dark-reasonable.css'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import { getPostSlug, getPostFromSlug } from '../../src/utils/mdx'
+import { SectionTitle, Text } from '../../data/components/mdx-components'
+import styles from '../blog/post.module.css';
 
-
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import client from '../../libs/contentfulPosts';
-import styles from './post.module.css';
-
-export default function Post({ post }) {
-  const { title, date, description, content, imageLink, slug, tags } = post.fields;
+export default function Post({ post: { source, frontmatter } }) {
 
   return (
     <div className={styles.postContainer + " rounded-3"}>
-      {tags && <div className={styles.postTags}>Tags: {tags.join(', ')}</div>}
+      {/* {tags && <div className={styles.postTags}>Tags: {tags.join(', ')}</div>} */}
       
-      <h1 className={styles.postTitle}>{title}</h1>
-      <p className={styles.postDate}>{new Date(date).toLocaleDateString()}</p>
-      <p className={styles.postDescription}>{description}</p>
+      <h1 className={styles.postTitle}>{frontmatter.title}</h1>
+      <p className={styles.postDate}>{dayjs(frontmatter.publishedAt).format('MMMM D, YYYY')} &mdash;{' '} {frontmatter.readingTime}</p>
+      <p className={styles.postDescription}>{frontmatter.excerpt}</p>
       <div className={styles.postContent}>
-        {documentToReactComponents(content)}
+        <MDXRemote {...source} components={{ Image, SectionTitle, Text }} />
       </div>
       
-      {imageLink && <img src={imageLink} alt={title} className={styles.postImage} />}
+      {frontmatter.cover_image_link && <img src={frontmatter.cover_image_link} alt={frontmatter.title} className={styles.postImage} />}
     </div>
   );
-}
 
-export async function getStaticPaths() {
-  const response = await client.getEntries({
-    content_type: 'cyberneelPost',
-  });
-
-  const paths = response.items.map((item) => ({
-    params: { slug: item.fields.slug },
-  }));
-
-  return {
-    paths,
-    fallback: false,
-  };
+  return (
+    <React.Fragment>
+      <Head>
+        <title>{frontmatter.title} | My blog</title>
+      </Head>
+      <div className="article-container">
+        <h1 className="article-title">{frontmatter.title}</h1>
+        <p className="publish-date">
+          {dayjs(frontmatter.publishedAt).format('MMMM D, YYYY')} &mdash;{' '}
+          {frontmatter.readingTime}
+        </p>
+        <div className="content">
+          <MDXRemote {...source} components={{ Image, SectionTitle, Text }} />
+        </div>
+      </div>
+    </React.Fragment>
+  )
 }
 
 export async function getStaticProps({ params }) {
-  const { slug } = params;
-  const response = await client.getEntries({
-    content_type: 'cyberneelPost',
-    'fields.slug': slug,
-  });
+  //fetch the particular file based on the slug
+  const { slug } = params
+  const { content, frontmatter } = await getPostFromSlug(slug)
+
+  const mdxSource = await serialize(content, {
+    mdxOptions: {
+      rehypePlugins: [
+        rehypeSlug,
+        [
+          rehypeAutolinkHeadings,
+          {
+            properties: { className: ['anchor'] },
+          },
+          { behaviour: 'wrap' },
+        ],
+        rehypeHighlight,
+        rehypeCodeTitles,
+      ],
+    },
+  })
 
   return {
     props: {
-      post: response.items[0],
+      post: {
+        source: mdxSource,
+        frontmatter,
+      },
     },
-  };
+  }
+}
+
+// dynamically generate the slugs for each article(s)
+export async function getStaticPaths() {
+    // getting all paths of each article as an array of
+    // objects with their unique slugs
+    const paths = (await getPostSlug()).map((slug) => ({ params: { slug } }))
+  
+    return {
+      paths,
+      // in situations where you try to access a path
+      // that does not exist. it'll return a 404 page
+      fallback: false,
+    }
 }

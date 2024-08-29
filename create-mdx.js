@@ -14,10 +14,10 @@ function createMDXFile(type, fileName, title) {
 
   // Frontmatter template
   const frontmatter = `---
-title: "${title}"
-publishedAt: "yyyy-mm-dd"
-excerpt: "description"
-cover_image_link: "link/to/img"
+title: '${title}'
+publishedAt: 'yyyy-mm-dd'
+excerpt: 'description'
+cover_image_link: 'link/to/img'
 tags: []
 ---
 
