@@ -10,7 +10,8 @@ export default function Navbar() {
   useEffect(() => {
     fetch('/pages.json')
       .then(response => response.json())
-      .then(data => setPages(data));
+      .then(data => setPages(data))
+      .catch(error => console.error('Error:', error));;
   }, []);
 
   const renderMenuItems = (items, drop=false) => {
