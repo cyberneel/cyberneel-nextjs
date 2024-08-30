@@ -3,7 +3,7 @@ import BigBlock from '../components/BigBlock';
 import { useEffect, useState } from 'react';
 import { fetchAboutPost } from '../libs/contentful';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import styles from './posts/post.module.css';
+import styles from './blog/post.module.css';
 
 export default function About() {
   const [posts, setPosts] = useState([]);
