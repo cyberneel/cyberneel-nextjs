@@ -44,7 +44,7 @@ export default function BlogPage({ posts }) {
       <Masonry gutter="1rem">
         {posts.map((frontMatter) => {
           return (
-            <PostCard key={frontMatter.slug} post={frontMatter} />
+            <PostCard key={frontMatter.slug} type={"posts"} post={frontMatter} />
           )
         })}
       </Masonry>
@@ -57,8 +57,19 @@ export default function BlogPage({ posts }) {
 export async function getStaticProps() {
   const articles = await getAllPosts()
 
+  // Check if running on localhost
+  const isLocalhost = process.env.NODE_ENV !== 'production' || process.env.VERCEL_ENV === 'development';
+
   const sortedArticles = articles
-  .filter((article) => article && article.publishedAt)  // Filter to ensure publishedAt exists
+  .filter((article) => 
+    {
+      // Only show draft posts if on localhost
+      if (article.draft && !isLocalhost) {
+        return false;
+      }
+      return true;
+    }
+  )
   .sort((a, b) => new Date(a.publishedAt) - new Date(b.publishedAt)).reverse();  // Sort by date
 
   // Log sorted dates to confirm the order

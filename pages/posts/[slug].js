@@ -17,7 +17,7 @@ export default function Post({ post: { source, frontmatter } }) {
 
   return (
     <div className={styles.postContainer + " rounded-3"}>
-      {/* {tags && <div className={styles.postTags}>Tags: {tags.join(', ')}</div>} */}
+      {frontmatter.tags && <div className={styles.postTags}>Tags: {frontmatter.tags.join(', ')}</div>}
       
       <h1 className={styles.postTitle}>{frontmatter.title}</h1>
       <p className={styles.postDate}>{dayjs(frontmatter.publishedAt).format('MMMM D, YYYY')} &mdash;{' '} {frontmatter.readingTime}</p>
