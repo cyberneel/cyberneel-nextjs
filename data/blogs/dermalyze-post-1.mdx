@@ -8,14 +8,31 @@ draft: true
 ---
 
 # The Idea
-&emsp;What if you could simply take a picture of your rash or patch of pimples and get and instant response with what it may actually be along with common treatments? This is what my friends, a couple of CS kids and a Bio kid, and I asked ourselves when we wanted to hop onto the AI hype train and were looking for a project.
-# Well, Doesn't That Already Exist?
-&emsp;We do realize we are not inventing something out of the ballpark, **YET**. But during our initial research into this topic, the existing apps that we found had a few things about them which we did not like, but the two things we were really focussed on were:
+&emsp;What if you could take a picture of your rash or patch of pimples and get an instant response with what it may be, along with standard treatments? This is what my friends, a couple of CS kids, and a Bio kid and I asked ourselves when we wanted to hop onto the AI hype train and were looking for a project.
 
-* **Cost:** Most of the premium tools available out there had some sort of cost associated to them in some way, most had either a subscription or an annoying experience filled with adverts.
-* **Bias:** The few decent free options we did find for this use case, were usually sponsored by some company and were only showing products for that company.
-* **Features:** Overall, they were still missing features such as providing common treatments and data on the skin condition itself.
+# Well, Doesn't That Already Exist?
+&emsp;We realize we are not inventing something out of the ballpark, **YET**. During our initial research into this topic, the existing apps that we found had a few things about them that we did not like, but the two things we were focused on were:
+
+* **Cost:** Most of the premium tools available out there had some cost associated with them in some way; most had either a subscription or an annoying experience filled with adverts.
+* **Bias:** The few decent free options we did find for this use case were usually sponsored by some company and were only showing products for that company. This bias in the recommendations limits the user's choice and can lead to suboptimal treatment outcomes.
+* **Features:** Overall, they were still missing features such as providing common treatments and data on the skin condition.
+
 # Progress…
 ## Streamlit Era
-&emsp;The first prototype for this project was started on Jan 1, 2024. The prototype used Streamlit, a tool that turns python scripts into web apps, as we our team used it before to throw together a prototype for UNT's hackathon.
+&emsp;The prototype for this project was started on Jan. 1, 2024. The prototype used Streamlit, a tool that turns Python scripts into web apps, as our team had used it before to throw together a prototype for UNT's hackathon. This version of Dermalyze was pretty bare-bones.
+
+### Features:
+* **Image Input:** We found an open-source model that could classify between 4 skin conditions.
+
+### Moving On
+&emsp;Making this prototype introduced us to many new tools, such as PyTorch and OpenCV. Although this prototype seemed to do its job, it was missing some of the main features we started this project. We wanted to add more conditions, a blog, and a tuned LLM that provides treatments we found in our research. That is when I decided that we should split from scratch as a team.
+
+## Learning PyTorch
+&emsp;My job in my team was to figure out the AI and the logistics associated with it. At first, I began learning ML through tutorials and learning Tensorflow, but I soon shifted to PyTorch as it had support for using GPUs on Windows machines on its latest version. I figured out that it was far more efficient to fine-tune a pre-trained model for a specific use case rather than train an entire model from scratch.
+
+### Using Resnet
+&emsp;After reading PyTorch's documentation, I came across a way to tune Resnet models. After spending a lot of time tweaking the hyperparameters, parameters that specify a model's learning behavior, I got about 80% accuracy among four classifications: acne, eczema, psoriasis, and moles/melanoma.
+
+### Using ONNX
+&emsp;
 
