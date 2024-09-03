@@ -30,9 +30,12 @@ draft: true
 ## Learning PyTorch
 &emsp;My job in my team was to figure out the AI and the logistics associated with it. At first, I began learning ML through tutorials and learning Tensorflow, but I soon shifted to PyTorch as it had support for using GPUs on Windows machines on its latest version. I figured out that it was far more efficient to fine-tune a pre-trained model for a specific use case rather than train an entire model from scratch.
 
-### Using Resnet
-&emsp;After reading PyTorch's documentation, I came across a way to tune Resnet models. After spending a lot of time tweaking the hyperparameters, parameters that specify a model's learning behavior, I got about 80% accuracy among four classifications: acne, eczema, psoriasis, and moles/melanoma.
+### Using ResNet
+&emsp;After reading PyTorch's documentation, I found a way to tune ResNet models. After spending a lot of time tweaking the hyper-parameters, parameters that specify a model's learning behavior, I got about 80% accuracy among four classifications: acne, eczema, psoriasis, and moles/melanoma.
 
 ### Using ONNX
+&emsp;Once I got the hang of PyTorch and had a model ready, I needed a way to run it in a browser environment so anyone could go to the website and try the AI for free. This is when I found the ONNX format, which stands for Open Neural Network Exchange. This tool was beneficial because of a runtime library developed by Microsoft that allows any ONNX model to be used in environments such as browsers. It took some tinkering to convert the fine-tuned model into the proper ONNX format that supported all the types of PyTorch layers the model was using, but once I had an ONNX file, I began working on the first website.
+
+### Github Pages
 &emsp;
 
