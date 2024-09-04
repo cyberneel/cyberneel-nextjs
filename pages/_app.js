@@ -9,7 +9,8 @@ import '../styles/globals.css'
 import ScrollToTop from '../components/ScrollToTop';
 //import Script from 'next/script'
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {  
+
   const router = useRouter();
 
   useEffect(() => {

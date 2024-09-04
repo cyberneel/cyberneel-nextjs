@@ -3,19 +3,11 @@ import BigBlock from '../components/BigBlock';
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import { useEffect, useState } from 'react';
 import { fetchPosts } from '../libs/contentful';
-import PostCard from '../components/PostCard';
+import PostCard from '../components/PostCardMDX';
 import dynamic from 'next/dynamic';
+import { getAllPosts } from '../src/utils/mdx';
 
-export default function Home() {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    async function getPosts() {
-      const fetchedPosts = await fetchPosts();
-      setPosts(fetchedPosts);
-    }
-    getPosts();
-  }, []);
+export default function Home({ posts }) {
 
   const breakpointColumnsObj = {
     1100: 3,
@@ -39,9 +31,11 @@ export default function Home() {
       
       <ResponsiveMasonry >
         <Masonry gutter="1rem">
-          {posts.map((post) => (
-            <PostCard key={post.sys.id} post={post} />
-          ))}
+          {posts.map((frontMatter) => {
+            return (
+              <PostCard key={frontMatter.slug} type={"posts"} post={frontMatter} />
+            )
+          })}
         </Masonry>
       </ResponsiveMasonry>
       <div className="d-flex justify-content-center p-3">
@@ -49,4 +43,35 @@ export default function Home() {
       </div>
     </>
   );
+}
+
+export async function getStaticProps() {
+  const articles = await getAllPosts()
+
+  // Check if running on localhost
+  const isLocalhost = process.env.NODE_ENV !== 'production' || process.env.VERCEL_ENV === 'development';
+
+  const sortedPosts = articles
+  .filter((article) => 
+    {
+      // Only show draft posts if on localhost
+      if (article.draft && !isLocalhost) {
+        return false;
+      }
+      return true;
+    }
+  )
+  .sort((a, b) => new Date(a.publishedAt) - new Date(b.publishedAt)).reverse();  // Sort by date
+
+  // Log sorted dates to confirm the order
+  console.log("Sorted Articles:", sortedPosts.map(article => article.publishedAt));
+
+  // Trim the array to the first 3 elements
+  const latestPosts = sortedPosts.slice(0, 3);
+
+  return {
+    props: {
+      posts: latestPosts,
+    },
+  }
 }
