@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Link from "next/link"
 import dayjs from 'dayjs'
 import { getAllPosts } from '../../src/utils/mdx'
+import { indexPosts } from '../../src/utils/flexsearch'
 
 // My Imports
 import Masonry from 'react-responsive-masonry';
@@ -56,6 +57,7 @@ export default function BlogPage({ posts }) {
 
 export async function getStaticProps() {
   const articles = await getAllPosts()
+  await indexPosts(articles);
 
   // Check if running on localhost
   const isLocalhost = process.env.NODE_ENV !== 'production' || process.env.VERCEL_ENV === 'development';

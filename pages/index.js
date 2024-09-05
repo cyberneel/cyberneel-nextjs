@@ -46,7 +46,7 @@ export default function Home({ posts }) {
 }
 
 export async function getStaticProps() {
-  const articles = await getAllPosts()
+  const articles = await getAllPosts();
 
   // Check if running on localhost
   const isLocalhost = process.env.NODE_ENV !== 'production' || process.env.VERCEL_ENV === 'development';
