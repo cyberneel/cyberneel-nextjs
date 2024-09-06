@@ -45,7 +45,7 @@ export default function BlogPage({ posts }) {
       <Masonry gutter="1rem">
         {posts.map((frontMatter) => {
           return (
-            <PostCard key={frontMatter.slug} type={"posts"} post={frontMatter} />
+            <PostCard key={frontMatter.slug} type={frontMatter.type} post={frontMatter} />
           )
         })}
       </Masonry>

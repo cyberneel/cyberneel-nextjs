@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 import { fetchPosts } from '../libs/contentful';
 import PostCard from '../components/PostCardMDX';
 import dynamic from 'next/dynamic';
-import { getAllPosts } from '../src/utils/mdx';
+import { getAllPosts, getAllArticles } from '../src/utils/mdx';
+import { post } from 'jquery';
 
 export default function Home({ posts }) {
 
@@ -26,32 +27,36 @@ export default function Home({ posts }) {
       </div>
       
       <hr className="hr hr-blurry" />
-      <h2 className="text-center p-3 rounded-3 subtleTransparent">Latest Posts</h2>
+      <h2 className="text-center p-3 rounded-3 subtleTransparent">Latest Updates</h2>
       <hr className="hr hr-blurry" />
       
       <ResponsiveMasonry >
         <Masonry gutter="1rem">
           {posts.map((frontMatter) => {
             return (
-              <PostCard key={frontMatter.slug} type={"posts"} post={frontMatter} />
+              <PostCard key={frontMatter.slug} type={frontMatter.type} post={frontMatter} />
             )
           })}
         </Masonry>
       </ResponsiveMasonry>
       <div className="d-flex justify-content-center p-3">
-        <a href={'/posts'} className="btn btn-danger">See All Posts</a>
+        <a href={'/posts'} className="btn btn-danger m-3">See All Posts</a>
+        <a href={'/blog'} className="btn btn-danger m-3">See All Blogs</a>
       </div>
     </>
   );
 }
 
 export async function getStaticProps() {
-  const articles = await getAllPosts();
+  const posts = await getAllPosts();
+  const blogs = await getAllArticles();
+
+  const postsAndBlogs = posts.concat(blogs);
 
   // Check if running on localhost
   const isLocalhost = process.env.NODE_ENV !== 'production' || process.env.VERCEL_ENV === 'development';
 
-  const sortedPosts = articles
+  const sortedPosts = postsAndBlogs
   .filter((article) => 
     {
       // Only show draft posts if on localhost

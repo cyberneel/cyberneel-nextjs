@@ -85,6 +85,7 @@ export async function getArticleFromSlug(slug) {
           ...data,
           slug: articleSlug.replace('.mdx', ''),
           readingTime: readingTime(source).text,
+          type: 'blog'
         },
         ...allArticles,
       ]
@@ -107,6 +108,7 @@ export async function getArticleFromSlug(slug) {
           ...data,
           slug: articleSlug.replace('.mdx', ''),
           readingTime: readingTime(source).text,
+          type: 'posts'
         },
         ...allArticles,
       ]
