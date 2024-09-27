@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Head from 'next/head'
 import Link from "next/link"
 import dayjs from 'dayjs'
 import { getAllPosts } from '../../src/utils/mdx'
-import { indexPosts } from '../../src/utils/flexsearch'
 
 // My Imports
 import Masonry from 'react-responsive-masonry';
 import PostCard from '../../components/PostCardMDX';
 import dynamic from 'next/dynamic';
+import SearchBarFlex from '../../components/SearchBar-Flex';
 
 
 const ResponsiveMasonry = dynamic(() => import('react-responsive-masonry').then(mod => mod.ResponsiveMasonry), {
@@ -23,11 +23,16 @@ const breakpointColumnsObj = {
 };
 
 export default function BlogPage({ posts }) {
+
+  const [filteredPosts, setFilteredPosts] = useState(posts);
+
   return (
     <React.Fragment>
       <Head>
         <title>My Posts</title>
       </Head>
+
+      <SearchBarFlex posts={posts} onSearchResults={setFilteredPosts} />
 
       <div class="alert alert-danger text-center" role="alert">
         This page is UNDER CONSTRUCTION, you may see placeholder items!
@@ -43,7 +48,7 @@ export default function BlogPage({ posts }) {
 
       <ResponsiveMasonry columnsCountBreakPoints={breakpointColumnsObj}>
       <Masonry gutter="1rem">
-        {posts.map((frontMatter) => {
+        {filteredPosts.map((frontMatter) => {
           return (
             <PostCard key={frontMatter.slug} type={frontMatter.type} post={frontMatter} />
           )
@@ -57,7 +62,7 @@ export default function BlogPage({ posts }) {
 
 export async function getStaticProps() {
   const articles = await getAllPosts()
-  await indexPosts(articles);
+  //await indexPosts(articles);
 
   // Check if running on localhost
   const isLocalhost = process.env.NODE_ENV !== 'production' || process.env.VERCEL_ENV === 'development';
