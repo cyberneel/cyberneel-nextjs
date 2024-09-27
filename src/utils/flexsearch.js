@@ -1,17 +1,17 @@
 import FlexSearch from 'flexsearch'
 import { getPostFromSlug } from './mdx';
 
-// Create a FlexSearch Document index
-const postsIndex = new FlexSearch.Document({
-  document: {
-    id: "id",  // Unique identifier for each post
-    index: ["title", "content"],  // Fields to index
-    store: ["title", "content"]  // Fields to store and retrieve in the result
-  }
-});
-
 // Function to add posts to the index
 export function indexPosts(posts) {
+
+      // Create a FlexSearch Document index
+    const postsIndex = new FlexSearch.Document({
+      document: {
+        id: "id",  // Unique identifier for each post
+        index: ["title", "content"],  // Fields to index
+        store: ["title", "content"]  // Fields to store and retrieve in the result
+      }
+    });
 
   const indexingPromise = posts.map((post) => {
     // Extract plain text content asynchronously
@@ -32,6 +32,11 @@ export function indexPosts(posts) {
   //   const results = postsIndex.search("white", { field: "title" });
   //   console.log(results);  // Should now return results matching the word "White"
   // });
+
+  // Wait for all promises to resolve
+  //await Promise.all(indexingPromise);
+
+  return postsIndex;  // Return the index after indexing
 }
 
 // Function to extract plain text from compiled MDX source
@@ -41,6 +46,10 @@ function extractTextFromMDX(compiledSource) {
 }
 
 // Function to search the index
-export function searchPosts(query) {
+export function searchPosts(query, posts) { 
+
+  // Create a FlexSearch Document index
+  const postsIndex = indexPosts(posts);
+
   return postsIndex.search(query);
 }
