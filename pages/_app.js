@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps }) {
     <>
     
     <Head>
-      <link rel="icon" href="https://github.com/4301e00e-966d-44c8-b913-d06cf7b553b1" type="image/x-icon"/>
+      <link rel="icon" href="https://github.com/cyberneel/cyberneel.github.io/raw/refs/heads/main/img/CyberNeelLogoNewOutfit1080p.webp" type="image/x-icon"/>
     </Head>
     
     
