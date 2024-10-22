@@ -13,7 +13,7 @@ function Footer() {
     <section class="mb-4">
 
       <a class="btn btn-outline-light btn-floating m-1" href="https://boulderbugle.com/my-google-profile-Qr6XopIM" role="button"
-        ><Icon.Google />
+        ><Icon.Question />
       </a>
 
 
