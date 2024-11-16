@@ -11,6 +11,8 @@ export default function Contact() {
         <h1 className='p-3'></h1>
         <ContactForm />
       </div>
+      <div className="p-5"></div>
+      <div className="p-1"></div>
     </>
   );
 }
