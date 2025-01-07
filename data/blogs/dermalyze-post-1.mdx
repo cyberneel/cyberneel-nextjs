@@ -2,9 +2,9 @@
 title: 'What is Dermalyze?'
 publishedAt: '2024-08-30'
 excerpt: 'Learn about my AI project for skin health.'
-cover_image_link: 'link/to/img'
+cover_image_link: 'https://cyberneel.github.io/images/webp/DermalyzePost-1.jpeg'
 tags: ['AI', 'NextJS']
-draft: true
+draft: false
 ---
 
 # The Idea
@@ -34,11 +34,18 @@ draft: true
 &emsp; After reading PyTorch's documentation, I found a way to tune ResNet models. After spending a lot of time tweaking the hyper-parameters, parameters that specify a model's learning behavior, I got about 80% accuracy among four classifications: acne, eczema, psoriasis, and moles/melanoma.
 
 ## ONNX
-&emsp; Once I got the hang of PyTorch and had a model ready, I needed a way to run it in a browser environment so anyone could go to the website and try the AI for free. This is when I found the ONNX format, which stands for Open Neural Network Exchange. This tool was beneficial because of a runtime library developed by Microsoft that allows any ONNX model to be used in environments such as browsers. It took some tinkering to convert the fine-tuned model into the proper ONNX format that supported all the types of PyTorch layers the model was using, but once I had an ONNX file, I began working on the first website.
+&emsp; Once I got the hang of PyTorch and had a model ready, I needed a way to run it in a browser environment so anyone could go to the website and try the AI for free. This is when I found the ONNX format, which stands for Open Neural Network Exchange. This tool was beneficial because of a runtime library developed by Microsoft that allows any ONNX model to be used in environments such as browsers. It took some tinkering to convert the fine-tuned model into the proper ONNX format that supported all the types of PyTorch layers the model was using, but once I had an ONNX file, I began working on the first website. 
 
 ### Github Pages
 &emsp; Github has a feature called Pages that allows anyone to host a static website for free. This seemed like an excellent way to create the first iteration of our website. We quickly got the ONNX script running, but there was a problem.
 
 ### Pre-Processing
-&emsp; 
+&emsp; Although the model could run in the browser, there wasn't a quick way to run pre-processing operations on the images going into the model. There was a way to turn it into a matrix, but applying filters such as blur, tinting, and any other effects beyond cropping wasn't possible.
 
+#### The Canvas Element
+&emsp; After looking at many ways to pre-process images in the browser, I found the Canvas element. This was the most simple way to show an image on the screen with the added benefit of begin able to programmatically edit the image. Once the image is edited, I was able to use the `getImageData` function to get the pixel data and send it to the model.
+
+# What's Next?
+&emsp; This project has taight me a lot of new things from PyTorch to ONNX to the Canvas element. There are some things I would like to add to the project, such as detection for more conditions and the ability to classify an image as "other". Another feature I plan on adding is filtering the input image for better results for oconditions that are more visible with certain filters. Even with filtering images, some conditions may look too similar. To address this, I want to create some form of a questionnaire that can help the model make a more accurate prediction.
+
+I hope you enjoyed reading about my project. If you have any questions or would like to collaborate, feel free to reach out to me using the [contact form](/contact) and make sure to try out [Dermalyze](https://dermalyze.cyberneel.com)!
