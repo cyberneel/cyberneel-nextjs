@@ -12,6 +12,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import { getArticleSlug, getArticleFromSlug } from '../../src/utils/mdx'
 import { SectionTitle, Text } from '../../data/components/mdx-components'
 import TurntableViewer from '../../components/TurntableViewer'
+import ImageMDX from '../../components/ImageMDX'
 import styles from './post.module.css';
 
 export default function Blog({ post: { source, frontmatter } }) {
@@ -27,7 +28,7 @@ export default function Blog({ post: { source, frontmatter } }) {
       <p className={styles.postDate}>{dayjs(frontmatter.publishedAt).format('MMMM D, YYYY')} &mdash;{' '} {frontmatter.readingTime}</p>
       <p className={styles.postDescription}>{frontmatter.excerpt}</p>
       <div className={styles.postContent}>
-        <MDXRemote {...source} components={{ Image, SectionTitle, Text, TurntableViewer }} />
+        <MDXRemote {...source} components={{ Image, SectionTitle, Text, TurntableViewer, ImageMDX }} />
       </div>
       
       

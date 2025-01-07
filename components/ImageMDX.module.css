@@ -1,0 +1,31 @@
+.imageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.imageContainer.center {
+    justify-self: center;
+}
+
+.imageContainer.left {
+    justify-self: start;
+}
+.imageContainer.right {
+    justify-self: end;
+}
+
+.image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.caption {
+    text-align: center;
+    font-size: 0.9em;
+    color: #555;
+    margin-top: 10px;
+}
