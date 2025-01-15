@@ -1,22 +1,12 @@
 import Head from 'next/head';
-import BigBlock from '../components/BigBlock';
-import { useEffect, useState } from 'react';
-import { fetchAboutPost } from '../libs/contentful';
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { MDXRemote } from 'next-mdx-remote';
+import { serialize } from 'next-mdx-remote/serialize';
+import fs from 'fs';
+import path from 'path';
 import styles from './blog/post.module.css';
+import BigBlock from '../components/BigBlock';
 
-export default function About() {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    async function getPosts() {
-      const aboutPost = await fetchAboutPost();
-      setPosts(aboutPost);
-    }
-    getPosts();
-  }, []);
-
-
+export default function About({ source }) {
   return (
     <>
       <Head>
@@ -31,21 +21,27 @@ export default function About() {
         />
       </div>
       
-      <hr class="hr hr-blurry" id="aboutSection"/>
-      <h2 class="text-center p-3" style={{backgroundColor: "white"}}>Learn About Me!</h2>
-      <hr class="hr hr-blurry" />
+      <hr className="hr hr-blurry" id="aboutSection"/>
+      <h2 className="text-center p-3" style={{backgroundColor: "white"}}>Learn About Me!</h2>
+      <hr className="hr hr-blurry" />
       
       <div className={styles.postContainer + " rounded-3"}>
-        {posts.length > 0 ? (
-          <div className={styles.postContent}>
-            {documentToReactComponents(posts[0].fields.content)}
-          </div>
-        ) : (
-          <p>Loading...</p>
-        )}         
+        <div className={styles.postContent}>
+          <MDXRemote {...source} />
+        </div>
       </div>
-      
-     </>
-      
+    </>
   );
+}
+
+export async function getStaticProps() {
+  const filePath = path.join(process.cwd(), 'data', 'about.mdx');
+  const source = fs.readFileSync(filePath, 'utf8');
+  const mdxSource = await serialize(source);
+
+  return {
+    props: {
+      source: mdxSource,
+    },
+  };
 }
