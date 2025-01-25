@@ -47,6 +47,7 @@ const TurntableViewer = ({ videoPath }) => {
           ref={videoRef}
           src={videoPath}
           preload="auto"
+          type="video/mp4"
           loop
           style={{ width: '100%', display: 'block' }}
         />

@@ -11,6 +11,7 @@ import 'highlight.js/styles/atom-one-dark-reasonable.css'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import { getPostSlug, getPostFromSlug } from '../../src/utils/mdx'
 import { SectionTitle, Text } from '../../data/components/mdx-components'
+import TurntableViewer from '../../components/TurntableViewer'
 import styles from '../blog/post.module.css';
 
 export default function Post({ post: { source, frontmatter } }) {
@@ -23,7 +24,7 @@ export default function Post({ post: { source, frontmatter } }) {
       <p className={styles.postDate}>{dayjs(frontmatter.publishedAt).format('MMMM D, YYYY')} &mdash;{' '} {frontmatter.readingTime}</p>
       <p className={styles.postDescription}>{frontmatter.excerpt}</p>
       <div className={styles.postContent}>
-        <MDXRemote {...source} components={{ Image, SectionTitle, Text }} />
+        <MDXRemote {...source} components={{ Image, SectionTitle, Text, TurntableViewer }} />
       </div>
       
       {frontmatter.cover_image_link && <img src={frontmatter.cover_image_link} alt={frontmatter.title} className={styles.postImage} />}
