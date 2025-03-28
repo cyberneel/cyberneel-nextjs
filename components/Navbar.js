@@ -6,6 +6,7 @@ import Styles from './Navbar.module.css'
 export default function Navbar() {
   
   const [pages, setPages] = useState([]);
+  const [theme, setTheme] = useState('light');
   
   useEffect(() => {
     fetch('/pages.json')
@@ -13,6 +14,14 @@ export default function Navbar() {
       .then(data => setPages(data))
       .catch(error => console.error('Error:', error));;
   }, []);
+
+  useEffect(() => {
+    document.body.className = theme;
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  }
 
   const renderMenuItems = (items, drop=false) => {
     return items.map((item, index) => {
@@ -78,6 +87,10 @@ export default function Navbar() {
           <ul className="navbar-nav">
             {renderMenuItems(pages)}
           </ul>
+          {/* Theme toggle */}
+          {/* <button onClick={toggleTheme} className="btn btn-secondary ms-auto">
+            {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+          </button> */}
         </div>
       </nav>
     </>

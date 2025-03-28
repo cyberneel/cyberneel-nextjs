@@ -43,3 +43,13 @@
 footer {
   min-height: 30vh;
 }
+
+body.light {
+  background-color: #ffffff;
+  color: #353535;
+}
+
+body.dark {
+  background-color: #353535;
+  color: #ffffff;
+}
