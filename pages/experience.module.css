@@ -1,0 +1,118 @@
+.experienceContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: rgba(255,255,255,0.9);
+}
+
+.timelineYear {
+  position: relative;
+  margin-bottom: 40px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.yearHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.yearLine {
+  flex-grow: 1;
+  height: 2px;
+  background-color: #dc3545;
+  opacity: 0.5;
+  margin-left: 15px;
+}
+
+.yearTitle {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.filterButtons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.card {
+  transition: all 0.3s ease;
+  height: auto;
+  animation: slideUp 0.5s ease-in-out;
+  margin-bottom: 1rem;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.35em 0.65em;
+  border-radius: 0.25rem;
+}
+
+.techBadge {
+  background-color: #f8f9fa;
+  color: #212529;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+}
+
+.expandButton {
+  color: #dc3545;
+  border-color: #dc3545;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.2rem;
+}
+
+.expandButton:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+.linkButton {
+  color: #dc3545;
+  text-decoration: none;
+}
+
+.linkButton:hover {
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .yearTitle {
+    font-size: 1.5rem;
+  }
+}
