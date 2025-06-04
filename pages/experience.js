@@ -6,6 +6,10 @@ import styles from './experience.module.css';
 import { getAllExperienceData } from '../src/utils/experiences';
 import dynamic from 'next/dynamic';
 import Masonry from 'react-responsive-masonry';
+import ImageMDX from '../components/ImageMDX';
+import FontWrapper from '../components/FontWrapper';
+import { MDXRemote } from 'next-mdx-remote';
+import { serialize } from 'next-mdx-remote/serialize';
 
 export default function Experience({ experienceData }) {
   const [expandedItem, setExpandedItem] = useState(null);
@@ -14,6 +18,7 @@ export default function Experience({ experienceData }) {
   const [years, setYears] = useState([]);
   const [modalItem, setModalItem] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [mdxSource, setMdxSource] = useState(null);
 
   useEffect(() => {
     // Initialize on component mount
@@ -42,9 +47,24 @@ export default function Experience({ experienceData }) {
     }
   }, [selectedCategory]);
 
-  const toggleExpand = (item) => {
+  const toggleExpand = async (item) => {
     setModalItem(item);
-    setShowModal(true);
+    
+    try {
+      // Extract content after ReadMore separator if it exists
+      const contentParts = item.content.split('=ReAdMoRe=');
+      const mdxContent = contentParts.length > 1 ? contentParts[1] : item.content;
+      
+      // Process MDX content with next-mdx-remote
+      const mdxSource = await serialize(mdxContent);
+      setMdxSource(mdxSource);
+      
+      // Show modal after content is processed
+      setShowModal(true);
+    } catch (error) {
+      console.error('Error processing MDX:', error);
+      setShowModal(true); // Show modal anyway, with fallback content
+    }
   };
 
   const closeModal = () => {
@@ -61,11 +81,13 @@ export default function Experience({ experienceData }) {
       setTimeout(() => {
         setShowModal(false);
         setModalItem(null);
+        setMdxSource(null); // Clear MDX source when closing
       }, 300); // Match this to the animation duration in CSS
     } else {
       // Fallback if elements not found
       setShowModal(false);
       setModalItem(null);
+      setMdxSource(null); // Clear MDX source when closing
     }
   };
 
@@ -106,7 +128,7 @@ export default function Experience({ experienceData }) {
       <div className='p-3 col-md-8 container'>
         <BigBlock 
           headText='Professional Experience'
-          description='My journey through education, work, and personal projects. '
+          description='My journey through education, work, and personal projects'
           linkText="Let's Explore!"
           link='#experienceSection'
         />
@@ -223,13 +245,26 @@ export default function Experience({ experienceData }) {
                   {modalItem.location} · {modalItem.startDate} - {modalItem.endDate}
                 </p>
                 <div className={styles.modalContent}>
-                  {modalItem.content.split('=ReAdMoRe=')[1] ? 
+                  {modalItem.content.split('=ReAdMoRe=')[1] ? (
                     <>
                       <p>{modalItem.content.split('=ReAdMoRe=')[0]}</p>
-                      <p>{modalItem.content.split('=ReAdMoRe=')[1]}</p>
-                    </> :
+                      <div className={styles.mdxContent}>
+                        {mdxSource ? (
+                          <MDXRemote 
+                            {...mdxSource} 
+                            components={{ 
+                              ImageMDX,
+                              Font: FontWrapper
+                            }} 
+                          />
+                        ) : (
+                          <p>Loading content...</p>
+                        )}
+                      </div>
+                    </>
+                  ) : (
                     <p>{modalItem.content}</p>
-                  }
+                  )}
                 </div>
                 {modalItem.technologies && (
                   <div className="mt-3">

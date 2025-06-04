@@ -164,6 +164,80 @@
   line-height: 1.6;
 }
 
+/* MDX Content Styles */
+.mdxContent {
+  margin-top: 1rem;
+}
+
+.markdownContent {
+  width: 100%;
+}
+
+.mdxContent h1,
+.mdxContent h2,
+.mdxContent h3,
+.mdxContent h4,
+.mdxContent h5,
+.mdxContent h6,
+.markdownContent h1,
+.markdownContent h2,
+.markdownContent h3,
+.markdownContent h4,
+.markdownContent h5,
+.markdownContent h6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.mdxContent p,
+.markdownContent p {
+  margin-bottom: 1rem;
+  white-space: pre-wrap;
+}
+
+.mdxContent ul,
+.mdxContent ol,
+.markdownContent ul,
+.markdownContent ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.mdxContent li,
+.markdownContent li {
+  margin-bottom: 0.5rem;
+}
+
+.mdxContent blockquote,
+.markdownContent blockquote {
+  border-left: 4px solid #dc3545;
+  padding-left: 1rem;
+  margin-left: 0;
+  color: #6c757d;
+}
+
+.mdxContent pre,
+.markdownContent pre {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.mdxContent code,
+.markdownContent code {
+  background-color: #f8f9fa;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.mdxImageContainer {
+  margin: 1.5rem 0;
+  width: 100%;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
