@@ -5,6 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import styles from './blog/post.module.css';
 import BigBlock from '../components/BigBlock';
+import FontWrapper from '../components/FontWrapper';
 
 export default function About({ source }) {
   return (
@@ -27,7 +28,7 @@ export default function About({ source }) {
       
       <div className={styles.postContainer + " rounded-3"}>
         <div className={styles.postContent}>
-          <MDXRemote {...source} />
+          <MDXRemote {...source} components={{ Font: FontWrapper }} />
         </div>
       </div>
     </>
