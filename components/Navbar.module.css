@@ -1,12 +1,124 @@
+.navContainer {
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.navBrand {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: #333;
+  transition: transform 0.2s ease;
+}
+
+.navBrand:hover {
+  transform: scale(1.02);
+}
+
+.navLogo {
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 .navItem {
-  
-  transition: 0.1s ease-in-out;
-  
+  padding: 0.5rem 0.8rem;
+  margin: 0 0.2rem;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+  position: relative;
 }
 
 .navItem:hover {
+  background-color: rgba(248, 215, 218, 0.7);
+  transform: translateY(-2px);
+}
+
+.navItem:active {
+  transform: translateY(0);
+}
+
+.dropdownMenu {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: none;
+  padding: 0.5rem;
+}
+
+.dropdownItem {
+  border-radius: 6px;
+  margin-bottom: 0.2rem;
+}
+
+.mobileMenuButton {
+  border: none;
+  background-color: transparent;
+  padding: 0.5rem;
+}
+
+.mobileMenuButton:focus {
+  box-shadow: none;
+}
+
+/* Position navbar items */
+.navbarPosition {
+  position: relative;
+}
+
+.brandPosition {
+  position: relative;
+  left: 0;
+  z-index: 1;
+}
+
+.togglerPosition {
+  position: relative;
+  right: 0;
+  z-index: 1;
+}
+
+.linksContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.navContainer {
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.navLinks {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 992px) {
+  .navLinks {
+    position: relative;
+    left: 0;
+    transform: none;
+    width: 100%;
+  }
   
-  background-color: #f8d7da;
-  font-weight: bold;
+  .navItem {
+    margin: 0.3rem 0;
+    text-align: center;
+    justify-content: center;
+  }
   
+  .navContainer ul.navbar-nav {
+    text-align: center;
+  }
+  
+  .navContainer .nav-link {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .linksContainer {
+    margin-top: 1rem;
+  }
 }

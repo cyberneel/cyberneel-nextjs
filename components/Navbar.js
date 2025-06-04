@@ -1,27 +1,27 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Styles from './Navbar.module.css'
+import Styles from './Navbar.module.css';
+import { Menu, Home, ChevronDown } from 'lucide-react';
 
 export default function Navbar() {
   
   const [pages, setPages] = useState([]);
-  const [theme, setTheme] = useState('light');
+  const [isScrolled, setIsScrolled] = useState(false);
   
   useEffect(() => {
     fetch('/pages.json')
       .then(response => response.json())
       .then(data => setPages(data))
-      .catch(error => console.error('Error:', error));;
+      .catch(error => console.error('Error:', error));
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  useEffect(() => {
-    document.body.className = theme;
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
-  }
 
   const renderMenuItems = (items, drop=false) => {
     return items.map((item, index) => {
@@ -30,33 +30,43 @@ export default function Navbar() {
       }
       if (item.children) {
         return (
-          <li className="nav-item dropdown">
+          <li key={index} className="nav-item dropdown">
               <a
-                className="nav-link dropdown-toggle"
+                className={`nav-link dropdown-toggle d-flex align-items-center ${Styles.navItem}`}
                 href="#"
                 id="navbarDropdownMenuLink"
                 data-bs-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                {item.label}
+                {item.label} <ChevronDown className="ms-1" size={16} />
               </a>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                {renderMenuItems(item.children,true)}
+              <ul className={`dropdown-menu ${Styles.dropdownMenu}`} aria-labelledby="navbarDropdownMenuLink">
+                {renderMenuItems(item.children, true)}
               </ul>
             </li>
         );
       }
       
-      if (drop == true) {
+      if (drop === true) {
         return (
-          <li><a className={Styles.navItem + " dropdown-item rounded-3"} href={item.path}>{item.label}</a></li>
+          <li key={index}>
+            <a className={`${Styles.navItem} ${Styles.dropdownItem} dropdown-item`} href={item.path}>
+              {item.label}
+            </a>
+          </li>
         );
       }
       
       return (
         <li key={index} className='nav-item'>
-            <a className={Styles.navItem + ' nav-link rounded-3'} href={item.path}>{item.label}</a>
+          <a 
+            className={`${Styles.navItem} nav-link d-flex align-items-center`} 
+            href={item.path}
+          >
+            {item.path === '/' && <Home size={16} className="me-1" />}
+            {item.label}
+          </a>
         </li>
       );
     });
@@ -64,33 +74,36 @@ export default function Navbar() {
   
   return (
     <>
-      <nav className="navbar navbar-expand-lg rounded-3">
-        <a className="navbar-brand px-3" href="/">
-        
-          <img className="rounded-2"src="https://cyberneel.github.io/img/CyberNeelLogoNewOutfit1080p-1400x1400.webp" alt="" width="30" height="30" alt=""></img>
-        
-        &nbsp;&nbsp;CyberNeel
-        
-        </a>
-        <button
-          className="navbar-toggler mx-3"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavDropdown"
-          aria-controls="navbarNavDropdown"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul className="navbar-nav">
-            {renderMenuItems(pages)}
-          </ul>
-          {/* Theme toggle */}
-          {/* <button onClick={toggleTheme} className="btn btn-secondary ms-auto">
-            {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
-          </button> */}
+      <nav className={`navbar navbar-expand-lg rounded-3 ${Styles.navContainer} ${isScrolled ? 'shadow-sm' : ''}`}>
+        <div className="container-fluid position-relative">
+          <a className={`navbar-brand ${Styles.navBrand}`} href="/">
+            <img 
+              className={Styles.navLogo} 
+              src="https://cyberneel.github.io/img/CyberNeelLogoNewOutfit1080p-1400x1400.webp" 
+              alt="CyberNeel Logo" 
+              width="30" 
+              height="30"
+            />
+            <span className="ms-2">CyberNeel</span>
+          </a>
+          
+          <button
+            className={`navbar-toggler ${Styles.mobileMenuButton}`}
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <Menu size={24} />
+          </button>
+          
+          <div className={`collapse navbar-collapse ${Styles.linksContainer}`} id="navbarNavDropdown">
+            <ul className={`navbar-nav ${Styles.navLinks}`}>
+              {renderMenuItems(pages)}
+            </ul>
+          </div>
         </div>
       </nav>
     </>
