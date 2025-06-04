@@ -12,6 +12,8 @@ export default function Experience({ experienceData }) {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [filteredData, setFilteredData] = useState(experienceData);
   const [years, setYears] = useState([]);
+  const [modalItem, setModalItem] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     // Initialize on component mount
@@ -40,9 +42,57 @@ export default function Experience({ experienceData }) {
     }
   }, [selectedCategory]);
 
-  const toggleExpand = (id) => {
-    setExpandedItem(expandedItem === id ? null : id);
+  const toggleExpand = (item) => {
+    setModalItem(item);
+    setShowModal(true);
   };
+
+  const closeModal = () => {
+    // Get modal elements to add closing animation classes
+    const modalOverlay = document.querySelector(`.${styles.modalOverlay}`);
+    const modal = document.querySelector(`.${styles.modal}`);
+    
+    if (modalOverlay && modal) {
+      // Add closing animation classes
+      modalOverlay.classList.add(styles.fadeOut);
+      modal.classList.add(styles.slideUp);
+      
+      // Wait for animation to complete before removing from DOM
+      setTimeout(() => {
+        setShowModal(false);
+        setModalItem(null);
+      }, 300); // Match this to the animation duration in CSS
+    } else {
+      // Fallback if elements not found
+      setShowModal(false);
+      setModalItem(null);
+    }
+  };
+
+  // Close modal when clicking outside or pressing escape
+  useEffect(() => {
+    const handleEscapeKey = (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    };
+
+    const handleClickOutside = (e) => {
+      if (showModal && e.target.classList.contains(styles.modalOverlay)) {
+        closeModal();
+      }
+    };
+
+    if (showModal) {
+      document.addEventListener('keydown', handleEscapeKey);
+      document.addEventListener('click', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [showModal]);
 
   return (
     <>
@@ -56,7 +106,7 @@ export default function Experience({ experienceData }) {
       <div className='p-3 col-md-8 container'>
         <BigBlock 
           headText='Professional Experience'
-          description='My journey through education, work, and personal projects'
+          description='My journey through education, work, and personal projects. '
           linkText="Let's Explore!"
           link='#experienceSection'
         />
@@ -122,9 +172,7 @@ export default function Experience({ experienceData }) {
                       {item.location} · {item.startDate} - {item.endDate}
                     </p>
                     <p className="card-text">
-                      {expandedItem === item.id ? 
-                        (item.content.split('=ReAdMoRe=')[1] || item.content) : 
-                        (item.content.split('=ReAdMoRe=')[0] || item.content)}
+                      {item.content.split('=ReAdMoRe=')[0] || item.content}
                     </p>
                     {item.technologies && (
                       <div className="mb-3">
@@ -138,9 +186,9 @@ export default function Experience({ experienceData }) {
                     <div className="d-flex justify-content-between align-items-center mt-auto pt-2">
                         <button 
                           className={`btn btn-sm btn-outline-danger ${styles.expandButton}`}
-                          onClick={() => toggleExpand(item.id)}
+                          onClick={() => toggleExpand(item)}
                         >
-                          {expandedItem === item.id ? 'Show Less' : 'Read More'}
+                          Read More
                         </button>
                         {item.link && (
                           <a 
@@ -160,6 +208,57 @@ export default function Experience({ experienceData }) {
             </div>
           ))}
         </div>
+
+        {/* Modal for expanded content */}
+        {showModal && modalItem && (
+          <div className={styles.modalOverlay}>
+            <div className={styles.modal}>
+              <div className={styles.modalHeader}>
+                <h4 className={styles.modalTitle}>{modalItem.title}</h4>
+                <button className={styles.modalClose} onClick={closeModal}>×</button>
+              </div>
+              <div className={styles.modalBody}>
+                <h6 className="text-muted mb-2">{modalItem.company}</h6>
+                <p className="small text-muted mb-3">
+                  {modalItem.location} · {modalItem.startDate} - {modalItem.endDate}
+                </p>
+                <div className={styles.modalContent}>
+                  {modalItem.content.split('=ReAdMoRe=')[1] ? 
+                    <>
+                      <p>{modalItem.content.split('=ReAdMoRe=')[0]}</p>
+                      <p>{modalItem.content.split('=ReAdMoRe=')[1]}</p>
+                    </> :
+                    <p>{modalItem.content}</p>
+                  }
+                </div>
+                {modalItem.technologies && (
+                  <div className="mt-3">
+                    <h6>Technologies:</h6>
+                    <div>
+                      {modalItem.technologies.map(tech => (
+                        <span key={tech} className={styles.techBadge + " badge me-1 mb-1"}>
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {modalItem.link && (
+                  <div className="mt-3">
+                    <a 
+                      href={modalItem.link} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="btn btn-danger"
+                    >
+                      Visit Project
+                    </a>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </>
     );
 }
