@@ -29,7 +29,41 @@ export default function BlogPage({ posts }) {
   return (
     <React.Fragment>
       <Head>
-        <title>My Posts</title>
+        <title>CyberNeel Posts - Quick Updates and Insights</title>
+        <meta name="description" content="Browse CyberNeel's latest posts featuring quick updates, tech insights, creative projects, and digital art. Short-form content covering technology, AI, and development." />
+        <meta name="keywords" content="CyberNeel posts, tech updates, digital art, creative projects, technology insights, AI posts, development updates" />
+        <meta name="author" content="CyberNeel" />
+        <link rel="canonical" href="https://cyberneel.com/posts" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="CyberNeel Posts - Quick Updates and Insights" />
+        <meta property="og:description" content="Browse CyberNeel's latest posts featuring quick updates, tech insights, creative projects, and digital art." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cyberneel.com/posts" />
+        <meta property="og:site_name" content="CyberNeel" />
+        
+        {/* Twitter Cards */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="CyberNeel Posts - Quick Updates and Insights" />
+        <meta name="twitter:description" content="Browse CyberNeel's latest posts featuring quick updates, tech insights, creative projects, and digital art." />
+        
+        {/* Structured Data for Posts Collection */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "CollectionPage",
+              "name": "CyberNeel Posts",
+              "description": "Quick Updates and Insights",
+              "url": "https://cyberneel.com/posts",
+              "author": {
+                "@type": "Person",
+                "name": "CyberNeel"
+              }
+            })
+          }}
+        />
       </Head>
 
       <SearchBarFlex posts={posts} onSearchResults={setFilteredPosts} />

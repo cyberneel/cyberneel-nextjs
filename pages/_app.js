@@ -33,6 +33,21 @@ function MyApp({ Component, pageProps }) {
     <>
     
     <Head>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta charSet="utf-8" />
+      <meta name="robots" content="index, follow" />
+      <meta name="googlebot" content="index, follow" />
+      <meta name="author" content="CyberNeel" />
+      <meta name="language" content="English" />
+      
+      {/* Default Open Graph tags */}
+      <meta property="og:site_name" content="CyberNeel" />
+      <meta property="og:locale" content="en_US" />
+      
+      {/* Default Twitter Card tags */}
+      <meta name="twitter:creator" content="@cyberneel" />
+      <meta name="twitter:site" content="@cyberneel" />
+      
       <link rel="icon" href="https://github.com/cyberneel/cyberneel.github.io/raw/refs/heads/main/img/CyberNeelLogoNewOutfit1080p.webp" type="image/x-icon"/>
     </Head>
     

@@ -9,10 +9,39 @@ module.exports = {
   },
   
   reactStrictMode: true,
+  
+  // SEO optimizations
+  compress: true,
+  generateEtags: true,
+  poweredByHeader: false,
 
   images: {
     loader: 'akamai',
     path: '',
+    formats: ['image/webp', 'image/avif'],
+  },
+
+  // Security headers for better SEO and user trust  
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin'
+          },
+        ]
+      }
+    ]
   },
 
   webpack: (config) => {

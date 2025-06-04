@@ -2,7 +2,10 @@
   "entry_script": "start",
   "entry_file": "pages/index.js",
   "scripts": {
-    "start": "next dev -p 3450"
+    "dev": "next dev -p 3450",
+    "build": "next build",
+    "start": "next start",
+    "export": "next export"
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "15.22.9",
@@ -17,6 +20,7 @@
     "next": "^14.2.13",
     "next-mdx-remote": "^5.0.0",
     "next-page-transitions": "1.0.0-beta.2",
+    "next-sitemap": "^4.2.3",
     "node-fetch": "3.3.2",
     "react": "18.3.1",
     "react-bootstrap-icons": "1.11.4",

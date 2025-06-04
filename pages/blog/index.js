@@ -30,7 +30,45 @@ export default function BlogPage({ posts }) {
   return (
     <React.Fragment>
       <Head>
-        <title>My Blog</title>
+        <title>CyberNeel Blog - Tech, AI, and Development Insights</title>
+        <meta name="description" content="Explore CyberNeel's blog featuring insights on technology, artificial intelligence, web development, and digital experiences. Read about LinkedIn AI, social media trends, and more." />
+        <meta name="keywords" content="CyberNeel blog, tech blog, AI insights, web development, LinkedIn AI, social media, technology trends, programming" />
+        <meta name="author" content="CyberNeel" />
+        <link rel="canonical" href="https://cyberneel.com/blog" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="CyberNeel Blog - Tech, AI, and Development Insights" />
+        <meta property="og:description" content="Explore CyberNeel's blog featuring insights on technology, artificial intelligence, web development, and digital experiences." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cyberneel.com/blog" />
+        <meta property="og:site_name" content="CyberNeel Blog" />
+        
+        {/* Twitter Cards */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="CyberNeel Blog - Tech, AI, and Development Insights" />
+        <meta name="twitter:description" content="Explore CyberNeel's blog featuring insights on technology, artificial intelligence, web development, and digital experiences." />
+        
+        {/* Structured Data for Blog */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Blog",
+              "name": "CyberNeel Blog",
+              "description": "Tech, AI, and Development Insights",
+              "url": "https://cyberneel.com/blog",
+              "author": {
+                "@type": "Person",
+                "name": "CyberNeel"
+              },
+              "publisher": {
+                "@type": "Organization",
+                "name": "CyberNeel"
+              }
+            })
+          }}
+        />
       </Head>
 
       <SearchBarFlex posts={posts} onSearchResults={setFilteredPosts} />
