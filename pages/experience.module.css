@@ -5,6 +5,28 @@
   background: rgba(255,255,255,0.9);
 }
 
+/* Infinite scroll styles */
+.loadingSpinner {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.loadingText {
+  text-align: center;
+  color: #6c757d;
+  margin: 2rem 0;
+  font-style: italic;
+}
+
+.endMessage {
+  text-align: center;
+  color: #6c757d;
+  margin: 2rem 0;
+  padding: 1rem;
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
 .timelineYear {
   position: relative;
   margin-bottom: 40px;
