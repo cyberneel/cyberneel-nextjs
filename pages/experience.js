@@ -125,10 +125,10 @@ export default function Experience({ experienceData }) {
         tags={["experience", "portfolio", "career", "education", "projects"]}
       />
       
-      <div className='p-3 col-md-8 container'>
+      <div className='p-3 container'>
         <BigBlock 
           headText='Professional Experience'
-          description='My journey through education, work, and personal projects'
+          description='My journey through education, work, and personal projects. '
           linkText="Let's Explore!"
           link='#experienceSection'
         />
