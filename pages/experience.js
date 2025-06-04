@@ -136,6 +136,16 @@ export default function Experience({ experienceData }) {
       
       <hr className="hr hr-blurry" id="experienceSection"/>
       <h2 className="text-center p-3 subtleTransparent">My Experience</h2>
+      <div className="text-center">
+        <span className={`badge mx-1 ${
+          selectedCategory === 'education' ? 'bg-primary' : 
+          selectedCategory === 'work' ? 'bg-success' : 
+          selectedCategory === 'all' ? 'd-none' :
+          'bg-danger'
+        }`}>
+          {selectedCategory !== 'all' && `Showing ${selectedCategory} only`}
+        </span>
+      </div>
       <hr className="hr hr-blurry" />
       
       <div className={styles.experienceContainer + " rounded-3"}>
@@ -151,14 +161,14 @@ export default function Experience({ experienceData }) {
             </button>
             <button 
               type="button" 
-              className={`btn ${selectedCategory === 'education' ? 'btn-danger' : 'btn-outline-danger'}`}
+              className={`btn ${selectedCategory === 'education' ? 'btn-primary' : 'btn-outline-primary'}`}
               onClick={() => setSelectedCategory('education')}
             >
               Education
             </button>
             <button 
               type="button" 
-              className={`btn ${selectedCategory === 'work' ? 'btn-danger' : 'btn-outline-danger'}`}
+              className={`btn ${selectedCategory === 'work' ? 'btn-success' : 'btn-outline-success'}`}
               onClick={() => setSelectedCategory('work')}
             >
               Work
@@ -177,21 +187,39 @@ export default function Experience({ experienceData }) {
         {years.map(year => (
           <div key={year} className={styles.timelineYear}>
             <div className={styles.yearHeader}>
-              <h3 className={styles.yearTitle}>{year}</h3>
-              <div className={styles.yearLine} />
+              <h3 className={`${styles.yearTitle} ${
+                selectedCategory === 'education' ? styles.yearTitleEducation : 
+                selectedCategory === 'work' ? styles.yearTitleWork : 
+                selectedCategory === 'project' ? styles.yearTitleProject :
+                ''
+              }`}>{year}</h3>
+              <div className={`${styles.yearLine} ${
+                selectedCategory === 'education' ? styles.yearLineEducation : 
+                selectedCategory === 'work' ? styles.yearLineWork : 
+                styles.yearLineDefault
+              }`} />
             </div>
             
             <Masonry gutter="1rem">
-              {filteredData.filter(item => item.year === year).map(item => (
+              {filteredData.filter(item => item.year === year).map((item, index) => (
                 <div 
                   key={item.id} 
-                  className={`card shadow-sm ${styles.card} ${styles.clickableCard}`}
+                  className={`card shadow-sm ${styles.card} ${styles.clickableCard} ${
+                    item.category === 'education' ? styles.cardEducation : 
+                    item.category === 'work' ? styles.cardWork : 
+                    styles.cardProject
+                  }`}
                   onClick={() => toggleExpand(item)}
+                  style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <div className="card-body d-flex flex-column">
                     <div className={styles.cardHeader + " mb-2"}>
                       <h5 className="card-title mb-0">{item.title}</h5>
-                      <span className="badge bg-danger">{item.category}</span>
+                      <span className={`badge ${
+                        item.category === 'education' ? 'bg-primary' : 
+                        item.category === 'work' ? 'bg-success' : 
+                        'bg-danger'
+                      }`}>{item.category}</span>
                     </div>
                     <h6 className="card-subtitle mb-2 text-muted">{item.company}</h6>
                     <p className="card-text small text-muted mb-2">
@@ -203,7 +231,11 @@ export default function Experience({ experienceData }) {
                     {item.technologies && (
                       <div className="mb-3">
                         {item.technologies.map(tech => (
-                          <span key={tech} className={styles.techBadge + " badge me-1 mb-1"}>
+                          <span key={tech} className={`${styles.techBadge} ${
+                            item.category === 'education' ? styles.techBadgeEducation : 
+                            item.category === 'work' ? styles.techBadgeWork : 
+                            styles.techBadgeProject
+                          } badge me-1 mb-1`}>
                             {tech}
                           </span>
                         ))}
@@ -211,7 +243,11 @@ export default function Experience({ experienceData }) {
                     )}
                     <div className="d-flex justify-content-between align-items-center mt-auto pt-2">
                         <div 
-                          className={`btn btn-sm btn-outline-danger ${styles.expandButton}`}
+                          className={`btn btn-sm ${
+                            item.category === 'education' ? 'btn-outline-primary' : 
+                            item.category === 'work' ? 'btn-outline-success' : 
+                            'btn-outline-danger'
+                          } ${styles.expandButton}`}
                         >
                           Read More
                         </div>
@@ -220,7 +256,11 @@ export default function Experience({ experienceData }) {
                             href={item.link} 
                             target="_blank" 
                             rel="noopener noreferrer" 
-                            className={styles.linkButton + " btn btn-sm btn-link"}
+                            className={`${styles.linkButton} btn btn-sm btn-link ${
+                              item.category === 'education' ? styles.linkButtonEducation : 
+                              item.category === 'work' ? styles.linkButtonWork : 
+                              styles.linkButtonProject
+                            }`}
                             onClick={(e) => e.stopPropagation()} // Prevent card click when clicking the link
                           >
                             Visit
@@ -239,12 +279,23 @@ export default function Experience({ experienceData }) {
         {showModal && modalItem && (
           <div className={styles.modalOverlay}>
             <div className={styles.modal}>
-              <div className={styles.modalHeader}>
+              <div className={`${styles.modalHeader} ${
+                modalItem.category === 'education' ? styles.modalHeaderEducation : 
+                modalItem.category === 'work' ? styles.modalHeaderWork : 
+                styles.modalHeaderProject
+              }`}>
                 <h4 className={styles.modalTitle}>{modalItem.title}</h4>
                 <button className={styles.modalClose} onClick={closeModal}>×</button>
               </div>
               <div className={styles.modalBody}>
-                <h6 className="text-muted mb-2">{modalItem.company}</h6>
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <h6 className="text-muted mb-0">{modalItem.company}</h6>
+                  <span className={`badge ${
+                    modalItem.category === 'education' ? 'bg-primary' : 
+                    modalItem.category === 'work' ? 'bg-success' : 
+                    'bg-danger'
+                  }`}>{modalItem.category}</span>
+                </div>
                 <p className="small text-muted mb-3">
                   {modalItem.location} · {modalItem.startDate} - {modalItem.endDate}
                 </p>
@@ -275,7 +326,11 @@ export default function Experience({ experienceData }) {
                     <h6>Keywords:</h6>
                     <div>
                       {modalItem.keywords.map(tech => (
-                        <span key={tech} className={styles.techBadge + " badge me-1 mb-1"}>
+                        <span key={tech} className={`${styles.techBadge} ${
+                          modalItem.category === 'education' ? styles.techBadgeEducation : 
+                          modalItem.category === 'work' ? styles.techBadgeWork : 
+                          styles.techBadgeProject
+                        } badge me-1 mb-1`}>
                           {tech}
                         </span>
                       ))}
@@ -288,9 +343,13 @@ export default function Experience({ experienceData }) {
                       href={modalItem.link} 
                       target="_blank" 
                       rel="noopener noreferrer" 
-                      className="btn btn-danger"
+                      className={`btn ${
+                        modalItem.category === 'education' ? 'btn-primary' : 
+                        modalItem.category === 'work' ? 'btn-success' : 
+                        'btn-danger'
+                      }`}
                     >
-                      Visit Project
+                      Visit {modalItem.category === 'project' ? 'Project' : modalItem.category === 'work' ? 'Company' : 'Institution'}
                     </a>
                   </div>
                 )}
