@@ -183,7 +183,11 @@ export default function Experience({ experienceData }) {
             
             <Masonry gutter="1rem">
               {filteredData.filter(item => item.year === year).map(item => (
-                <div key={item.id} className={`card shadow-sm ${styles.card}`}>
+                <div 
+                  key={item.id} 
+                  className={`card shadow-sm ${styles.card} ${styles.clickableCard}`}
+                  onClick={() => toggleExpand(item)}
+                >
                   <div className="card-body d-flex flex-column">
                     <div className={styles.cardHeader + " mb-2"}>
                       <h5 className="card-title mb-0">{item.title}</h5>
@@ -206,18 +210,18 @@ export default function Experience({ experienceData }) {
                       </div>
                     )}
                     <div className="d-flex justify-content-between align-items-center mt-auto pt-2">
-                        <button 
+                        <div 
                           className={`btn btn-sm btn-outline-danger ${styles.expandButton}`}
-                          onClick={() => toggleExpand(item)}
                         >
                           Read More
-                        </button>
+                        </div>
                         {item.link && (
                           <a 
                             href={item.link} 
                             target="_blank" 
                             rel="noopener noreferrer" 
                             className={styles.linkButton + " btn btn-sm btn-link"}
+                            onClick={(e) => e.stopPropagation()} // Prevent card click when clicking the link
                           >
                             Visit
                           </a>
@@ -266,11 +270,11 @@ export default function Experience({ experienceData }) {
                     <p>{modalItem.content}</p>
                   )}
                 </div>
-                {modalItem.technologies && (
+                {modalItem.keywords && (
                   <div className="mt-3">
-                    <h6>Technologies:</h6>
+                    <h6>Keywords:</h6>
                     <div>
-                      {modalItem.technologies.map(tech => (
+                      {modalItem.keywords.map(tech => (
                         <span key={tech} className={styles.techBadge + " badge me-1 mb-1"}>
                           {tech}
                         </span>

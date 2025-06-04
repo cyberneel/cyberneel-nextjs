@@ -44,6 +44,29 @@
   margin-bottom: 1rem;
 }
 
+.clickableCard {
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.clickableCard::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(220, 53, 69, 0); /* Bootstrap danger color with 0 opacity */
+  transition: background 0.3s ease;
+  pointer-events: none;
+}
+
+.clickableCard:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
@@ -75,6 +98,9 @@
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   border-radius: 0.2rem;
+  cursor: pointer;
+  user-select: none;
+  display: inline-block;
 }
 
 .expandButton:hover {
@@ -112,9 +138,11 @@
   width: 90%;
   max-width: 800px;
   max-height: 90vh;
-  overflow-y: auto;
+  overflow: hidden; /* Changed from overflow-y: auto to hide scrollbar corners */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   animation: slideDown 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Close animation classes */
@@ -132,6 +160,12 @@
   align-items: center;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #dee2e6;
+  background-color: white; /* Ensure consistent background */
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  position: sticky; /* Keep header visible when scrolling */
+  top: 0;
+  z-index: 10;
 }
 
 .modalTitle {
@@ -157,6 +191,8 @@
 
 .modalBody {
   padding: 1.5rem;
+  overflow-y: auto; /* Add scrolling to body only */
+  flex: 1; /* Allow body to take remaining space */
 }
 
 .modalContent {
@@ -236,6 +272,26 @@
 .mdxImageContainer {
   margin: 1.5rem 0;
   width: 100%;
+}
+
+/* Custom scrollbar for modal body */
+.modalBody::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modalBody::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.modalBody::-webkit-scrollbar-thumb {
+  background: #0000002b;
+  border-radius: 4px;
+  opacity: 0.7;
+}
+
+.modalBody::-webkit-scrollbar-thumb:hover {
+  background: #0000002b;
 }
 
 @keyframes fadeIn {
