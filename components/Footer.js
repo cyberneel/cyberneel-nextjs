@@ -35,7 +35,7 @@ function Footer() {
 
 
   <div class="text-center p-3 bg-dark" >
-    © 2024 Copyright:&nbsp;
+    © {new Date().getFullYear()} Copyright:&nbsp;
     <a class="text-white" href="#">Neelesh Chevuri</a>
   </div>
 
