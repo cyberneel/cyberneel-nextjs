@@ -37,7 +37,7 @@ function MyApp({ Component, pageProps }) {
       <meta charSet="utf-8" />
       <meta name="robots" content="index, follow" />
       <meta name="googlebot" content="index, follow" />
-      <meta name="author" content="CyberNeel" />
+      <meta name="author" content="Neelesh Chevuri" />
       <meta name="language" content="English" />
       
       {/* Default Open Graph tags */}

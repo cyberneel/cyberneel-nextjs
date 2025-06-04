@@ -32,7 +32,7 @@ export default function BlogPage({ posts }) {
         <title>CyberNeel Posts - Quick Updates and Insights</title>
         <meta name="description" content="Browse CyberNeel's latest posts featuring quick updates, tech insights, creative projects, and digital art. Short-form content covering technology, AI, and development." />
         <meta name="keywords" content="CyberNeel posts, tech updates, digital art, creative projects, technology insights, AI posts, development updates" />
-        <meta name="author" content="CyberNeel" />
+        <meta name="author" content="Neelesh Chevuri" />
         <link rel="canonical" href="https://cyberneel.com/posts" />
         
         {/* Open Graph */}
@@ -59,7 +59,7 @@ export default function BlogPage({ posts }) {
               "url": "https://cyberneel.com/posts",
               "author": {
                 "@type": "Person",
-                "name": "CyberNeel"
+                "name": "Neelesh Chevuri"
               }
             })
           }}
@@ -68,9 +68,9 @@ export default function BlogPage({ posts }) {
 
       <SearchBarFlex posts={posts} onSearchResults={setFilteredPosts} />
 
-      <div class="alert alert-danger text-center" role="alert">
+      {/* <div class="alert alert-danger text-center" role="alert">
         This page is UNDER CONSTRUCTION, you may see placeholder items!
-      </div>
+      </div> */}
 
       <hr class="hr hr-blurry" />
       <div style={{backgroundColor: "white"}}>
