@@ -288,6 +288,20 @@ export default function Experience({ experienceData }) {
                             ))}
                           </div>
                         )}
+                        {item.keywords && (
+                          <div className="mb-2">
+                            <span className="fw-semibold small me-2">Keywords:</span>
+                            {item.keywords.map(tech => (
+                              <span key={tech} className={`${styles.techBadge} ${
+                                item.category === 'education' ? styles.techBadgeEducation : 
+                                item.category === 'work' ? styles.techBadgeWork : 
+                                item.category === 'project' ? styles.techBadgeProject : ''
+                              } badge me-1 mb-1`}>
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                         <div className="d-flex justify-content-between align-items-center mt-auto pt-2">
                           <div 
                             className={`btn btn-sm ${
