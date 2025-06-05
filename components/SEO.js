@@ -4,12 +4,12 @@ const SEO = ({
   title = 'CyberNeel - 3D Artist & Developer',
   description = 'Personal website of CyberNeel featuring 3D art, blog posts about technology, LinkedIn AI, and creative projects.',
   canonicalUrl = 'https://cyberneel.com',
-  ogImage = 'https://cyberneel.com/og-image.jpg',
+  ogImage = 'https://cyberneel.github.io/img/CyberNeelLogoNewOutfit1080p-1400x1400.webp',
   ogType = 'website',
   publishedTime,
   modifiedTime,
   tags = [],
-  author = 'CyberNeel'
+  author = 'Neelesh Chevuri'
 }) => {
   const structuredData = {
     "@context": "https://schema.org",
