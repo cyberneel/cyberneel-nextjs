@@ -5,7 +5,7 @@ import BigBlock from '../components/BigBlock';
 import styles from './experience.module.css';
 import { getAllExperienceData } from '../src/utils/experiences';
 import dynamic from 'next/dynamic';
-import Masonry from 'react-responsive-masonry';
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import ImageMDX from '../components/ImageMDX';
 import FontWrapper from '../components/FontWrapper';
 import { MDXRemote } from 'next-mdx-remote';
@@ -246,48 +246,49 @@ export default function Experience({ experienceData }) {
                 }`} />
               </div>
               
-              <Masonry gutter="1rem">
-                {filteredData.filter(item => item.year === year).map((item, index) => (
-                  <div 
-                    key={item.id} 
-                    className={`card shadow-sm ${styles.card} ${styles.clickableCard} ${
-                      item.category === 'education' ? styles.cardEducation : 
-                      item.category === 'work' ? styles.cardWork : 
-                      styles.cardProject
-                    }`}
-                    onClick={() => toggleExpand(item)}
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <div className="card-body d-flex flex-column">
-                      <div className={styles.cardHeader + " mb-2"}>
-                        <h5 className="card-title mb-0">{item.title}</h5>
-                        <span className={`badge ${
-                          item.category === 'education' ? 'bg-primary' : 
-                          item.category === 'work' ? 'bg-success' : 
-                          'bg-danger'
-                        }`}>{item.category}</span>
-                      </div>
-                      <h6 className="card-subtitle mb-2 text-muted">{item.company}</h6>
-                      <p className="card-text small text-muted mb-2">
-                        {item.location} · {item.startDate} - {item.endDate}
-                      </p>
-                      <p className="card-text">
-                        {item.content.split('=ReAdMoRe=')[0] || item.content}
-                      </p>
-                      {item.technologies && (
-                        <div className="mb-3">
-                          {item.technologies.map(tech => (
-                            <span key={tech} className={`${styles.techBadge} ${
-                              item.category === 'education' ? styles.techBadgeEducation : 
-                              item.category === 'work' ? styles.techBadgeWork : 
-                              styles.techBadgeProject
-                            } badge me-1 mb-1`}>
-                              {tech}
-                            </span>
-                          ))}
+              <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 700: 2, 1000: 3 }}>
+                <Masonry gutter="1rem">
+                  {filteredData.filter(item => item.year === year).map((item, index) => (
+                    <div 
+                      key={item.id} 
+                      className={`card shadow-sm ${styles.card} ${styles.clickableCard} ${
+                        item.category === 'education' ? styles.cardEducation : 
+                        item.category === 'work' ? styles.cardWork : 
+                        styles.cardProject
+                      }`}
+                      onClick={() => toggleExpand(item)}
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      <div className="card-body d-flex flex-column">
+                        <div className={styles.cardHeader + " mb-2"}>
+                          <h5 className="card-title mb-0">{item.title}</h5>
+                          <span className={`badge ${
+                            item.category === 'education' ? 'bg-primary' : 
+                            item.category === 'work' ? 'bg-success' : 
+                            'bg-danger'
+                          }`}>{item.category}</span>
                         </div>
-                      )}
-                      <div className="d-flex justify-content-between align-items-center mt-auto pt-2">
+                        <h6 className="card-subtitle mb-2 text-muted">{item.company}</h6>
+                        <p className="card-text small text-muted mb-2">
+                          {item.location} · {item.startDate} - {item.endDate}
+                        </p>
+                        <p className="card-text">
+                          {item.content.split('=ReAdMoRe=')[0] || item.content}
+                        </p>
+                        {item.technologies && (
+                          <div className="mb-3">
+                            {item.technologies.map(tech => (
+                              <span key={tech} className={`${styles.techBadge} ${
+                                item.category === 'education' ? styles.techBadgeEducation : 
+                                item.category === 'work' ? styles.techBadgeWork : 
+                                styles.techBadgeProject
+                              } badge me-1 mb-1`}>
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        <div className="d-flex justify-content-between align-items-center mt-auto pt-2">
                           <div 
                             className={`btn btn-sm ${
                               item.category === 'education' ? 'btn-outline-primary' : 
@@ -317,95 +318,96 @@ export default function Experience({ experienceData }) {
                     </div>
                   ))}
                 </Masonry>
-              </div>
-            ))}
-          </InfiniteScroll>
-        </div>
+              </ResponsiveMasonry>
+            </div>
+          ))}
+        </InfiniteScroll>
+      </div>
 
-        {/* Modal for expanded content */}
-        {showModal && modalItem && (
-          <div className={styles.modalOverlay}>
-            <div className={styles.modal}>
-              <div className={`${styles.modalHeader} ${
-                modalItem.category === 'education' ? styles.modalHeaderEducation : 
-                modalItem.category === 'work' ? styles.modalHeaderWork : 
-                modalItem.category === 'project' ? styles.modalHeaderProject : ''
-              }`}>
-                <h4 className={styles.modalTitle}>{modalItem.title}</h4>
-                <button className={styles.modalClose} onClick={closeModal}>×</button>
+      {/* Modal for expanded content */}
+      {showModal && modalItem && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <div className={`${styles.modalHeader} ${
+              modalItem.category === 'education' ? styles.modalHeaderEducation : 
+              modalItem.category === 'work' ? styles.modalHeaderWork : 
+              modalItem.category === 'project' ? styles.modalHeaderProject : ''
+            }`}>
+              <h4 className={styles.modalTitle}>{modalItem.title}</h4>
+              <button className={styles.modalClose} onClick={closeModal}>×</button>
+            </div>
+            <div className={styles.modalBody}>
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <h6 className="text-muted mb-0">{modalItem.company}</h6>
+                <span className={`badge ${
+                  modalItem.category === 'education' ? 'bg-primary' : 
+                  modalItem.category === 'work' ? 'bg-success' : 
+                  'bg-danger'
+                }`}>{modalItem.category}</span>
               </div>
-              <div className={styles.modalBody}>
-                <div className="d-flex justify-content-between align-items-center mb-2">
-                  <h6 className="text-muted mb-0">{modalItem.company}</h6>
-                  <span className={`badge ${
-                    modalItem.category === 'education' ? 'bg-primary' : 
-                    modalItem.category === 'work' ? 'bg-success' : 
-                    'bg-danger'
-                  }`}>{modalItem.category}</span>
-                </div>
-                <p className="small text-muted mb-3">
-                  {modalItem.location} · {modalItem.startDate} - {modalItem.endDate}
-                </p>
-                <div className={styles.modalContent}>
-                  {modalItem.content.split('=ReAdMoRe=')[1] ? (
-                    <>
-                      <p>{modalItem.content.split('=ReAdMoRe=')[0]}</p>
-                      <div className={styles.mdxContent}>
-                        {mdxSource ? (
-                          <MDXRemote 
-                            {...mdxSource} 
-                            components={{ 
-                              ImageMDX,
-                              Font: FontWrapper
-                            }} 
-                          />
-                        ) : (
-                          <p>Loading content...</p>
-                        )}
-                      </div>
-                    </>
-                  ) : (
-                    <p>{modalItem.content}</p>
-                  )}
-                </div>
-                {modalItem.keywords && (
-                  <div className="mt-3">
-                    <h6>Keywords:</h6>
-                    <div>
-                      {modalItem.keywords.map(tech => (
-                        <span key={tech} className={`${styles.techBadge} ${
-                          modalItem.category === 'education' ? styles.techBadgeEducation : 
-                          modalItem.category === 'work' ? styles.techBadgeWork : 
-                          modalItem.category === 'project' ? styles.techBadgeProject : ''
-                        } badge me-1 mb-1`}>
-                          {tech}
-                        </span>
-                      ))}
+              <p className="small text-muted mb-3">
+                {modalItem.location} · {modalItem.startDate} - {modalItem.endDate}
+              </p>
+              <div className={styles.modalContent}>
+                {modalItem.content.split('=ReAdMoRe=')[1] ? (
+                  <>
+                    <p>{modalItem.content.split('=ReAdMoRe=')[0]}</p>
+                    <div className={styles.mdxContent}>
+                      {mdxSource ? (
+                        <MDXRemote 
+                          {...mdxSource} 
+                          components={{ 
+                            ImageMDX,
+                            Font: FontWrapper
+                          }} 
+                        />
+                      ) : (
+                        <p>Loading content...</p>
+                      )}
                     </div>
-                  </div>
-                )}
-                {modalItem.link && (
-                  <div className="mt-3">
-                    <a 
-                      href={modalItem.link} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className={`btn ${
-                        modalItem.category === 'education' ? 'btn-primary' : 
-                        modalItem.category === 'work' ? 'btn-success' : 
-                        'btn-danger'
-                      }`}
-                    >
-                      Visit {modalItem.category === 'project' ? 'Project' : modalItem.category === 'work' ? 'Company' : 'Institution'}
-                    </a>
-                  </div>
+                  </>
+                ) : (
+                  <p>{modalItem.content}</p>
                 )}
               </div>
+              {modalItem.keywords && (
+                <div className="mt-3">
+                  <h6>Keywords:</h6>
+                  <div>
+                    {modalItem.keywords.map(tech => (
+                      <span key={tech} className={`${styles.techBadge} ${
+                        modalItem.category === 'education' ? styles.techBadgeEducation : 
+                        modalItem.category === 'work' ? styles.techBadgeWork : 
+                        modalItem.category === 'project' ? styles.techBadgeProject : ''
+                      } badge me-1 mb-1`}>
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {modalItem.link && (
+                <div className="mt-3">
+                  <a 
+                    href={modalItem.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className={`btn ${
+                      modalItem.category === 'education' ? 'btn-primary' : 
+                      modalItem.category === 'work' ? 'btn-success' : 
+                      'btn-danger'
+                    }`}
+                  >
+                    Visit {modalItem.category === 'project' ? 'Project' : modalItem.category === 'work' ? 'Company' : 'Institution'}
+                  </a>
+                </div>
+              )}
             </div>
           </div>
-        )}
-      </>
-    );
+        </div>
+      )}
+    </>
+  );
 }
 
 export async function getStaticProps() {
