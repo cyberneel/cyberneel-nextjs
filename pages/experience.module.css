@@ -322,10 +322,43 @@
   cursor: pointer;
   padding: 0;
   line-height: 1;
+  width: 2.2rem;
+  height: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
 }
 
 .modalClose:hover {
   color: #dc3545;
+  background: #f8d7da33;
+}
+
+@media (max-width: 768px) {
+  .modalClose {
+    font-size: 2.2rem;
+    width: 2.8rem;
+    height: 2.8rem;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border-radius: 50%;
+    /* Increase touch area */
+  }
+}
+
+@media (max-width: 576px) {
+  .modalClose {
+    font-size: 2.4rem;
+    width: 3.2rem;
+    height: 3.2rem;
+    min-width: 48px;
+    min-height: 48px;
+    padding: 0;
+    border-radius: 50%;
+  }
 }
 
 .modalBody {

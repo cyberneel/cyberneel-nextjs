@@ -64,7 +64,7 @@ function MyApp({ Component, pageProps }) {
         <PageTransition timeout={300} classNames="fade">
           <div className="page">
             <Component {...pageProps} />
-            <ScrollToTop/>
+            {/* <ScrollToTop/> */}
           </div>
         </PageTransition>
       </Layout>
