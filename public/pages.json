@@ -8,6 +8,10 @@
     "path": "/about"
   },
   {
+    "label": "Experience",
+    "path": "/experience"
+  },
+  {
     "label": "Blog",
     "path": "/blog"
   },
