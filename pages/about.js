@@ -13,7 +13,7 @@ export default function About({ source }) {
       <Head>
         <title>About CyberNeel</title>
       </Head>
-      <div className='p-3 col-md-8 container'>
+      <div className='p-3 container'>
         <BigBlock 
           headText='Who is CyberNeel?'
           description='Read on to find out! '
