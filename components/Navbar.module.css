@@ -1,6 +1,6 @@
 .navContainer {
   padding: 0.5rem 1rem;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .navBrand {
@@ -8,7 +8,7 @@
   align-items: center;
   font-weight: 600;
   color: #333;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .navBrand:hover {
@@ -59,6 +59,74 @@
   box-shadow: none;
 }
 
+/* Custom collapse animation for mobile */
+.navbarCollapseWrapper :global(.navbar-collapse) {
+  transition: transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), 
+              opacity 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), 
+              height 0.35s cubic-bezier(0.25, 0.1, 0.25, 1) !important;
+}
+
+.navbarCollapseWrapper :global(.navbar-collapse.collapsing) {
+  transform-origin: top;
+  height: auto !important;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.navbarCollapseWrapper :global(.navbar-collapse.show) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Enhanced mobile menu animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom styles for the mobile menu animation */
+@media (max-width: 992px) {
+  .mobileMenuWrapper :global(.navbar-collapse) {
+    transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    will-change: height, opacity;
+  }
+  
+  .mobileMenuWrapper :global(.navbar-collapse.show) {
+    animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .mobileMenuWrapper :global(.navbar-collapse) :global(.nav-item) {
+    animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    animation-fill-mode: both;
+  }
+  
+  .mobileMenuWrapper :global(.nav-item:nth-child(1)) { animation-delay: 0.05s; }
+  .mobileMenuWrapper :global(.nav-item:nth-child(2)) { animation-delay: 0.1s; }
+  .mobileMenuWrapper :global(.nav-item:nth-child(3)) { animation-delay: 0.15s; }
+  .mobileMenuWrapper :global(.nav-item:nth-child(4)) { animation-delay: 0.2s; }
+  .mobileMenuWrapper :global(.nav-item:nth-child(5)) { animation-delay: 0.25s; }
+  
+  .navLinks {
+    position: relative;
+    left: 0;
+    transform: none;
+    width: 100%;
+    opacity: 1;
+  }
+  
+  .linksContainer {
+    margin-top: 1rem;
+    overflow: hidden;
+  }
+}
+
 /* Position navbar items */
 .navbarPosition {
   position: relative;
@@ -84,7 +152,7 @@
 
 .navContainer {
   padding: 0.5rem 1rem;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .navLinks {
@@ -95,18 +163,25 @@
   justify-content: center;
 }
 
+.navLinksVisible {
+  animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 @media (max-width: 992px) {
   .navLinks {
     position: relative;
     left: 0;
     transform: none;
     width: 100%;
+    opacity: 1;
+    transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
   
   .navItem {
     margin: 0.3rem 0;
     text-align: center;
     justify-content: center;
+    transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
   
   .navContainer ul.navbar-nav {
@@ -120,5 +195,37 @@
   
   .linksContainer {
     margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
+}
+
+/* Dropdown animations */
+.dropdownWrapper :global(.dropdown-menu) {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0s linear 0.25s;
+  pointer-events: none;
+}
+
+.dropdownWrapper :global(.dropdown-menu.show) {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0s linear 0s;
+  pointer-events: auto;
+}
+
+/* Fix for Bootstrap's default transition that causes jump */
+.navContainer :global(.collapsing) {
+  transition-property: height, visibility;
+  transition-duration: 0.35s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }

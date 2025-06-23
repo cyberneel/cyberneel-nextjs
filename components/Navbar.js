@@ -8,6 +8,7 @@ export default function Navbar() {
   
   const [pages, setPages] = useState([]);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   useEffect(() => {
     fetch('/pages.json')
@@ -18,10 +19,26 @@ export default function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
+    
+    const handleResize = () => {
+      // Close menu when screen becomes desktop-sized
+      if (window.innerWidth >= 992 && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isMenuOpen]);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   const renderMenuItems = (items, drop=false) => {
     return items.map((item, index) => {
@@ -30,7 +47,7 @@ export default function Navbar() {
       }
       if (item.children) {
         return (
-          <li key={index} className="nav-item dropdown">
+          <li key={index} className={`nav-item dropdown ${Styles.dropdownWrapper}`}>
               <a
                 className={`nav-link dropdown-toggle d-flex align-items-center ${Styles.navItem}`}
                 href="#"
@@ -90,17 +107,19 @@ export default function Navbar() {
           <button
             className={`navbar-toggler ${Styles.mobileMenuButton}`}
             type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown"
-            aria-expanded="false"
+            aria-expanded={isMenuOpen}
             aria-label="Toggle navigation"
+            onClick={toggleMenu}
           >
             <Menu size={24} />
           </button>
           
-          <div className={`collapse navbar-collapse ${Styles.linksContainer}`} id="navbarNavDropdown">
-            <ul className={`navbar-nav ${Styles.navLinks}`}>
+          <div 
+            className={`collapse navbar-collapse ${isMenuOpen ? 'show' : ''} ${Styles.linksContainer} ${Styles.navbarCollapseWrapper} ${Styles.mobileMenuWrapper}`} 
+            id="navbarNavDropdown"
+          >
+            <ul className={`navbar-nav ${Styles.navLinks} ${isMenuOpen ? Styles.navLinksVisible : ''}`}>
               {renderMenuItems(pages)}
             </ul>
           </div>
