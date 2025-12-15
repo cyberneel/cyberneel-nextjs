@@ -53,3 +53,20 @@ body.dark {
   background-color: #353535;
   color: #ffffff;
 }
+
+/* Ensure SVG icon paths inherit the current text color (used by react-bootstrap-icons) */
+.btn svg,
+.btn-outline-light svg,
+.btn-floating svg {
+  width: 1.5em !important;
+  height: 1.5em !important;
+  fill: currentColor !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+}
+
+.btn svg *,
+.btn-outline-light svg *,
+.btn-floating svg * {
+  fill: currentColor !important;
+}

@@ -16,7 +16,7 @@ const PostCard = ({ type, post }) => {
   }
 
   return (
-    <Link href={`/${type}/${post.slug}`} passHref legacyBehavior>
+    <Link href={`/${type}/${post.slug}`}>
     <div className={Styles.postCard}>
       <img src={post.cover_image_link} alt={post.title} className={Styles.postImage} />
       <div className={Styles.postContent}>

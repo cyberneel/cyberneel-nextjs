@@ -3,7 +3,7 @@ import Layout from '../components/Layout'
 import { useRouter } from "next/router"
 import { useEffect, useState } from 'react';
 import '../styles/transition.css'; // transition styles
-import { PageTransition } from 'next-page-transitions';
+import PageTransition from '../components/PageTransition'
 import 'bootstrap/dist/css/bootstrap.css'
 import '../styles/globals.css'
 import ScrollToTop from '../components/ScrollToTop';
@@ -61,11 +61,8 @@ function MyApp({ Component, pageProps }) {
       />
     
       <Layout>
-        <PageTransition timeout={300} classNames="fade">
-          <div className="page">
-            <Component {...pageProps} />
-            {/* <ScrollToTop/> */}
-          </div>
+        <PageTransition timeout={300}>
+          <Component {...pageProps} />
         </PageTransition>
       </Layout>
       

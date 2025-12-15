@@ -5,27 +5,27 @@ function Footer() {
   
   return(
     <>
-    <div class="p-3"></div>
-  <footer class="bg-dark text-center text-white rounded-3">
+    <div className="p-3"></div>
+  <footer className="bg-dark text-center text-white rounded-3">
 
-  <div class="container p-4 pb-0">
+  <div className="container p-4 pb-0">
 
-    <section class="mb-4">
+    <section className="mb-4">
 
-      <a class="btn btn-outline-light btn-floating m-1" href="https://social.mtdv.me/blog/posts/google-plus-profile" role="button"
+      <a className="btn btn-outline-light btn-floating m-1" href="https://social.mtdv.me/blog/posts/google-plus-profile" role="button"
         ><Icon.GooglePlay />
       </a>
 
-      <a class="btn btn-outline-light btn-floating m-1" href="https://linkedin.cyberneel.com/" role="button"
+      <a className="btn btn-outline-light btn-floating m-1" href="https://linkedin.cyberneel.com/" role="button"
         ><Icon.Linkedin />
       </a>
 
-      <a class="btn btn-outline-light btn-floating m-1" href="https://instagram.com/cyber_neel" role="button"
+      <a className="btn btn-outline-light btn-floating m-1" href="https://instagram.com/cyber_neel" role="button"
         ><Icon.Instagram />
        </a>
 
 
-      <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/cyberneel" role="button"
+      <a className="btn btn-outline-light btn-floating m-1" href="https://github.com/cyberneel" role="button"
         ><Icon.Github />
       </a>
     </section>
@@ -34,9 +34,9 @@ function Footer() {
 
 
 
-  <div class="text-center p-3 bg-dark" >
+  <div className="text-center p-3 bg-dark" >
     © {new Date().getFullYear()} Copyright:&nbsp;
-    <a class="text-white" href="#">Neelesh Chevuri</a>
+    <a className="text-white" href="#">Neelesh Chevuri</a>
   </div>
 
 </footer>
