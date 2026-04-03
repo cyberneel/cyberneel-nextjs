@@ -7,9 +7,9 @@ module.exports = {
     NEXT_PUBLIC_GOOGLE_FORM_ENTRY_EMAIL: process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_EMAIL,
     NEXT_PUBLIC_GOOGLE_FORM_ENTRY_MESSAGE: process.env.NEXT_PUBLIC_GOOGLE_FORM_ENTRY_MESSAGE,
   },
-  
+
   reactStrictMode: true,
-  
+
   // SEO optimizations
   compress: true,
   generateEtags: true,
@@ -66,4 +66,6 @@ module.exports = {
   },
 
   turbopack: {},
+
+  allowedDevOrigins: ['archlinux'],
 }

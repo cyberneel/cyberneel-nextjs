@@ -13,107 +13,62 @@ import { getPostSlug, getPostFromSlug } from '../../src/utils/mdx'
 import { SectionTitle, Text } from '../../data/components/mdx-components'
 import TurntableViewer from '../../components/TurntableViewer'
 import FontWrapper from '../../components/FontWrapper'
-import styles from '../blog/post.module.css';
+import { motion } from 'framer-motion'
 
 export default function Post({ post: { source, frontmatter } }) {
   const canonicalUrl = `https://cyberneel.com/posts/${frontmatter.slug}`;
-  const publishedDate = new Date(frontmatter.publishedAt).toISOString();
-  const modifiedDate = new Date().toISOString();
 
   return (
-    <>
+    <article className="min-h-screen pt-40 pb-20 transition-colors duration-500">
       <Head>
-        <title>{frontmatter.title} | CyberNeel Posts</title>
+        <title>{frontmatter.title} | Projects | CyberNeel</title>
         <meta name="description" content={frontmatter.excerpt} />
-        <meta name="keywords" content={frontmatter.tags ? frontmatter.tags.join(', ') : ''} />
-        <meta name="author" content="CyberNeel" />
         <link rel="canonical" href={canonicalUrl} />
-        
-        {/* Open Graph */}
-        <meta property="og:title" content={frontmatter.title} />
-        <meta property="og:description" content={frontmatter.excerpt} />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:site_name" content="CyberNeel" />
-        {frontmatter.cover_image_link && <meta property="og:image" content={frontmatter.cover_image_link} />}
-        
-        {/* Article specific */}
-        <meta property="article:published_time" content={publishedDate} />
-        <meta property="article:modified_time" content={modifiedDate} />
-        <meta property="article:author" content="CyberNeel" />
-        {frontmatter.tags && frontmatter.tags.map(tag => (
-          <meta key={tag} property="article:tag" content={tag} />
-        ))}
-        
-        {/* Twitter Cards */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={frontmatter.title} />
-        <meta name="twitter:description" content={frontmatter.excerpt} />
-        {frontmatter.cover_image_link && <meta name="twitter:image" content={frontmatter.cover_image_link} />}
-        
-        {/* Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BlogPosting",
-              "headline": frontmatter.title,
-              "description": frontmatter.excerpt,
-              "image": frontmatter.cover_image_link || null,
-              "author": {
-                "@type": "Person",
-                "name": "CyberNeel"
-              },
-              "publisher": {
-                "@type": "Organization",
-                "name": "CyberNeel"
-              },
-              "datePublished": publishedDate,
-              "dateModified": modifiedDate,
-              "mainEntityOfPage": {
-                "@type": "WebPage",
-                "@id": canonicalUrl
-              },
-              "keywords": frontmatter.tags ? frontmatter.tags.join(', ') : ''
-            })
-          }}
-        />
       </Head>
       
-      <div className={styles.postContainer + " rounded-3"}>
-        {frontmatter.tags && <div className={styles.postTags}>Tags: {frontmatter.tags.join(', ')}</div>}
-        
-        <h1 className={styles.postTitle}>{frontmatter.title}</h1>
-        <p className={styles.postDate}>{dayjs(frontmatter.publishedAt).format('MMMM D, YYYY')} &mdash;{' '} {frontmatter.readingTime}</p>
-        <p className={styles.postDescription}>{frontmatter.excerpt}</p>
-        <div className={styles.postContent}>
+      <div className="max-w-4xl mx-auto px-4 md:px-8">
+        <header className="mb-20">
+          <div className="flex flex-wrap gap-3 mb-8">
+            {frontmatter.tags && frontmatter.tags.map(tag => (
+              <span key={tag} className="text-[10px] font-black uppercase tracking-widest text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-4 py-1.5 rounded-full">
+                {tag}
+              </span>
+            ))}
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-slate-900 dark:text-white mb-8 leading-tight uppercase">
+            {frontmatter.title}
+          </h1>
+          
+          <div className="flex items-center gap-6 text-slate-500 dark:text-zinc-500 font-bold uppercase tracking-widest text-xs">
+            <span>{dayjs(frontmatter.publishedAt).format('MMMM D, YYYY')}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-red-600" />
+            <span>{frontmatter.readingTime}</span>
+          </div>
+        </header>
+
+        <div className="prose prose-slate dark:prose-invert max-w-none 
+          prose-headings:tracking-tighter prose-headings:font-black
+          prose-p:text-lg prose-p:leading-relaxed prose-p:font-medium
+          prose-a:text-red-600 dark:prose-a:text-red-400 prose-a:no-underline hover:prose-a:underline prose-a:font-black
+          prose-img:rounded-[2rem] prose-img:shadow-2xl
+          prose-pre:bg-zinc-950 dark:prose-pre:bg-black prose-pre:border prose-pre:border-white/5 prose-pre:rounded-2xl mb-20">
           <MDXRemote {...source} components={{ Image, SectionTitle, Text, TurntableViewer, Font: FontWrapper }} />
         </div>
-        
-        {frontmatter.cover_image_link && <img src={frontmatter.cover_image_link} alt={frontmatter.title} className={styles.postImage} />}
-      </div>
-    </>
-  );
 
-  return (
-    <React.Fragment>
-      <Head>
-        <title>{frontmatter.title} | CyberNeel Posts</title>
-        <meta name="description" content={frontmatter.excerpt} />
-      </Head>
-      <div className="article-container">
-        <h1 className="article-title">{frontmatter.title}</h1>
-        <p className="publish-date">
-          {dayjs(frontmatter.publishedAt).format('MMMM D, YYYY')} &mdash;{' '}
-          {frontmatter.readingTime}
-        </p>
-        <div className="content">
-          <MDXRemote {...source} components={{ Image, SectionTitle, Text }} />
-        </div>
+        {frontmatter.cover_image_link && (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="aspect-video w-full rounded-[3rem] overflow-hidden mt-12 shadow-2xl border border-white/10"
+          >
+            <img src={frontmatter.cover_image_link} alt={frontmatter.title} className="w-full h-full object-cover" />
+          </motion.div>
+        )}
       </div>
-    </React.Fragment>
-  )
+    </article>
+  );
 }
 
 export async function getStaticProps({ params }) {
