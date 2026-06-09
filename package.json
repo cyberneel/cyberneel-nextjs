@@ -12,6 +12,7 @@
     "@popperjs/core": "2.11.8",
     "@tailwindcss/postcss": "^4.2.2",
     "@tailwindcss/typography": "^0.5.19",
+    "@vercel/analytics": "^2.0.1",
     "bootstrap": "5.3.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
