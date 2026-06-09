@@ -1,60 +1,67 @@
-import Head from 'next/head';
-import { MDXRemote } from 'next-mdx-remote';
-import { serialize } from 'next-mdx-remote/serialize';
 import fs from 'fs';
 import path from 'path';
-import FontWrapper from '../components/FontWrapper';
+import Link from 'next/link';
+import { MDXRemote } from 'next-mdx-remote';
+import { serialize } from 'next-mdx-remote/serialize';
 import { motion } from 'framer-motion';
+import { ArrowUpRight, Radio, Wrench, FileText } from 'lucide-react';
+import Seo from '../components/Seo';
+import FontWrapper from '../components/FontWrapper';
+
+const MORE = [
+  { href: '/now', label: 'Now', desc: 'What I’m focused on at the moment', Icon: Radio },
+  { href: '/uses', label: 'Uses', desc: 'The gear, software, and tools I use', Icon: Wrench },
+  { href: '/resume', label: 'Résumé', desc: 'Experience, projects, and education', Icon: FileText },
+];
 
 export default function About({ source }) {
   return (
-    <div className="min-h-screen pt-32 pb-20 transition-colors duration-500">
-      <Head>
-        <title>About | CyberNeel</title>
-      </Head>
-      
-      <div className="container mx-auto px-4 max-w-4xl">
-        <header className="mb-20 text-center">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-6xl md:text-8xl font-black tracking-tighter text-slate-900 dark:text-white mb-8 uppercase"
-          >
-            WHO IS <span className="text-red-600">CYBERNEEL</span>?
-          </motion.h1>
-          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-bold leading-relaxed">
-            A computer scientist, tinkerer, and digital artist exploring the intersection of code and creativity.
-          </p>
-        </header>
-        
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
-          className="glass-card rounded-[3rem] p-8 md:p-16 relative overflow-hidden group"
+    <>
+      <Seo title="About" description="About Neelesh Chevuri — computer scientist, tinkerer, and digital artist." />
+
+      <article className="mx-auto max-w-3xl px-4 pt-36 pb-10 md:px-6 md:pt-44">
+        <motion.header
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="absolute top-0 left-0 w-3 h-full bg-red-600 group-hover:w-4 transition-all duration-500" />
-          
-          <div className="prose prose-slate dark:prose-invert max-w-none
-            prose-headings:tracking-tighter prose-headings:font-black
-            prose-p:text-lg prose-p:leading-relaxed prose-p:font-medium
-            prose-a:text-red-600 dark:prose-a:text-red-400 prose-a:no-underline hover:prose-a:underline prose-a:font-black">
-            <MDXRemote {...source} components={{ Font: FontWrapper }} />
-          </div>
+          <p className="eyebrow mb-5">About</p>
+          <h1 className="font-display text-[clamp(2.5rem,6vw,4rem)] font-medium leading-[1.0]">
+            Who is <span className="text-accent italic">CyberNeel</span>?
+          </h1>
+        </motion.header>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="prose-atelier mt-12"
+        >
+          <MDXRemote {...source} components={{ Font: FontWrapper }} />
         </motion.div>
-      </div>
-    </div>
+
+        <div className="hairline mt-16 pt-10">
+          <p className="eyebrow mb-6">More about me</p>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {MORE.map(({ href, label, desc, Icon }) => (
+              <Link key={href} href={href} className="card group p-5 hover:-translate-y-1">
+                <div className="flex items-center justify-between">
+                  <Icon size={18} className="text-accent" />
+                  <ArrowUpRight size={16} className="text-faint transition-colors group-hover:text-accent" />
+                </div>
+                <p className="mt-4 font-display text-xl">{label}</p>
+                <p className="mt-1 text-sm leading-snug text-muted">{desc}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </article>
+    </>
   );
 }
 
 export async function getStaticProps() {
   const filePath = path.join(process.cwd(), 'data', 'about.mdx');
-  const source = fs.readFileSync(filePath, 'utf8');
-  const mdxSource = await serialize(source);
-
-  return {
-    props: {
-      source: mdxSource,
-    },
-  };
+  const source = await serialize(fs.readFileSync(filePath, 'utf8'));
+  return { props: { source } };
 }

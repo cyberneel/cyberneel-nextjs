@@ -1,50 +1,108 @@
-import { Github, Linkedin, Instagram, Play } from 'lucide-react';
+import Link from 'next/link';
+import { Github, Linkedin, Instagram, ArrowUpRight } from 'lucide-react';
 
-function Footer() {
+const SOCIALS = [
+  { label: 'GitHub', href: 'https://github.com/cyberneel', Icon: Github },
+  { label: 'LinkedIn', href: 'https://linkedin.cyberneel.com/', Icon: Linkedin },
+  { label: 'Instagram', href: 'https://instagram.com/cyber_neel', Icon: Instagram },
+];
+
+const NAV = [
+  { label: 'About', href: '/about' },
+  { label: 'Experience', href: '/experience' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Posts', href: '/posts' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const MORE = [
+  { label: 'Uses', href: '/uses' },
+  { label: 'Now', href: '/now' },
+  { label: 'Résumé', href: '/resume' },
+  { label: 'RSS', href: '/feed.xml', external: true },
+];
+
+export default function Footer() {
   return (
-    <footer className="w-full bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 transition-colors duration-300">
-      <div className="container mx-auto px-6 py-12 flex flex-col items-center">
-        <div className="flex gap-6 mb-8">
-          <a 
-            href="https://linkedin.cyberneel.com/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="p-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-white transition-all transform hover:scale-110"
-            aria-label="LinkedIn"
-          >
-            <Linkedin size={20} />
-          </a>
-          <a 
-            href="https://instagram.com/cyber_neel" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="p-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full hover:bg-pink-600 hover:text-white dark:hover:bg-pink-600 dark:hover:text-white transition-all transform hover:scale-110"
-            aria-label="Instagram"
-          >
-            <Instagram size={20} />
-          </a>
-          <a 
-            href="https://github.com/cyberneel" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="p-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-all transform hover:scale-110"
-            aria-label="GitHub"
-          >
-            <Github size={20} />
-          </a>
+    <footer className="relative mt-32">
+      <div className="mx-auto max-w-6xl px-4 md:px-6">
+        <div className="hairline pt-16 pb-12">
+          <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_0.8fr_0.9fr]">
+            <div>
+              <p className="eyebrow mb-4">Get in touch</p>
+              <h2 className="font-display text-4xl leading-[1.05] md:text-5xl">
+                Let&apos;s build
+                <br />
+                something <span className="text-accent italic">good.</span>
+              </h2>
+              <Link href="/contact" className="btn btn-primary mt-7">
+                Start a conversation <ArrowUpRight size={17} />
+              </Link>
+            </div>
+
+            <div>
+              <p className="eyebrow mb-5">Sitemap</p>
+              <ul className="flex flex-col gap-3">
+                {NAV.map((n) => (
+                  <li key={n.href}>
+                    <Link href={n.href} className="link-underline text-muted transition-colors hover:text-fg">
+                      {n.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <p className="eyebrow mb-5">More</p>
+              <ul className="flex flex-col gap-3">
+                {MORE.map((n) =>
+                  n.external ? (
+                    <li key={n.href}>
+                      <a href={n.href} className="link-underline text-muted transition-colors hover:text-fg">
+                        {n.label}
+                      </a>
+                    </li>
+                  ) : (
+                    <li key={n.href}>
+                      <Link href={n.href} className="link-underline text-muted transition-colors hover:text-fg">
+                        {n.label}
+                      </Link>
+                    </li>
+                  )
+                )}
+              </ul>
+            </div>
+
+            <div>
+              <p className="eyebrow mb-5">Elsewhere</p>
+              <ul className="flex flex-col gap-3">
+                {SOCIALS.map(({ label, href, Icon }) => (
+                  <li key={label}>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center gap-2 text-muted transition-colors hover:text-fg"
+                    >
+                      <Icon size={16} />
+                      <span className="link-underline">{label}</span>
+                      <ArrowUpRight size={13} className="opacity-0 transition-opacity group-hover:opacity-100" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
 
-        <div className="text-center">
-          <p className="text-slate-500 dark:text-slate-400 mb-2">
-            © {new Date().getFullYear()} <span className="font-bold text-slate-900 dark:text-white">Neelesh Chevuri</span>
+        <div className="hairline flex flex-col items-center justify-between gap-3 py-6 sm:flex-row">
+          <p className="text-sm text-faint">
+            © {new Date().getFullYear()} Neelesh Chevuri
           </p>
-          <p className="text-xs text-slate-400 dark:text-slate-500 flex items-center justify-center gap-1">
-            Built with <span className="text-blue-500">Next.js</span> & <span className="text-blue-500">Tailwind</span>
-          </p>
+          <p className="eyebrow">Tinkerer &amp; Digital Artist</p>
         </div>
       </div>
     </footer>
   );
 }
-
-export default Footer;

@@ -1,136 +1,135 @@
-import Head from 'next/head';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Menu, Home, ChevronDown, X } from 'lucide-react';
+import { useRouter } from 'next/router';
+import { Menu, X } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
+import pages from '../public/pages.json';
+
+function isActive(pathname, itemPath) {
+  if (itemPath === '/') return pathname === '/';
+  return pathname === itemPath || pathname.startsWith(`${itemPath}/`);
+}
+
+function flatten(items) {
+  // Drop test/hidden items; lift dropdown children to top level on mobile.
+  return items.filter((i) => !i.test);
+}
 
 export default function Navbar() {
-  const [pages, setPages] = useState([]);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
-    fetch('/pages.json')
-      .then(response => response.json())
-      .then(data => setPages(data))
-      .catch(error => console.error('Error:', error));
+    const close = () => setOpen(false);
+    router.events.on('routeChangeStart', close);
+    return () => router.events.off('routeChangeStart', close);
+  }, [router.events]);
 
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const items = flatten(pages).filter((i) => !i.children);
+  const dropdowns = flatten(pages).filter((i) => i.children);
+  const mobileItems = [
+    ...items,
+    ...dropdowns.flatMap((d) => d.children || []),
+  ];
 
-  const renderMenuItems = (isMobile = false) => {
-    return pages.map((item, index) => {
-      if (item.test) return null;
-      
-      if (item.children) {
-        return (
-          <div key={index} className="relative group">
-            <button className="flex items-center gap-1 px-4 py-2 text-sm font-bold tracking-tight text-slate-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-500 transition-all">
-              {item.label} <ChevronDown size={14} />
-            </button>
-            <div className="absolute left-0 top-full hidden group-hover:block pt-2 animate-in fade-in slide-in-from-top-1 duration-200">
-              <ul className="glass border border-white/20 dark:border-white/10 rounded-2xl shadow-2xl py-3 min-w-[220px]">
-                {item.children.map((child, cIdx) => (
-                  <li key={cIdx}>
-                    <Link 
-                      href={child.path}
-                      className="block px-5 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-500 hover:bg-slate-50 dark:hover:bg-white/5 transition-all"
-                    >
-                      {child.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        );
-      }
-      
-      return (
-        <Link 
-          key={index} 
-          href={item.path}
-          className={`px-4 py-2 text-sm font-bold tracking-tight transition-all ${
-            isMobile 
-              ? 'block text-2xl font-black border-b border-slate-100 dark:border-white/5 last:border-0 py-6' 
-              : 'text-slate-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-500'
-          }`}
-          onClick={() => isMobile && setIsMenuOpen(false)}
-        >
-          <span className="flex items-center gap-2">
-            {item.path === '/' && !isMobile && <Home size={14} />}
-            {item.label}
-          </span>
-        </Link>
-      );
-    });
-  };
-  
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-      isScrolled 
-        ? 'py-4' 
-        : 'py-8'
-    }`}>
-      <div className="container mx-auto px-4 md:px-8">
-        <div className={`flex items-center justify-between px-6 py-3 rounded-[2rem] transition-all duration-500 ${
-          isScrolled 
-            ? 'glass shadow-2xl shadow-black/10' 
-            : 'bg-transparent'
-        }`}>
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-2xl bg-red-600 flex items-center justify-center overflow-hidden shadow-lg shadow-red-600/20 group-hover:rotate-6 transition-transform duration-500">
-              <img 
-                src="https://cyberneel.github.io/img/CyberNeelLogoNewOutfit1080p-1400x1400.webp" 
-                alt="CyberNeel" 
-                className="w-full h-full object-cover scale-110"
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div className="mx-auto max-w-6xl px-4 pt-4 md:px-6">
+        <nav className="glass flex items-center justify-between rounded-full pl-3 pr-2 py-2">
+
+          {/* Brand */}
+          <Link href="/" className="group flex items-center gap-2.5 pl-1">
+            <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-lg ring-1 ring-line">
+              <img
+                src="https://cyberneel.github.io/img/CyberNeelLogoNewOutfit1080p-1400x1400.webp"
+                alt="CyberNeel"
+                className="h-full w-full scale-110 object-cover"
               />
-            </div>
-            <span className="text-2xl font-black tracking-tighter text-slate-900 dark:text-white uppercase">
-              CYBER<span className="text-red-600">NEEL</span>
+            </span>
+            <span className="text-[15px] font-semibold tracking-tight text-fg">
+              Cyber<span className="text-accent">Neel</span>
             </span>
           </Link>
-          
-          <div className="hidden lg:flex items-center gap-1">
-            {renderMenuItems()}
+
+          {/* Desktop links */}
+          <div className="hidden items-center gap-1 md:flex">
+            {items.map((item) => {
+              const active = isActive(router.pathname, item.path);
+              return (
+                <Link
+                  key={item.path}
+                  href={item.path}
+                  aria-current={active ? 'page' : undefined}
+                  className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
+                    active ? 'text-fg' : 'text-fg/80 hover:text-fg'
+                  }`}
+                >
+                  <span className="relative">
+                    {item.label}
+                    <span
+                      className={`absolute -bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-accent transition-opacity ${
+                        active ? 'opacity-100' : 'opacity-0'
+                      }`}
+                    />
+                  </span>
+                </Link>
+              );
+            })}
           </div>
-          
-          <div className="flex items-center gap-4">
+
+          <div className="flex items-center gap-1">
             <ThemeToggle />
-            
-            <button
-              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white"
-              onClick={toggleMenu}
-              aria-label="Toggle Menu"
+            <Link
+              href="/contact"
+              className="hidden rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-[var(--accent-contrast)] transition-transform hover:scale-[1.03] active:scale-95 sm:inline-flex"
             >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              Let&apos;s talk
+            </Link>
+            <button
+              onClick={() => setOpen((v) => !v)}
+              aria-label="Toggle menu"
+              aria-expanded={open}
+              className="grid h-9 w-9 place-items-center rounded-full text-fg transition-colors hover:bg-bg-tint md:hidden"
+            >
+              {open ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
-        </div>
+        </nav>
       </div>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 bg-white dark:bg-[#0a0a0a] z-40 lg:hidden overflow-y-auto animate-in fade-in duration-300">
-          <div className="container mx-auto px-8 pt-32 pb-12 flex flex-col h-full">
-            <div className="flex-grow">
-              {renderMenuItems(true)}
-            </div>
-            <div className="mt-auto pt-8 border-t border-slate-100 dark:border-white/5">
-              <p className="text-slate-400 dark:text-zinc-600 font-mono text-xs uppercase tracking-widest">
-                Tinkerer & Digital Artist
-              </p>
-            </div>
+      {/* Mobile overlay */}
+      {open && (
+        <div className="fixed inset-0 top-0 z-40 bg-bg md:hidden">
+          <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-6 pt-28 pb-12">
+            <nav className="flex flex-col">
+              {mobileItems.map((item, i) => {
+                const active = isActive(router.pathname, item.path);
+                return (
+                  <Link
+                    key={item.path}
+                    href={item.path}
+                    className={`hairline flex items-center justify-between py-5 font-display text-3xl transition-colors ${
+                      active ? 'text-accent' : 'text-fg'
+                    }`}
+                    style={{ borderTop: i === 0 ? 'none' : undefined }}
+                  >
+                    {item.label}
+                    <span className="eyebrow">{String(i + 1).padStart(2, '0')}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+            <Link href="/contact" className="btn btn-primary mt-8 justify-center">
+              Let&apos;s talk
+            </Link>
           </div>
         </div>
       )}
-    </nav>
+    </header>
   );
 }

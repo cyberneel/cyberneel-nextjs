@@ -1,12 +1,12 @@
 import FontWrapper from '../../components/FontWrapper';
 
 export const SectionTitle = ({ children, ...props }) => (
-  <h2 className="section-title" {...props}>{children}</h2>
-)
+  <h2 className="font-display text-3xl mt-12 mb-2" {...props}>{children}</h2>
+);
 
 export const Text = ({ children, ...props }) => (
-  <p className="mdx-text" {...props}>{children}</p>
-)
+  <p className="leading-relaxed text-muted" {...props}>{children}</p>
+);
 
 export function useMDXComponents(components) {
   return {
@@ -14,5 +14,5 @@ export function useMDXComponents(components) {
     Font: FontWrapper,
     SectionTitle,
     Text,
-  }
+  };
 }

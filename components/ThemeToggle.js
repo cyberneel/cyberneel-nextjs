@@ -1,34 +1,32 @@
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
-import { Sun, Moon, Monitor } from 'lucide-react';
+import { Sun, Moon } from 'lucide-react';
 
 export default function ThemeToggle() {
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
+  if (!mounted) return <div className="h-9 w-9" />;
 
-  if (!mounted) return <div className="p-2 w-10 h-10" />;
-
-  const toggleTheme = () => {
-    if (resolvedTheme === 'dark') {
-      setTheme('light');
-    } else {
-      setTheme('dark');
-    }
-  };
+  const isDark = resolvedTheme === 'dark';
 
   return (
     <button
-      onClick={toggleTheme}
-      className="p-2 rounded-full transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      aria-label="Toggle theme"
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+      className="relative grid h-9 w-9 place-items-center rounded-full text-muted transition-colors hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
     >
-      {resolvedTheme === 'dark' ? (
-        <Sun className="w-5 h-5 text-yellow-500" />
-      ) : (
-        <Moon className="w-5 h-5 text-blue-600" />
-      )}
+      <Sun
+        className={`absolute h-[18px] w-[18px] transition-all duration-300 ${
+          isDark ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0'
+        }`}
+      />
+      <Moon
+        className={`absolute h-[18px] w-[18px] transition-all duration-300 ${
+          isDark ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
+        }`}
+      />
     </button>
   );
 }

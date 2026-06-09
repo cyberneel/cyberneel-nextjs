@@ -1,85 +1,362 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* Dark mode driven by a class on <html> (next-themes attribute="class") */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================
+   Design tokens — "Editorial Atelier"
+   Warm paper/ink palette, Fraunces display + Geist body,
+   a single sharp vermilion accent.
+   ============================================================ */
 @theme {
-  --color-primary: #dc2626; /* red-600 */
-  --color-primary-foreground: #ffffff;
-  
-  --color-accent: #ef4444; /* red-500 */
-  --color-accent-foreground: #ffffff;
-  
-  --color-background-dark: #0a0a0a; /* near black */
-  --color-surface-dark: #121212; /* dark gray */
-  --color-border-dark: #1f1f1f;
+  --font-display: var(--ff-display), Georgia, "Times New Roman", serif;
+  --font-sans: var(--ff-body), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--ff-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  --color-accent: #d53e3b;
+  --color-accent-strong: #c0322f;
+  --color-paper: #f6f3ee;
+  --color-ink: #1a1612;
+
+  /* Semantic tokens — resolve to runtime vars that flip in dark mode */
+  --color-fg: var(--fg);
+  --color-muted: var(--fg-muted);
+  --color-faint: var(--fg-faint);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-bg: var(--bg);
+  --color-bg-tint: var(--bg-tint);
+
+  --radius-card: 1.5rem;
+}
+
+/* Semantic surface variables — flip on .dark */
+:root {
+  --bg: #f4f4f3;
+  --bg-tint: #e9e9e7;
+  --fg: #1b1a18;
+  --fg-muted: #5c5a56;
+  --fg-faint: #8d8a85;
+  --surface: rgba(255, 255, 255, 0.78);
+  --surface-solid: #ffffff;
+  --border: rgba(20, 19, 17, 0.11);
+  --border-strong: rgba(20, 19, 17, 0.18);
+  --glass-bg: rgba(250, 250, 249, 0.9);
+  --glass-border: rgba(20, 19, 17, 0.12);
+  --accent: #d53e3b;
+  --accent-contrast: #ffffff;
+  --shadow-card: 0 1px 2px rgba(20, 19, 17, 0.04), 0 18px 40px -24px rgba(20, 19, 17, 0.24);
+  --grain-opacity: 0.03;
+}
+
+.dark {
+  --bg: #0b0a09;
+  --bg-tint: #131110;
+  --fg: #f1ece6;
+  --fg-muted: #9a918a;
+  --fg-faint: #6c635c;
+  --surface: rgba(255, 255, 255, 0.035);
+  --surface-solid: #15120f;
+  --border: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --glass-bg: rgba(18, 16, 15, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --accent: #e2524e;
+  --accent-contrast: #140b0a;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 24px 60px -28px rgba(0, 0, 0, 0.7);
+  --grain-opacity: 0.05;
 }
 
 @layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+
   body {
-    @apply bg-slate-50 text-slate-900 dark:bg-[#0a0a0a] dark:text-slate-100 transition-colors duration-300;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv01";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-contrast);
+  }
+
+  ::-webkit-scrollbar { width: 11px; height: 11px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 999px;
+    border: 3px solid var(--bg);
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--fg-faint); }
+
+  a { color: inherit; }
+}
+
+/* ============================================================
+   Components
+   ============================================================ */
+@layer components {
+  .glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(30px) saturate(1.9) brightness(1.04);
+    -webkit-backdrop-filter: blur(30px) saturate(1.9) brightness(1.04);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.55) inset,
+      0 -1px 0 rgba(0, 0, 0, 0.04) inset,
+      0 12px 34px -18px rgba(0, 0, 0, 0.35);
+  }
+  .dark .glass {
+    backdrop-filter: blur(30px) saturate(1.7) brightness(0.95);
+    -webkit-backdrop-filter: blur(30px) saturate(1.7) brightness(0.95);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.08) inset,
+      0 -1px 0 rgba(0, 0, 0, 0.3) inset,
+      0 14px 40px -20px rgba(0, 0, 0, 0.75);
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    backdrop-filter: blur(16px) saturate(1.3);
+    -webkit-backdrop-filter: blur(16px) saturate(1.3);
+    box-shadow: var(--shadow-card);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+  }
+  .card:hover {
+    border-color: var(--border-strong);
+  }
+
+  /* Small uppercase mono label */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+
+  .accent-text { color: var(--accent); }
+
+  .hairline { border-top: 1px solid var(--border); }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.5rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1;
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+  }
+  .btn:active { transform: scale(0.97); }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--accent-contrast);
+  }
+  .btn-primary:hover { background: var(--color-accent-strong); }
+  .dark .btn-primary:hover { background: #ef5e5a; }
+
+  .btn-ghost {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .btn-ghost:hover { border-color: var(--border-strong); background: var(--bg-tint); }
+
+  /* Accent chip / tag */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+
+  .link-underline {
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-size: 0% 1.5px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s ease;
+  }
+  .link-underline:hover { background-size: 100% 1.5px; }
+}
+
+/* ============================================================
+   MDX / prose
+   ============================================================ */
+.prose-atelier {
+  color: var(--fg);
+  font-size: 1.075rem;
+  line-height: 1.8;
+}
+.prose-atelier > * + * { margin-top: 1.5rem; }
+/* Spacing for paragraphs nested inside wrappers like <Font> (a div), which the
+   direct-child rule above can't reach. */
+.prose-atelier p + p { margin-top: 1.5rem; }
+.prose-atelier :where(div) > p:not(:first-child) { margin-top: 1.5rem; }
+.prose-atelier h1, .prose-atelier h2, .prose-atelier h3 {
+  font-family: var(--font-display);
+  margin-top: 2.6rem;
+  margin-bottom: 0.2rem;
+  scroll-margin-top: 7rem;
+}
+.prose-atelier h2 { font-size: 1.9rem; }
+.prose-atelier h3 { font-size: 1.4rem; }
+.prose-atelier a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.prose-atelier a:hover { border-bottom-color: var(--accent); }
+.prose-atelier strong { color: var(--fg); font-weight: 650; }
+.prose-atelier img {
+  border-radius: 1.25rem;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+}
+.prose-atelier ul { list-style: none; padding-left: 0; }
+.prose-atelier ul > li {
+  position: relative;
+  padding-left: 1.5rem;
+}
+.prose-atelier ul > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+.prose-atelier ol { padding-left: 1.25rem; }
+.prose-atelier blockquote {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.25rem;
+  font-style: italic;
+  color: var(--fg-muted);
+}
+.prose-atelier code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--bg-tint);
+  padding: 0.15em 0.4em;
+  border-radius: 0.4rem;
+  border: 1px solid var(--border);
+}
+.prose-atelier pre {
+  background: #14110e;
+  color: #f1ece6;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1.25rem 1.4rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+}
+.prose-atelier pre code { background: transparent; border: none; padding: 0; }
+
+/* Legacy helpers still referenced by the /admin studio */
+.glass-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* ============================================================
+   Atmosphere — static accent glow + fine grain (Atmosphere.js)
+   ============================================================ */
+.atmo-glow {
+  position: absolute;
+  inset: 0;
+  /* Light mode: barely-there neutral hint so it never reads as an orange wash */
+  background: radial-gradient(44rem 22rem at 92% -14%, color-mix(in srgb, var(--accent) 4%, transparent), transparent 72%);
+}
+.dark .atmo-glow {
+  background:
+    radial-gradient(48rem 26rem at 86% -10%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 66%),
+    radial-gradient(40rem 30rem at -6% 6%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 68%);
+}
+.atmo-grain {
+  position: absolute;
+  inset: 0;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  mix-blend-mode: overlay;
+}
+.dark .atmo-grain {
+  mix-blend-mode: soft-light;
+}
+
+/* Print: clean black-on-white, drop the chrome. Used by /resume. */
+@media print {
+  :root,
+  .dark {
+    --bg: #ffffff;
+    --bg-tint: #f3f3f3;
+    --fg: #111111;
+    --fg-muted: #333333;
+    --fg-faint: #555555;
+    --border: rgba(0, 0, 0, 0.18);
+    --border-strong: rgba(0, 0, 0, 0.28);
+    --accent: #b3302d;
+  }
+  header,
+  footer {
+    display: none !important;
+  }
+  main {
+    padding-top: 0 !important;
+  }
+  a {
+    text-decoration: none;
   }
 }
 
-.glass {
-  @apply bg-white/70 dark:bg-black/40 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-xl;
-}
-
-.glass-card {
-  @apply bg-white/80 dark:bg-zinc-900/40 backdrop-blur-sm border border-slate-200/50 dark:border-white/10 shadow-lg;
-}
-
-.background-mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  background-image: url('https://github.com/cyberneel/cyberneel-nextjs/raw/master/public/IMG_0609.webp');
-  opacity: 0.1;
-  mask-image: radial-gradient(
-    circle at var(--mask-x) var(--mask-y),
-    rgba(0, 0, 0, 1) 100px,
-    rgba(0, 0, 0, 0.5) 200px,
-    rgba(0, 0, 0, 0) 400px
-  );
-  -webkit-mask-image: radial-gradient(
-    circle at var(--mask-x) var(--mask-y),
-    rgba(0, 0, 0, 1) 100px,
-    rgba(0, 0, 0, 0.5) 200px,
-    rgba(0, 0, 0, 0) 400px
-  );
-  z-index: 1;
-  background-size: cover;
-}
-
-.dark .background-mask {
-  opacity: 0.03;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-slate-200 dark:bg-zinc-800 rounded-full hover:bg-slate-300 dark:hover:bg-zinc-700;
-}
-
-/* Selection */
-::selection {
-  @apply bg-red-500/30 text-red-900 dark:text-red-100;
-}
-
-/* Red Glow Effect */
-.glow-red {
-  box-shadow: 0 0 20px rgba(220, 38, 38, 0.2);
-}
-
-.dark .glow-red {
-  box-shadow: 0 0 30px rgba(220, 38, 38, 0.15);
+/* Reveal-on-load utility (paired with framer where needed) */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  html { scroll-behavior: auto; }
 }
