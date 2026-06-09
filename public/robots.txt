@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /admin
 
-# Host
 Host: https://cyberneel.com
+Sitemap: https://cyberneel.com/sitemap.xml
