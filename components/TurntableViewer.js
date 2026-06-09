@@ -1,131 +1,164 @@
-import { useRef, useState, useEffect } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { RotateCw, Hand } from 'lucide-react';
 
-const TurntableViewer = ({ videoPath }) => {
+// Drag-to-rotate "turntable" viewer. The model is a pre-rendered 360° video;
+// dragging horizontally scrubs through it so it feels like spinning a real 3D
+// object — without ever exposing the model file or a single high-res still.
+//
+//   <TurntableViewer videoPath="/3d/RoboHead.mp4" caption="Robo Head — Nomad Sculpt" />
+export default function TurntableViewer({
+  videoPath,
+  poster,
+  caption,
+  autoSpin = true,
+  rotations = 1.1, // full-width drags per full turn
+}) {
+  const wrapRef = useRef(null);
   const videoRef = useRef(null);
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [sliderValue, setSliderValue] = useState(0);
+  const [loaded, setLoaded] = useState(false);
+  const [dragging, setDragging] = useState(false);
+  const [hint, setHint] = useState(true);
 
-  useEffect(() => {
-    const video = videoRef.current;
+  // Mutable interaction state kept in a ref so the rAF loop sees fresh values.
+  const st = useRef({ down: false, hovered: false, startX: 0, startTime: 0, vel: 0, lastX: 0, lastT: 0 });
 
-    if (video) {
-      video.addEventListener('loadedmetadata', () => {
-        setIsVideoLoaded(true);
-        video.pause(); // Pause video for slider control
-      });
-    }
+  const fallbackPoster = poster || videoPath.replace(/\.(mp4|mov|webm)$/i, '.webp');
 
-    return () => {
-      if (video) {
-        video.removeEventListener('loadedmetadata', () => {});
-      }
-    };
+  const setTime = useCallback((t) => {
+    const v = videoRef.current;
+    if (!v || !v.duration) return;
+    const d = v.duration;
+    v.currentTime = ((t % d) + d) % d; // wrap for seamless looping
   }, []);
 
-  const handleSliderChange = (e) => {
-    const value = Number(e.target.value);
-    setSliderValue(value);
+  // Idle auto-spin + inertia, all on one rAF loop.
+  useEffect(() => {
+    let raf;
+    let last = performance.now();
+    const tick = (now) => {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      const v = videoRef.current;
+      const s = st.current;
+      if (v && v.duration) {
+        if (s.down) {
+          // controlled by pointer move
+        } else if (Math.abs(s.vel) > 0.0005) {
+          // inertia: vel is in "turns per second"
+          setTime(v.currentTime + s.vel * v.duration * dt);
+          s.vel *= 0.94;
+        } else if (autoSpin && !s.hovered) {
+          setTime(v.currentTime + (v.duration / 22) * dt); // ~22s per turn
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [autoSpin, setTime]);
 
-    const video = videoRef.current;
-    if (isVideoLoaded && video) {
-      video.currentTime = (value / 100) * video.duration;
-    }
+  const onPointerDown = (e) => {
+    const v = videoRef.current;
+    if (!v) return;
+    setDragging(true);
+    setHint(false);
+    const s = st.current;
+    s.down = true;
+    s.startX = e.clientX;
+    s.startTime = v.currentTime;
+    s.lastX = e.clientX;
+    s.lastT = performance.now();
+    s.vel = 0;
+    wrapRef.current?.setPointerCapture?.(e.pointerId);
+  };
+
+  const onPointerMove = (e) => {
+    const s = st.current;
+    const v = videoRef.current;
+    const wrap = wrapRef.current;
+    if (!s.down || !v || !wrap) return;
+    const width = wrap.clientWidth || 1;
+    const dx = e.clientX - s.startX;
+    setTime(s.startTime + (dx / width) * rotations * v.duration);
+    // track velocity for inertia (turns/sec)
+    const now = performance.now();
+    const dt = Math.max(1, now - s.lastT) / 1000;
+    s.vel = ((e.clientX - s.lastX) / width) * rotations / dt;
+    s.lastX = e.clientX;
+    s.lastT = now;
+  };
+
+  const endDrag = () => {
+    const s = st.current;
+    if (!s.down) return;
+    s.down = false;
+    setDragging(false);
   };
 
   return (
-    <div style={{ width: '100%', maxWidth: '600px', margin: 'auto', textAlign: 'center' }}>
+    <figure className="not-prose my-12">
       <div
-        style={{
-          width: '100%',
-          height: 'auto',
-          overflow: 'hidden',
-          position: 'relative',
-          borderRadius: '.75rem',
+        ref={wrapRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+        onPointerEnter={() => (st.current.hovered = true)}
+        onPointerLeave={() => {
+          st.current.hovered = false;
+          endDrag();
         }}
+        onContextMenu={(e) => e.preventDefault()}
+        className="card group relative select-none overflow-hidden"
+        style={{ cursor: dragging ? 'grabbing' : 'grab', touchAction: 'pan-y' }}
       >
         <video
           ref={videoRef}
           src={videoPath}
-          preload="auto"
-          type="video/mp4"
+          poster={fallbackPoster}
+          muted
           loop
-          style={{ width: '100%', display: 'block' }}
+          playsInline
+          preload="auto"
+          draggable={false}
+          disablePictureInPicture
+          controlsList="nodownload noremoteplayback noplaybackrate"
+          onLoadedMetadata={(e) => {
+            e.currentTarget.pause();
+            setLoaded(true);
+          }}
+          className="pointer-events-none block w-full"
         />
-        {!isVideoLoaded && (
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#000',
-              color: '#fff',
-              fontSize: '1.2rem',
-            }}
-          >
-            Loading...
+
+        {/* badge */}
+        <div className="pointer-events-none absolute left-3 top-3 flex items-center gap-1.5">
+          <span className="chip backdrop-blur-md">
+            <RotateCw size={11} className="mr-1" /> 3D Turntable
+          </span>
+        </div>
+
+        {/* drag hint (fades after first interaction) */}
+        <div
+          className={`pointer-events-none absolute inset-0 flex items-end justify-center pb-5 transition-opacity duration-500 ${
+            hint && loaded ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <span className="glass flex items-center gap-2 rounded-full px-4 py-2 text-sm text-fg">
+            <Hand size={15} /> Drag to rotate
+          </span>
+        </div>
+
+        {/* loading shimmer */}
+        {!loaded && (
+          <div className="absolute inset-0 grid place-items-center bg-bg-tint">
+            <RotateCw size={22} className="animate-spin text-accent" />
           </div>
         )}
       </div>
-      <div style={{ marginTop: '1rem' }}>
-        <input
-          type="range"
-          min="0"
-          max="100"
-          step="1"
-          value={sliderValue}
-          onChange={handleSliderChange}
-          style={{
-            width: '100%',
-            appearance: 'none',
-            height: '12px',
-            borderRadius: '10px',
-            background: 'linear-gradient(90deg, #FFC1C1 0%, #F75C5C 100%)',
-            outline: 'none',
-            cursor: 'pointer',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-          }}
-        />
-        <style jsx>{`
-          input[type='range']::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #ffffff;
-            border: 3px solid #F75C5C;
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: transform 0.2s ease;
-          }
 
-          input[type='range']::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-          }
-
-          input[type='range']::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            background: #ffffff;
-            border: 3px solid #F75C5C;
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: transform 0.2s ease;
-          }
-
-          input[type='range']::-moz-range-thumb:hover {
-            transform: scale(1.2);
-          }
-        `}</style>
-      </div>
-    </div>
+      {caption && (
+        <figcaption className="mt-3 text-center text-sm text-muted">{caption}</figcaption>
+      )}
+    </figure>
   );
-};
-
-export default TurntableViewer;
+}
