@@ -4,15 +4,27 @@
 //
 // Required env: GITHUB_TOKEN (contents + pull_requests write).
 // Optional env: GITHUB_REPO (default "cyberneel/cyberneel-nextjs"),
-//               GITHUB_DEFAULT_BRANCH (default "main").
+//               GITHUB_DEFAULT_BRANCH (else the repo's actual default branch).
 
 const API = 'https://api.github.com';
 
 function repo() {
   return process.env.GITHUB_REPO || 'cyberneel/cyberneel-nextjs';
 }
-function baseBranch() {
-  return process.env.GITHUB_DEFAULT_BRANCH || 'main';
+
+let _defaultBranch;
+// Branch that PRs target. Honor the env override; otherwise ask GitHub for the
+// repo's real default branch (works whether that's "master" or "main").
+async function baseBranch() {
+  if (process.env.GITHUB_DEFAULT_BRANCH) return process.env.GITHUB_DEFAULT_BRANCH;
+  if (_defaultBranch) return _defaultBranch;
+  try {
+    const data = await gh(`/repos/${repo()}`);
+    _defaultBranch = data.default_branch || 'master';
+  } catch {
+    _defaultBranch = 'master';
+  }
+  return _defaultBranch;
 }
 
 export function githubConfigured() {
@@ -55,8 +67,9 @@ async function refSha(branch) {
 
 async function ensureBranch(branch) {
   if (await refSha(branch)) return;
-  const baseSha = await refSha(baseBranch());
-  if (!baseSha) throw new Error(`Base branch "${baseBranch()}" not found.`);
+  const base = await baseBranch();
+  const baseSha = await refSha(base);
+  if (!baseSha) throw new Error(`Base branch "${base}" not found.`);
   await gh(`/repos/${repo()}/git/refs`, {
     method: 'POST',
     body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: baseSha }),
@@ -84,7 +97,7 @@ async function ensurePr(branch, title) {
     body: JSON.stringify({
       title,
       head: branch,
-      base: baseBranch(),
+      base: await baseBranch(),
       body: 'Created via the Content Studio admin.',
     }),
   });
