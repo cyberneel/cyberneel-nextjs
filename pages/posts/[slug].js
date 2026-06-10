@@ -74,7 +74,7 @@ export default function Post({ post: { source, frontmatter }, toc, related }) {
               transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="mt-10 overflow-hidden rounded-2xl border border-line"
             >
-              <img src={frontmatter.cover_image_link} alt={frontmatter.title} className="aspect-video w-full object-cover" />
+              <img src={frontmatter.cover_image_link} alt={frontmatter.title} className="block h-auto w-full" />
             </motion.div>
           )}
 
