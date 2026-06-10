@@ -123,7 +123,7 @@ export default function Experience({ items }) {
 
                         <div className="eyebrow mt-4 flex flex-wrap gap-x-5 gap-y-2">
                           <span className="inline-flex items-center gap-1.5">
-                            <Calendar size={12} /> {item.startDate} — {item.endDate}
+                            <Calendar size={12} /> {item.startDate}{item.endDate ? ` — ${item.endDate}` : ''}
                           </span>
                           {item.location && (
                             <span className="inline-flex items-center gap-1.5">
@@ -194,7 +194,7 @@ export default function Experience({ items }) {
               <p className="mt-2 text-lg font-medium text-accent">{active.company}</p>
               <div className="eyebrow mt-4 flex flex-wrap gap-x-5 gap-y-2">
                 <span className="inline-flex items-center gap-1.5">
-                  <Calendar size={12} /> {active.startDate} — {active.endDate}
+                  <Calendar size={12} /> {active.startDate}{active.endDate ? ` — ${active.endDate}` : ''}
                 </span>
                 {active.location && (
                   <span className="inline-flex items-center gap-1.5">

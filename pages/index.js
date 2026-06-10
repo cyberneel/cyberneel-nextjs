@@ -79,7 +79,7 @@ export default function Home({ featured }) {
           custom={4}
           className="hairline mt-16 flex flex-wrap items-center gap-x-8 gap-y-3 pt-7"
         >
-          {['CTO @ AiME Technologies', 'CS @ UT Austin', 'Swift Student Challenge ’25'].map((m) => (
+          {['Embedded SWE @ EM Microelectronic', 'CS @ UT Austin', 'Swift Student Challenge ’25'].map((m) => (
             <span key={m} className="eyebrow">{m}</span>
           ))}
         </motion.div>
