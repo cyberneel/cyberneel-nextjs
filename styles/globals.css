@@ -126,6 +126,19 @@
 .hero-copy { border-top: 1px solid var(--line); padding: 32px 32px 48px; display: flex; flex-direction: column; gap: 28px }
 .hero-copy p { max-width: 34em; font-size: 20px; line-height: 1.45 }
 .hero-r { display: none }
+/* LogoTilt: --mx/--my is the cursor and --c/--r each tile, all in tiles. Within ~3.5 tiles of
+   the cursor tiles lift into a dome, each tilting away from it. */
+.tiles { position: absolute; inset: 0; perspective: 900px; transform-style: preserve-3d; --mx: -99; --my: -99 }
+.tiles > i {
+  position: absolute; box-sizing: border-box; border: solid var(--bg); border-width: 0 1px 1px 0;
+  background: var(--img) no-repeat border-box;
+  --dx: calc(var(--mx) - var(--c) - .5);
+  --dy: calc(var(--my) - var(--r) - .5);
+  --f: max(0, 1 - hypot(var(--dx), var(--dy)) / 3.5);
+  transform: translateZ(calc(var(--f) * 70px)) rotateY(calc(clamp(-1, var(--dx), 1) * var(--f) * -32deg)) rotateX(calc(clamp(-1, var(--dy), 1) * var(--f) * 32deg));
+  transition: transform .45s cubic-bezier(.2, .8, .2, 1);
+}
+@media (prefers-reduced-motion: reduce) { .tiles > i { transform: none } }
 .facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border-top: 1px solid var(--line) }
 .facts > div { background: var(--bg); padding: 24px 32px; min-width: 0 }
 .facts .k { font-size: 14px; color: var(--muted) }

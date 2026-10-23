@@ -13,7 +13,6 @@
     "@tailwindcss/postcss": "^4.2.2",
     "@vercel/analytics": "^2.0.1",
     "dayjs": "^1.11.13",
-    "framer-motion": "^12.16.0",
     "glob": "^11.0.0",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.513.0",
