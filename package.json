@@ -6,6 +6,9 @@
     "build": "next build",
     "start": "next start"
   },
+  "engines": {
+    "node": "24.x"
+  },
   "dependencies": {
     "@tailwindcss/postcss": "^4.2.2",
     "@vercel/analytics": "^2.0.1",
