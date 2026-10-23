@@ -3,7 +3,7 @@ import { LOGO } from './Navbar';
 
 const TILE = 22; // target tile size in px; the count adapts to the pane
 const DOME = 88; // px per unit of the cursor dome, so it keeps its size whatever the tiles
-const R = 3.5; // dome radius in DOME units
+const R = 4.5; // dome radius in DOME units
 const LIFT = 70; // px the dome's peak rises toward the viewer
 const TILT = (32 * Math.PI) / 180; // most a tile tilts away from the cursor
 const P = 900; // perspective distance in px
@@ -39,7 +39,9 @@ export default function LogoTilt() {
         for (let x = t / 2; x - t / 2 < w; x += t) {
           const dx = cur.x - x / DOME;
           const dy = cur.y - y / DOME;
-          tiles.push({ x, y, dx, dy, f: Math.max(0, 1 - Math.hypot(dx, dy) / R) });
+          // smooth bump: zero slope at the rim, so the dome has no visible edge
+          const f = (1 - Math.min(1, (dx * dx + dy * dy) / (R * R))) ** 2;
+          tiles.push({ x, y, dx, dy, f });
         }
       tiles.sort((a, b) => a.f - b.f); // raised tiles paint last
       ctx.clearRect(0, 0, w, h);
