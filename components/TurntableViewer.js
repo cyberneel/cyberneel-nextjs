@@ -18,17 +18,18 @@ export default function TurntableViewer({
   const [loaded, setLoaded] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [hint, setHint] = useState(true);
+  const [frame, setFrame] = useState(false); // a decoded frame is on screen
 
   // Mutable interaction state kept in a ref so the rAF loop sees fresh values.
-  const st = useRef({ down: false, hovered: false, startX: 0, startTime: 0, vel: 0, lastX: 0, lastT: 0 });
+  // t is where the turntable should be; the rAF loop seeks the video there.
+  const st = useRef({ down: false, hovered: false, t: 0, startX: 0, startTime: 0, vel: 0, lastX: 0, lastT: 0 });
 
   const fallbackPoster = poster || videoPath.replace(/\.(mp4|mov|webm)$/i, '.webp');
 
   const setTime = useCallback((t) => {
-    const v = videoRef.current;
-    if (!v || !v.duration) return;
-    const d = v.duration;
-    v.currentTime = ((t % d) + d) % d; // wrap for seamless looping
+    const d = videoRef.current?.duration;
+    if (!d) return;
+    st.current.t = ((t % d) + d) % d; // wrap for seamless looping
   }, []);
 
   // A cached video can load its metadata before hydration attaches onLoadedMetadata.
@@ -50,11 +51,14 @@ export default function TurntableViewer({
           // controlled by pointer move
         } else if (Math.abs(s.vel) > 0.0005) {
           // inertia: vel is in "turns per second"
-          setTime(v.currentTime + s.vel * v.duration * dt);
+          setTime(s.t + s.vel * v.duration * dt);
           s.vel *= 0.94;
         } else if (autoSpin && !s.hovered) {
-          setTime(v.currentTime + (v.duration / 22) * dt); // ~22s per turn
+          setTime(s.t + (v.duration / 22) * dt); // ~22s per turn
         }
+        // One seek in flight at a time: seeking every frame cancels each seek
+        // before it lands, and Safari shows black instead of a stale frame.
+        if (!v.seeking && Math.abs(v.currentTime - s.t) > 1e-3) v.currentTime = s.t;
       }
       raf = requestAnimationFrame(tick);
     };
@@ -70,7 +74,7 @@ export default function TurntableViewer({
     const s = st.current;
     s.down = true;
     s.startX = e.clientX;
-    s.startTime = v.currentTime;
+    s.startTime = s.t;
     s.lastX = e.clientX;
     s.lastT = performance.now();
     s.vel = 0;
@@ -132,8 +136,15 @@ export default function TurntableViewer({
             e.currentTarget.pause();
             setLoaded(true);
           }}
+          onSeeked={() => setFrame(true)}
           className="pointer-events-none block w-full"
         />
+
+        {/* iOS drops the poster once seeking starts: hold it up until a frame lands */}
+        {!frame && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={fallbackPoster} alt="" draggable={false} className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
+        )}
 
         {/* badge */}
         <div className="pointer-events-none absolute left-0 top-0 flex items-center gap-1.5">
