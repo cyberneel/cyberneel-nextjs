@@ -6,10 +6,11 @@ const spring = { stiffness: 120, damping: 18, mass: 0.7 };
 
 // Soft ellipses unioned into one blob mask: centre and radii (% of the pane), how far each
 // leans toward the cursor, and its drift period in ms. Different leans make the edge wobble.
+// Keep x/y ± (r + k + 4) inside 0..100 or the fade hits the pane edge and cuts off hard.
 const BLOBS = [
-  { x: 50, y: 48, rx: 46, ry: 42, k: 6, p: 9000 },
-  { x: 38, y: 60, rx: 38, ry: 44, k: 12, p: 11000 },
-  { x: 64, y: 38, rx: 36, ry: 34, k: 18, p: 13000 },
+  { x: 50, y: 54, rx: 34, ry: 34, k: 5, p: 9000 },
+  { x: 44, y: 58, rx: 26, ry: 26, k: 9, p: 11000 },
+  { x: 56, y: 44, rx: 24, ry: 24, k: 12, p: 13000 },
 ];
 const clamp = (v) => Math.max(-1, Math.min(1, v));
 
@@ -41,7 +42,7 @@ export default function LogoTilt() {
       const a = still ? 0 : (t / b.p) * 2 * Math.PI;
       const cx = b.x + x * b.k + Math.sin(a) * 4;
       const cy = b.y + y * b.k + Math.cos(a * 1.3) * 4;
-      return `radial-gradient(ellipse ${b.rx}% ${b.ry}% at ${cx}% ${cy}%, #000 35%, transparent)`;
+      return `radial-gradient(ellipse ${b.rx}% ${b.ry}% at ${cx}% ${cy}%, #000 50%, transparent)`;
     }).join(', ')
   );
   const rotateY = useTransform(sx, [-1, 1], [-7, 7]);
