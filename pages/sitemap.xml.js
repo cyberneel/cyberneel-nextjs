@@ -16,7 +16,7 @@ export async function getServerSideProps({ res }) {
   const tags = new Set();
   allArticles.forEach((a) => (a.tags || []).forEach((t) => tags.add(tagSlug(t))));
 
-  const staticRoutes = ['/', '/about', '/experience', '/blog', '/posts', '/contact', '/uses', '/now', '/resume'];
+  const staticRoutes = ['/', '/about', '/experience', '/blog', '/posts', '/contact', '/uses', '/now', '/resume', '/guides', '/guides/funko-pop'];
   const entries = [
     ...staticRoutes.map((r) => url(r, r === '/' ? '1.0' : '0.8')),
     ...articles.map((slug) => url(`/blog/${slug}`)),

@@ -11,6 +11,7 @@ const ITEMS = [
   { label: 'Experience', path: '/experience' },
   { label: 'Blog', path: '/blog' },
   { label: 'Posts', path: '/posts' },
+  { label: 'Guides', path: '/guides' },
 ];
 
 export default function Navbar() {
