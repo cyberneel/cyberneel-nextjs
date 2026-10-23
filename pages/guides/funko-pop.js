@@ -101,7 +101,7 @@ const STEPS = [
         <li>Open the STL in the printer's slicer and scale it to the size you want.</li>
         <li>Turn on supports: the big head and arms overhang.</li>
         <li>
-          At UT Austin? <Out href="https://inventionworks.engr.utexas.edu">Texas Inventionworks</Out> in the EER building has
+          At UT Austin? <Out href="https://inventionworks.engr.utexas.edu">Texas Invention Works</Out> in the EER building has
           3D printers. Check their site for who can use them and how.
         </li>
       </ol>
