@@ -10,7 +10,7 @@ const GUIDES = [
     title: 'Make your own Funko Pop',
     blurb: 'Photo to printed figure in four free steps: ChatGPT, TRELLIS, Blender, a 3D printer.',
     cover: '/guides/funko-pop/cover.webp',
-    reel: null,
+    reel: 'https://www.instagram.com/reel/De2JYJzk4s7/',
   },
 ];
 
