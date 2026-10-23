@@ -31,6 +31,11 @@ export default function TurntableViewer({
     v.currentTime = ((t % d) + d) % d; // wrap for seamless looping
   }, []);
 
+  // A cached video can load its metadata before hydration attaches onLoadedMetadata.
+  useEffect(() => {
+    if (videoRef.current?.readyState >= 1) setLoaded(true);
+  }, []);
+
   // Idle auto-spin + inertia, all on one rAF loop.
   useEffect(() => {
     let raf;
