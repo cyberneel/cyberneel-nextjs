@@ -22,7 +22,7 @@ export default function TableOfContents({ toc }) {
 
   return (
     <nav aria-label="Table of contents">
-      <p className="eyebrow mb-4">On this page</p>
+      <p className="mb-3 text-sm font-medium">On this page</p>
       <ul className="border-l border-line">
         {toc.map((t) => (
           <li key={t.id}>
@@ -30,7 +30,7 @@ export default function TableOfContents({ toc }) {
               href={`#${t.id}`}
               className={`-ml-px block border-l-2 py-1.5 text-sm leading-snug transition-colors ${
                 active === t.id
-                  ? 'border-accent text-fg'
+                  ? 'border-fg text-fg'
                   : 'border-transparent text-muted hover:text-fg'
               }`}
               style={{ paddingLeft: t.level === 3 ? '1.65rem' : '0.85rem' }}

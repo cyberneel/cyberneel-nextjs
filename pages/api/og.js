@@ -2,16 +2,13 @@ import { ImageResponse } from 'next/og';
 
 export const config = { runtime: 'edge' };
 
-// Branded Open Graph card: /api/og?title=…&type=Article&date=…
-// Rendered at request time and cached by the CDN. Pure typography + a
-// monogram so it never depends on fetching external/webp art.
+// Share card: /api/og?title=...&type=Article&date=...
+// Flat black, white type, red "Neel". Rendered at request time and cached by the CDN.
 export default function handler(req) {
   const { searchParams } = new URL(req.url);
-  const rawTitle = (searchParams.get('title') || 'Neelesh Chevuri').slice(0, 110);
+  const title = (searchParams.get('title') || 'Neelesh Chevuri').slice(0, 110);
   const type = (searchParams.get('type') || '').slice(0, 24);
   const date = (searchParams.get('date') || '').slice(0, 24);
-
-  const accent = '#d53e3b';
 
   return new ImageResponse(
     (
@@ -22,79 +19,26 @@ export default function handler(req) {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          background: '#0b0a09',
-          backgroundImage:
-            'radial-gradient(1000px 500px at 88% -12%, rgba(213,62,59,0.32), transparent 60%), radial-gradient(800px 600px at -8% 110%, rgba(213,62,59,0.14), transparent 60%)',
+          background: '#000',
+          color: '#fff',
           padding: '72px',
           fontFamily: 'sans-serif',
-          color: '#f1ece6',
         }}
       >
-        {/* top row */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <div
-              style={{
-                width: '64px',
-                height: '64px',
-                borderRadius: '18px',
-                background: accent,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '40px',
-                fontWeight: 800,
-                color: '#fff',
-              }}
-            >
-              C
-            </div>
-            <div style={{ display: 'flex', fontSize: '26px', fontWeight: 700, letterSpacing: '-0.02em' }}>
-              <span>Cyber</span>
-              <span style={{ color: accent }}>Neel</span>
-            </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '30px', fontWeight: 600 }}>
+          {/* satori drops the r/N kerning across spans; the margin puts it back */}
+          <div style={{ display: 'flex' }}>
+            <span>Cyber</span>
+            <span style={{ color: '#d53e3b', marginLeft: '-0.08em' }}>Neel</span>
           </div>
-          {type ? (
-            <div
-              style={{
-                fontSize: '20px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.18em',
-                color: accent,
-                border: `1px solid ${accent}`,
-                borderRadius: '999px',
-                padding: '8px 20px',
-              }}
-            >
-              {type}
-            </div>
-          ) : (
-            <div />
-          )}
+          <div style={{ display: 'flex', color: '#a3a3a3', fontWeight: 400 }}>{type}</div>
         </div>
-
-        {/* title */}
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div
-            style={{
-              fontSize: rawTitle.length > 64 ? '60px' : '78px',
-              fontWeight: 700,
-              lineHeight: 1.05,
-              letterSpacing: '-0.03em',
-              maxWidth: '1000px',
-            }}
-          >
-            {rawTitle}
-          </div>
+        <div style={{ display: 'flex', fontSize: title.length > 64 ? '60px' : '80px', fontWeight: 500, lineHeight: 1.04, letterSpacing: '-0.035em', maxWidth: '1040px' }}>
+          {title}
         </div>
-
-        {/* bottom row */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div style={{ width: '44px', height: '4px', background: accent, borderRadius: '2px' }} />
-            <div style={{ fontSize: '24px', color: '#9a918a' }}>Neelesh Chevuri · cyberneel.com</div>
-          </div>
-          {date ? <div style={{ fontSize: '22px', color: '#6c635c' }}>{date}</div> : <div />}
+        <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #333', paddingTop: '28px', fontSize: '24px', color: '#a3a3a3' }}>
+          <div style={{ display: 'flex' }}>Neelesh Chevuri, cyberneel.com</div>
+          <div style={{ display: 'flex' }}>{date}</div>
         </div>
       </div>
     ),

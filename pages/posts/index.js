@@ -9,29 +9,21 @@ export default function Posts({ posts }) {
 
   return (
     <>
-      <Seo title="Posts & Art" description="Quick updates, creative experiments, and 3D digital art by CyberNeel." />
-
-      <section className="mx-auto max-w-6xl px-4 pt-36 pb-10 md:px-6 md:pt-44">
-        <header className="mb-10 max-w-2xl">
-          <p className="eyebrow mb-5">Projects &amp; Art</p>
-          <h1 className="font-display text-[clamp(2.5rem,6vw,4.5rem)] font-medium leading-[1.0]">
-            The <span className="text-accent italic">work</span>.
-          </h1>
-          <p className="mt-5 text-lg text-muted">
-            Renders, build logs, and quick experiments — a running gallery of what I make.
-          </p>
+      <Seo title="Posts and art" description="Quick updates, creative experiments and 3D digital art by CyberNeel." />
+      <div className="wrap wide pb-24">
+        <header className="page-head">
+          <h1>Posts and art</h1>
+          <p>Renders, build logs and quick experiments. A running gallery of what I make.</p>
         </header>
-
         <div className="mb-10 max-w-md">
-          <SearchBar posts={posts} onResults={setResults} placeholder="Search projects…" />
+          <SearchBar posts={posts} onResults={setResults} placeholder="Search posts" />
         </div>
-
         {results.length === 0 ? (
           <p className="py-20 text-center text-muted">Nothing matches that search.</p>
         ) : (
           <Gallery posts={results} />
         )}
-      </section>
+      </div>
     </>
   );
 }

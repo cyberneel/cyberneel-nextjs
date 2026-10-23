@@ -1,24 +1,22 @@
 import Head from 'next/head';
-import { Fraunces, Geist, Geist_Mono } from 'next/font/google';
+import { Schibsted_Grotesk, Martian_Mono } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 import { Analytics } from '@vercel/analytics/react';
 import Layout from '../components/Layout';
 import '../styles/globals.css';
 
-const display = Fraunces({ subsets: ['latin'], variable: '--ff-display', display: 'swap' });
-const body = Geist({ subsets: ['latin'], variable: '--ff-body', display: 'swap' });
-const mono = Geist_Mono({ subsets: ['latin'], variable: '--ff-mono', display: 'swap' });
+const sans = Schibsted_Grotesk({ subsets: ['latin'], weight: ['400', '500', '600'], style: ['normal', 'italic'] });
+const mono = Martian_Mono({ subsets: ['latin'], weight: ['300', '400'] });
 
 export default function App({ Component, pageProps }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       <Head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="author" content="Neelesh Chevuri" />
         <meta name="robots" content="index, follow" />
-        <meta name="theme-color" content="#f6f3ee" media="(prefers-color-scheme: light)" />
-        <meta name="theme-color" content="#0b0a09" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#000000" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link
           rel="apple-touch-icon"
@@ -28,11 +26,12 @@ export default function App({ Component, pageProps }) {
         <link rel="alternate" type="application/rss+xml" title="CyberNeel RSS" href="/feed.xml" />
       </Head>
 
-      <div className={`${display.variable} ${body.variable} ${mono.variable} font-sans`}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </div>
+      <style jsx global>{`
+        :root { --ff-sans: ${sans.style.fontFamily}; --ff-mono: ${mono.style.fontFamily}; }
+      `}</style>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
       <Analytics />
     </ThemeProvider>
   );

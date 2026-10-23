@@ -109,7 +109,7 @@ export default function TurntableViewer({
           endDrag();
         }}
         onContextMenu={(e) => e.preventDefault()}
-        className="card group relative select-none overflow-hidden"
+        className="group relative select-none overflow-hidden border border-line"
         style={{ cursor: dragging ? 'grabbing' : 'grab', touchAction: 'pan-y' }}
       >
         <video
@@ -131,9 +131,9 @@ export default function TurntableViewer({
         />
 
         {/* badge */}
-        <div className="pointer-events-none absolute left-3 top-3 flex items-center gap-1.5">
-          <span className="chip backdrop-blur-md">
-            <RotateCw size={11} className="mr-1" /> 3D Turntable
+        <div className="pointer-events-none absolute left-0 top-0 flex items-center gap-1.5">
+          <span className="inline-flex items-center gap-1.5 bg-black px-2.5 py-1.5 font-mono text-xs text-white">
+            <RotateCw size={12} /> 3D turntable
           </span>
         </div>
 
@@ -143,15 +143,15 @@ export default function TurntableViewer({
             hint && loaded ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <span className="glass flex items-center gap-2 rounded-full px-4 py-2 text-sm text-fg">
+          <span className="flex items-center gap-2 bg-black px-4 py-2 text-sm text-white">
             <Hand size={15} /> Drag to rotate
           </span>
         </div>
 
         {/* loading shimmer */}
         {!loaded && (
-          <div className="absolute inset-0 grid place-items-center bg-bg-tint">
-            <RotateCw size={22} className="animate-spin text-accent" />
+          <div className="absolute inset-0 grid place-items-center bg-surface">
+            <RotateCw size={22} className="animate-spin text-muted" />
           </div>
         )}
       </div>

@@ -1,10 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Calendar, MapPin, X, ArrowUpRight, Briefcase, GraduationCap, Sparkles } from 'lucide-react';
+import { X } from 'lucide-react';
 import Seo from '../components/Seo';
-import FontWrapper from '../components/FontWrapper';
 import ImageMDX from '../components/ImageMDX';
 import { getAllExperienceData } from '../src/utils/experiences';
 
@@ -14,8 +12,7 @@ const FILTERS = [
   { key: 'education', label: 'Education' },
   { key: 'project', label: 'Projects' },
 ];
-
-const ICONS = { work: Briefcase, education: GraduationCap, project: Sparkles };
+const KIND = { work: 'Work', education: 'Education', project: 'Project' };
 
 function summaryOf(content) {
   return (content || '').split('=ReAdMoRe=')[0].trim();
@@ -25,20 +22,36 @@ function detailOf(content) {
   return parts.length > 1 ? parts[1].trim() : '';
 }
 
+function Meta({ item }) {
+  return (
+    <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted">
+      <span>{KIND[item.category] || item.category}</span>
+      <span className="font-mono text-[13px]">
+        {item.startDate}{item.endDate ? ` – ${item.endDate}` : ''}
+      </span>
+      {item.location && <span>{item.location}</span>}
+    </div>
+  );
+}
+
 export default function Experience({ items }) {
   const [filter, setFilter] = useState('all');
   const [active, setActive] = useState(null);
   const [detailSource, setDetailSource] = useState(null);
+  const dialog = useRef(null);
 
   const filtered = useMemo(
     () => (filter === 'all' ? items : items.filter((i) => i.category === filter)),
     [filter, items]
   );
-
   const years = useMemo(
     () => [...new Set(filtered.map((i) => i.year))].sort((a, b) => b - a),
     [filtered]
   );
+
+  useEffect(() => {
+    if (active && !dialog.current.open) dialog.current.showModal();
+  }, [active]);
 
   const open = async (item) => {
     setActive(item);
@@ -55,170 +68,84 @@ export default function Experience({ items }) {
 
   return (
     <>
-      <Seo title="Experience" description="The professional, academic, and creative trajectory of Neelesh Chevuri." />
+      <Seo title="Experience" description="Work, education and projects of Neelesh Chevuri." />
 
-      <section className="mx-auto max-w-5xl px-4 pt-36 pb-10 md:px-6 md:pt-44">
-        <header className="mb-12">
-          <p className="eyebrow mb-5">Experience</p>
-          <h1 className="font-display text-[clamp(2.5rem,6vw,4.5rem)] font-medium leading-[1.0]">
-            The <span className="text-accent italic">trajectory</span>.
-          </h1>
+      <div className="wrap pb-24">
+        <header className="page-head">
+          <h1>Experience</h1>
+          <p>Where I&apos;ve worked, studied and built things.</p>
         </header>
 
-        <div className="mb-14 flex flex-wrap gap-2">
+        <div className="ruled mb-14 w-fit grid-cols-4" role="group" aria-label="Filter">
           {FILTERS.map((f) => (
             <button
               key={f.key}
               onClick={() => setFilter(f.key)}
-              className={`rounded-full px-4 py-2 text-sm transition-colors ${
-                filter === f.key
-                  ? 'bg-accent text-[var(--accent-contrast)]'
-                  : 'glass text-muted hover:text-fg'
-              }`}
+              aria-pressed={filter === f.key}
+              className={`h-11 px-3 text-[15px] sm:px-5 ${filter === f.key ? '!bg-fg text-bg' : 'hover:!bg-surface'}`}
             >
               {f.label}
             </button>
           ))}
         </div>
 
-        <div className="space-y-16">
+        <div className="space-y-14">
           {years.map((year) => (
-            <div key={year} className="grid gap-6 md:grid-cols-[7rem_1fr]">
-              <div className="md:pt-1">
-                <span className="font-display text-3xl text-faint md:sticky md:top-28">{year}</span>
-              </div>
-              <div className="space-y-5">
+            <div key={year} className="grid gap-4 md:grid-cols-[7rem_1fr]">
+              <div className="font-mono text-2xl font-light text-muted md:sticky md:top-24 md:self-start">{year}</div>
+              <div className="ruled">
                 {filtered
                   .filter((i) => i.year === year)
-                  .map((item) => {
-                    const Icon = ICONS[item.category] || Sparkles;
-                    const hasDetail = Boolean(detailOf(item.content));
-                    return (
-                      <motion.button
-                        key={item.id}
-                        initial={{ opacity: 0, y: 14 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: '-60px' }}
-                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                        onClick={() => open(item)}
-                        className="card group w-full p-6 text-left hover:-translate-y-0.5"
-                      >
-                        <div className="flex items-start justify-between gap-4">
-                          <div>
-                            <span className="chip mb-3">
-                              <Icon size={12} className="mr-1.5" /> {item.category}
-                            </span>
-                            <h3 className="font-display text-2xl leading-tight transition-colors group-hover:text-accent">
-                              {item.title}
-                            </h3>
-                            <p className="mt-1 text-[15px] font-medium text-accent">{item.company}</p>
-                          </div>
-                          {item.link && (
-                            <ArrowUpRight
-                              size={18}
-                              className="shrink-0 text-faint transition-colors group-hover:text-accent"
-                            />
-                          )}
-                        </div>
-
-                        <div className="eyebrow mt-4 flex flex-wrap gap-x-5 gap-y-2">
-                          <span className="inline-flex items-center gap-1.5">
-                            <Calendar size={12} /> {item.startDate}{item.endDate ? ` — ${item.endDate}` : ''}
-                          </span>
-                          {item.location && (
-                            <span className="inline-flex items-center gap-1.5">
-                              <MapPin size={12} /> {item.location}
-                            </span>
-                          )}
-                        </div>
-
-                        <p className="mt-4 line-clamp-2 text-[15px] leading-relaxed text-muted">
-                          {summaryOf(item.content)}
+                  .map((item) => (
+                    <button key={item.id} onClick={() => open(item)} className="group p-6 text-left hover:!bg-surface">
+                      <Meta item={item} />
+                      <h3 className="mt-3 text-[22px] leading-tight">{item.title}</h3>
+                      <p className="mt-1 font-medium">{item.company}</p>
+                      <p className="mt-3 line-clamp-2 text-muted">{summaryOf(item.content)}</p>
+                      {(item.keywords || item.technologies) && (
+                        <p className="mt-3 text-sm text-muted">
+                          {(item.keywords || item.technologies).slice(0, 5).join(', ')}
                         </p>
-
-                        {(item.keywords || item.technologies) && (
-                          <div className="mt-5 flex flex-wrap gap-2">
-                            {(item.keywords || item.technologies).slice(0, 5).map((t) => (
-                              <span
-                                key={t}
-                                className="rounded-full border border-line px-2.5 py-1 text-xs text-muted"
-                              >
-                                {t}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-
-                        {hasDetail && (
-                          <span className="mt-5 inline-block text-sm font-medium text-accent">
-                            Read more →
-                          </span>
-                        )}
-                      </motion.button>
-                    );
-                  })}
+                      )}
+                      {detailOf(item.content) && (
+                        <span className="mt-4 inline-block font-medium underline decoration-1 underline-offset-[3px] group-hover:decoration-2">
+                          Read more
+                        </span>
+                      )}
+                    </button>
+                  ))}
               </div>
             </div>
           ))}
         </div>
-      </section>
+      </div>
 
-      {/* Detail modal */}
-      <AnimatePresence>
+      <dialog
+        ref={dialog}
+        onClose={() => setActive(null)}
+        onClick={(e) => e.target === dialog.current && dialog.current.close()}
+        className="m-auto max-h-[88vh] w-[calc(100%-32px)] max-w-3xl border border-line bg-bg p-0 text-fg backdrop:bg-black/60"
+      >
         {active && (
-          <div className="fixed inset-0 z-[60] flex items-end justify-center p-0 md:items-center md:p-6">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setActive(null)}
-              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            />
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 40 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="relative max-h-[88vh] w-full max-w-3xl overflow-y-auto rounded-t-3xl border border-line bg-[var(--surface-solid)] p-7 md:rounded-3xl md:p-10"
-            >
-              <button
-                onClick={() => setActive(null)}
-                aria-label="Close"
-                className="glass absolute right-5 top-5 grid h-9 w-9 place-items-center rounded-full text-muted hover:text-fg"
-              >
-                <X size={18} />
-              </button>
-
-              <span className="chip mb-4">{active.category}</span>
-              <h2 className="font-display text-3xl md:text-4xl">{active.title}</h2>
-              <p className="mt-2 text-lg font-medium text-accent">{active.company}</p>
-              <div className="eyebrow mt-4 flex flex-wrap gap-x-5 gap-y-2">
-                <span className="inline-flex items-center gap-1.5">
-                  <Calendar size={12} /> {active.startDate}{active.endDate ? ` — ${active.endDate}` : ''}
-                </span>
-                {active.location && (
-                  <span className="inline-flex items-center gap-1.5">
-                    <MapPin size={12} /> {active.location}
-                  </span>
-                )}
-              </div>
-
-              <div className="prose-atelier hairline mt-7 pt-7">
-                <p>{summaryOf(active.content)}</p>
-                {detailSource && (
-                  <MDXRemote {...detailSource} components={{ ImageMDX, Font: FontWrapper }} />
-                )}
-              </div>
-
-              {active.link && (
-                <a href={active.link} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-8">
-                  Visit <ArrowUpRight size={16} />
-                </a>
-              )}
-            </motion.div>
+          <div className="p-6 md:p-10">
+            <button onClick={() => dialog.current.close()} aria-label="Close" className="theme-btn float-right -mr-2 -mt-2">
+              <X />
+            </button>
+            <Meta item={active} />
+            <h2 className="mt-3 text-3xl md:text-4xl">{active.title}</h2>
+            <p className="mt-2 text-lg font-medium">{active.company}</p>
+            <div className="prose mt-6 border-t border-hair pt-6">
+              <p>{summaryOf(active.content)}</p>
+              {detailSource && <MDXRemote {...detailSource} components={{ ImageMDX }} />}
+            </div>
+            {active.link && (
+              <a href={active.link} target="_blank" rel="noopener noreferrer" className="btn primary mt-8">
+                Open link
+              </a>
+            )}
           </div>
         )}
-      </AnimatePresence>
+      </dialog>
     </>
   );
 }

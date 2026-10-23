@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import Seo from '../../components/Seo';
 import PostCard from '../../components/PostCard';
 import SearchBar from '../../components/SearchBar';
@@ -10,33 +9,25 @@ export default function Blog({ posts }) {
 
   return (
     <>
-      <Seo title="Blog" description="Long-form writing on technology, AI, embedded systems, and digital art." />
-
-      <section className="mx-auto max-w-6xl px-4 pt-36 pb-10 md:px-6 md:pt-44">
-        <header className="mb-10 max-w-2xl">
-          <p className="eyebrow mb-5">Writing</p>
-          <h1 className="font-display text-[clamp(2.5rem,6vw,4.5rem)] font-medium leading-[1.0]">
-            The <span className="text-accent italic">blog</span>.
-          </h1>
-          <p className="mt-5 text-lg text-muted">
-            Deep dives into projects, ideas, and the things I learn along the way.
-          </p>
+      <Seo title="Blog" description="Long-form writing on technology, AI, embedded systems and digital art." />
+      <div className="wrap wide pb-24">
+        <header className="page-head">
+          <h1>Blog</h1>
+          <p>Deep dives into projects, ideas and the things I learn along the way.</p>
         </header>
-
         <div className="mb-10 max-w-md">
-          <SearchBar posts={posts} onResults={setResults} placeholder="Search articles…" />
+          <SearchBar posts={posts} onResults={setResults} placeholder="Search articles" />
         </div>
-
         {results.length === 0 ? (
           <p className="py-20 text-center text-muted">Nothing matches that search.</p>
         ) : (
-          <motion.div layout className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="ruled sm:grid-cols-2 lg:grid-cols-3">
             {results.map((post, i) => (
               <PostCard key={post.slug} post={post} priority={i < 3} />
             ))}
-          </motion.div>
+          </div>
         )}
-      </section>
+      </div>
     </>
   );
 }

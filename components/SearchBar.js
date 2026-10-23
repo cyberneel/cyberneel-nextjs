@@ -1,35 +1,19 @@
-import { useState } from 'react';
-import { Search, X } from 'lucide-react';
+import { Search } from 'lucide-react';
 
-export default function SearchBar({ posts, onResults, placeholder = 'Search…' }) {
-  const [query, setQuery] = useState('');
-
+export default function SearchBar({ posts, onResults, placeholder = 'Search' }) {
   const run = (value) => {
-    setQuery(value);
     const q = value.trim().toLowerCase();
-    if (!q) return onResults(posts);
     onResults(
-      posts.filter((p) => {
-        const haystack = [p.title, p.excerpt, ...(p.tags || [])].join(' ').toLowerCase();
-        return haystack.includes(q);
-      })
+      q
+        ? posts.filter((p) => [p.title, p.excerpt, ...(p.tags || [])].join(' ').toLowerCase().includes(q))
+        : posts
     );
   };
 
   return (
-    <div className="glass group flex items-center gap-3 rounded-full px-5 py-3">
-      <Search size={18} className="shrink-0 text-faint transition-colors group-focus-within:text-accent" />
-      <input
-        value={query}
-        onChange={(e) => run(e.target.value)}
-        placeholder={placeholder}
-        className="w-full bg-transparent text-[15px] text-fg outline-none placeholder:text-faint"
-      />
-      {query && (
-        <button onClick={() => run('')} aria-label="Clear search" className="text-faint hover:text-fg">
-          <X size={16} />
-        </button>
-      )}
-    </div>
+    <label className="relative block">
+      <Search size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted" />
+      <input type="search" onChange={(e) => run(e.target.value)} placeholder={placeholder} aria-label={placeholder} className="input pl-11" />
+    </label>
   );
 }

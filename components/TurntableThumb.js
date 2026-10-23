@@ -31,8 +31,8 @@ export default function TurntableThumb({ src, poster, alt }) {
         controlsList="nodownload noremoteplayback"
         className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
       />
-      <span className="chip absolute right-3 top-3 backdrop-blur-md">
-        <RotateCw size={11} className="mr-1" /> 3D
+      <span className="absolute right-0 top-0 inline-flex items-center gap-1.5 bg-black px-2.5 py-1.5 font-mono text-xs text-white">
+        <RotateCw size={12} /> 3D
       </span>
     </div>
   );

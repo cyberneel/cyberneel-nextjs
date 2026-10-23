@@ -21,7 +21,7 @@ export default function Pre(props) {
         type="button"
         onClick={copy}
         aria-label="Copy code"
-        className="absolute right-3 top-3 z-10 grid h-8 w-8 place-items-center rounded-lg bg-white/10 text-white/70 opacity-0 backdrop-blur transition-all hover:bg-white/20 hover:text-white group-hover:opacity-100"
+        className="absolute right-0 top-0 z-10 grid h-9 w-9 place-items-center border-b border-l border-[#333] bg-black text-[#a3a3a3] opacity-0 hover:text-white focus-visible:opacity-100 group-hover:opacity-100"
       >
         {copied ? <Check size={15} /> : <Copy size={15} />}
       </button>

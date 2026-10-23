@@ -30,7 +30,7 @@ export async function getServerSideProps({ res }) {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>CyberNeel — Neelesh Chevuri</title>
+    <title>CyberNeel | Neelesh Chevuri</title>
     <link>${SITE}</link>
     <description>Projects, writing, and digital art by Neelesh Chevuri.</description>
     <language>en</language>

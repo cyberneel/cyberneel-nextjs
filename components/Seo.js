@@ -5,7 +5,7 @@ const SITE = 'https://cyberneel.com';
 const BRAND = 'CyberNeel';
 const AUTHOR = 'Neelesh Chevuri';
 const DEFAULT_DESC =
-  'Neelesh Chevuri (CyberNeel) — computer scientist, tinkerer, and digital artist. Projects, writing, and 3D art exploring the intersection of code and creativity.';
+  'Neelesh Chevuri (CyberNeel) is a computer science student at UT Austin who writes firmware, builds full-stack systems and makes 3D art.';
 const DEFAULT_OG = 'https://cyberneel.github.io/img/CyberNeelLogoNewOutfit1080p-1400x1400.webp';
 const SAME_AS = [
   'https://github.com/cyberneel',
@@ -25,7 +25,7 @@ export default function Seo({
   const router = useRouter();
   const path = (router.asPath || '/').split('?')[0].split('#')[0];
   const url = `${SITE}${path === '/' ? '' : path}`;
-  const fullTitle = title ? `${title} · ${BRAND}` : `${BRAND} — ${AUTHOR}`;
+  const fullTitle = title ? `${title} | ${BRAND}` : `${BRAND} | ${AUTHOR}`;
   const desc = description || DEFAULT_DESC;
 
   // Branded share card generated on the fly by /api/og.
@@ -73,7 +73,7 @@ export default function Seo({
           alternateName: BRAND,
           url: SITE,
           image: DEFAULT_OG,
-          jobTitle: 'Computer Scientist & Digital Artist',
+          jobTitle: 'Computer scientist and digital artist',
           sameAs: SAME_AS,
         };
 

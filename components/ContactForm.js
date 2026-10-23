@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Send, CheckCircle2 } from 'lucide-react';
-
-const field =
-  'w-full rounded-xl border border-line bg-bg-tint/60 px-4 py-3 text-[15px] text-fg outline-none transition-colors placeholder:text-faint focus:border-accent focus:ring-2 focus:ring-accent/15';
-const label = 'eyebrow mb-2 block';
+const field = 'input';
+const label = 'mb-2 block text-sm font-medium';
 
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
@@ -35,30 +32,28 @@ export default function ContactForm() {
     }
     fetch(formAction, { method: 'POST', body: new FormData(e.target), mode: 'no-cors' })
       .then(() => setSubmitted(true))
-      .catch(() => setError('Something went wrong — try again or email me directly.'));
+      .catch(() => setError('Something went wrong. Try again or email me directly.'));
   };
 
   if (!formAction || !nameID || !emailID || !messageID) {
     return (
-      <div className="card p-8 text-center text-muted">
-        The contact form isn&apos;t configured yet. Reach me at{' '}
-        <a href="mailto:contact@cyberneel.com" className="text-accent">contact@cyberneel.com</a>.
-      </div>
+      <p className="border border-line p-8 text-muted">
+        The contact form isn&apos;t set up yet. Email me at <a href="mailto:contact@cyberneel.com">contact@cyberneel.com</a>.
+      </p>
     );
   }
 
   if (submitted) {
     return (
-      <div className="card flex flex-col items-center gap-4 p-12 text-center">
-        <CheckCircle2 className="text-accent" size={40} />
-        <h2 className="font-display text-2xl">Message sent</h2>
-        <p className="text-muted">Thanks for reaching out — I&apos;ll get back to you soon.</p>
+      <div className="border border-line p-8">
+        <h2 className="text-2xl">Message sent</h2>
+        <p className="mt-2 text-muted">Thanks for reaching out. I&apos;ll get back to you soon.</p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="card space-y-5 p-7 md:p-9">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label className={label} htmlFor="cf-name">Name</label>
@@ -72,10 +67,10 @@ export default function ContactForm() {
 
       <div>
         <label className={label} htmlFor="cf-message">Message</label>
-        <textarea id="cf-message" name={messageID} required rows={5} className={`${field} resize-none`} placeholder="What's on your mind?" />
+        <textarea id="cf-message" name={messageID} required rows={5} className={`${field} resize-y`} placeholder="What's on your mind?" />
       </div>
 
-      <input type="text" name="honeypot" tabIndex={-1} autoComplete="off" className="hidden" onChange={(e) => setHoneypot(e.target.value)} />
+      <input type="text" name="honeypot" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" onChange={(e) => setHoneypot(e.target.value)} />
 
       <div>
         <label className={label} htmlFor="cf-math">{mathQuestion}</label>
@@ -90,11 +85,9 @@ export default function ContactForm() {
         />
       </div>
 
-      {error && <p className="text-sm text-accent">{error}</p>}
+      {error && <p role="alert" className="text-sm font-medium">{error}</p>}
 
-      <button type="submit" className="btn btn-primary">
-        Send message <Send size={16} />
-      </button>
+      <button type="submit" className="btn primary">Send message</button>
     </form>
   );
 }

@@ -1,60 +1,32 @@
 import Link from 'next/link';
 import dayjs from 'dayjs';
-import { ArrowUpRight } from 'lucide-react';
 
-// One card for both blog articles and posts. `post.type` is 'blog' | 'posts'
-// (matching the route segment), set by the mdx loaders.
+// One card for blog articles and posts. `post.type` is 'blog' | 'posts', the route segment.
+// Sits inside a .ruled grid, which draws the lines.
 export default function PostCard({ post, priority = false }) {
-  const href = `/${post.type}/${post.slug}`;
-  const kind = post.type === 'posts' ? 'Post' : 'Article';
-
   return (
-    <Link href={href} className="card group block overflow-hidden hover:-translate-y-1">
+    <Link href={`/${post.type}/${post.slug}`} className="group flex flex-col">
       {post.cover_image_link && (
-        <div className="relative aspect-[16/10] overflow-hidden">
+        <div className="aspect-[16/10] overflow-hidden border-b border-hair bg-surface">
           <img
             src={post.cover_image_link}
-            alt={post.title}
+            alt=""
             loading={priority ? 'eager' : 'lazy'}
-            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+            className="h-full w-full object-cover"
           />
-          <div className="absolute left-3 top-3 flex gap-2">
-            <span className="chip backdrop-blur-md">{kind}</span>
-            {post.draft && (
-              <span className="chip border-amber-500/30 bg-amber-500/15 text-amber-600 backdrop-blur-md dark:text-amber-400">
-                Draft
-              </span>
-            )}
-          </div>
         </div>
       )}
-
-      <div className="p-6">
-        <div className="eyebrow mb-3 flex items-center gap-2">
-          <span>{dayjs(post.publishedAt).format('MMM D, YYYY')}</span>
-          {post.readingTime && (
-            <>
-              <span className="text-faint">/</span>
-              <span>{post.readingTime}</span>
-            </>
-          )}
+      <div className="flex flex-1 flex-col gap-3 p-6">
+        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted">
+          <span>{post.type === 'posts' ? 'Post' : 'Article'}</span>
+          {post.draft && <span>Draft</span>}
+          <span className="font-mono text-[13px]">{dayjs(post.publishedAt).format('MMM D, YYYY')}</span>
+          {post.readingTime && <span className="font-mono text-[13px]">{post.readingTime}</span>}
         </div>
-
-        <h3 className="font-display text-2xl leading-tight transition-colors group-hover:text-accent">
+        <h3 className="text-[22px] leading-tight group-hover:underline group-hover:decoration-1 group-hover:underline-offset-4">
           {post.title}
         </h3>
-
-        {post.excerpt && (
-          <p className="mt-3 line-clamp-2 text-[15px] leading-relaxed text-muted">{post.excerpt}</p>
-        )}
-
-        <div className="mt-5 flex items-center gap-1.5 text-sm font-medium text-accent">
-          Read
-          <ArrowUpRight
-            size={15}
-            className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-          />
-        </div>
+        {post.excerpt && <p className="line-clamp-2 text-muted">{post.excerpt}</p>}
       </div>
     </Link>
   );
