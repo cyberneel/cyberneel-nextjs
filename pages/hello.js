@@ -4,7 +4,7 @@ import Seo from '../components/Seo';
 import { LOGO } from '../components/Navbar';
 
 // hello.cyberneel.com (rewritten to /hello in next.config.js): the card I hand to people I meet.
-// A metal card that catches the light as it tilts, with my links below. Tap it for the QR on the back.
+// A red card with my logo that catches the light as it tilts, with my links below. Tap it for the QR on the back.
 
 const LINKS = [
   { label: 'Website', handle: 'cyberneel.com', href: 'https://cyberneel.com', Icon: Globe },
@@ -66,32 +66,21 @@ function Card() {
           aria-label={back ? 'Show the front of the card' : 'Show the QR code on the back of the card'}
         >
           <span className="hc-face hc-front" aria-hidden={back}>
-            <span className="hc-brand">
-              Cyber<span>Neel</span>
+            <img className="hc-logo" src={LOGO} alt="" />
+            <img className="hc-logo hc-fig" src="/hello/figure.webp" alt="" />
+            <span className="hc-brand">CyberNeel</span>
+            <span className="hc-name">
+              Neelesh
+              <br />
+              Chevuri
             </span>
-            <svg className="hc-chip" viewBox="0 0 50 38" aria-hidden>
-              <defs>
-                <linearGradient id="hc-gold" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stopColor="#f1e3ad" />
-                  <stop offset=".55" stopColor="#b3954f" />
-                  <stop offset="1" stopColor="#e6d293" />
-                </linearGradient>
-              </defs>
-              <rect x=".5" y=".5" width="49" height="37" rx="6" fill="url(#hc-gold)" stroke="#86703a" strokeWidth=".8" />
-              <path d="M0 13h17M0 25h17M33 13h17M33 25h17M17 0v38M33 0v38M17 19h16" stroke="#86703a" strokeWidth=".8" fill="none" />
-            </svg>
-            <svg className="hc-wave" viewBox="0 0 24 24" aria-hidden>
-              <path d="M8.5 7.5a6.5 6.5 0 0 1 0 9M12 5a10 10 0 0 1 0 14M15.5 2.5a13.5 13.5 0 0 1 0 19M5 10a3 3 0 0 1 0 4" />
-            </svg>
             <span className="hc-role">Firmware, full stack, 3D</span>
-            <span className="hc-name">Neelesh Chevuri</span>
-            <span className="hc-holo">
-              <img src={LOGO} alt="" />
-            </span>
           </span>
           <span className="hc-face hc-back" aria-hidden={!back}>
-            <span className="hc-stripe" />
-            <span className="hc-sig">Neel</span>
+            <svg className="hc-mark" viewBox="0 0 100 100" aria-hidden>
+              <path d="M65.56 34.44 A22 22 0 1 0 65.56 65.56" />
+            </svg>
+            <span className="hc-brand">CyberNeel</span>
             <img className="hc-qr" src="/hello/qr.svg" alt="QR code for hello.cyberneel.com" />
             <span className="hc-url">
               Scan to open this card

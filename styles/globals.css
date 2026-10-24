@@ -185,51 +185,49 @@ footer.band { border-top: 1px solid var(--band-line) }
 .footin div { display: flex; flex-wrap: wrap; gap: 8px 24px }
 .footin a:hover { color: var(--fg) }
 
-/* hello.cyberneel.com: a metal card. The one place that leaves the ink rules on purpose: a card has
-   rounded corners, an embossed name and light that moves across it. --x/--y (-1..1) are the tilt, set by
+/* hello.cyberneel.com: a red card with my logo. The one place that leaves the ink rules on purpose: a card has
+   rounded corners, foil lettering and light that moves across it. --x/--y (-1..1) are the tilt, set by
    pages/hello.js. Sizes inside the card are in cqw so it scales as one piece. */
-.hello { min-height: 100svh; display: flex; flex-direction: column; align-items: center; padding: clamp(40px, 9vh, 96px) 16px 56px; background: radial-gradient(ellipse 70% 45% at 50% 20%, #1f1f1f, #000 70%) }
-.hc-stage { width: min(100%, 500px); perspective: 1100px; animation: hc-in 1.2s var(--ease-out) both }
+.hello { min-height: 100svh; display: flex; flex-direction: column; align-items: center; padding: clamp(40px, 9vh, 96px) 16px 56px; background: radial-gradient(ellipse 70% 45% at 50% 20%, #2b0d0e, #000 70%) }
+.hc-stage { width: min(100%, 520px); perspective: 1100px; animation: hc-in 1.2s var(--ease-out) both }
 @keyframes hc-in { from { opacity: 0; transform: perspective(900px) translateY(56px) rotateX(60deg) } }
 .hc-tilt { transform-style: preserve-3d; transform: rotateY(calc(var(--x, 0) * 18deg)) rotateX(calc(var(--y, 0) * -14deg)) }
 .hc-card {
-  display: block; position: relative; width: 100%; aspect-ratio: 85.6 / 53.98; padding: 0; border: 0; background: none; color: inherit;
+  display: block; position: relative; width: 100%; aspect-ratio: 7 / 4; padding: 0; border: 0; background: none; color: inherit;
   font: inherit; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent;
   transform-style: preserve-3d; transition: transform .8s var(--ease-out);
 }
 .hc-card.is-back { transform: rotateY(180deg) }
 .hc-face {
-  position: absolute; inset: 0; overflow: hidden; container-type: inline-size; border-radius: 3.7% / 5.9%;
-  backface-visibility: hidden; -webkit-backface-visibility: hidden; color: #d9dbe0;
+  position: absolute; inset: 0; overflow: hidden; container-type: inline-size; border-radius: 4% / 7%;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden; color: #fff;
   background:
-    radial-gradient(circle at calc(50% + var(--x, 0) * 45%) calc(40% + var(--y, 0) * 45%), rgb(255 255 255 / .14), transparent 55%),
-    linear-gradient(105deg, transparent 42%, rgb(255 255 255 / .24) 50%, transparent 58%) calc(50% + var(--x, 0) * 35%) 0 / 300% 100% no-repeat,
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0012 1.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 .4 0 0 0 -.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23b)'/%3E%3C/svg%3E"),
-    linear-gradient(135deg, #222327, #3d3f45 24%, #19191c 50%, #303237 74%, #151618);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / .22), inset 0 -1px 0 rgb(0 0 0 / .6), inset 0 0 0 1px rgb(255 255 255 / .07);
+    radial-gradient(circle at calc(50% + var(--x, 0) * 45%) calc(40% + var(--y, 0) * 45%), rgb(255 255 255 / .16), transparent 55%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),
+    linear-gradient(135deg, #e04a40, #c02b2c 40%, #8a171c);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .3), inset 0 -1px 0 rgb(0 0 0 / .35);
+}
+.hc-face::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(105deg, transparent 42%, rgb(255 255 255 / .2) 50%, transparent 58%) calc(50% + var(--x, 0) * 35%) 0 / 300% 100% no-repeat;
 }
 .hc-face > * { position: absolute }
 .hc-back { transform: rotateY(180deg) }
-.hc-brand { left: 7cqw; top: 6.5cqw; font-size: 6.4cqw; font-weight: 600; letter-spacing: -.03em; color: #eef0f3; text-shadow: 0 1px 0 rgb(0 0 0 / .5) }
-.hc-brand span { color: var(--accent) }
-.hc-chip { left: 8cqw; top: 21cqw; width: 12.5cqw }
-.hc-wave { left: 23cqw; top: 22.5cqw; width: 6.5cqw; fill: none; stroke: #c9ccd2; stroke-width: 1.6; opacity: .75 }
-.hc-role, .hc-name { left: 8cqw; color: #e2e4e8; text-shadow: 0 1px 0 rgb(255 255 255 / .14), 0 -1px 0 rgb(0 0 0 / .7) }
-.hc-role { top: 38cqw; font: 400 3.3cqw var(--font-mono); letter-spacing: .04em; color: #c2c5cb; text-shadow: 0 1px 0 rgb(0 0 0 / .6) }
-.hc-name { bottom: 7cqw; font-size: 5.6cqw; font-weight: 500; letter-spacing: .01em }
-.hc-holo { right: 7cqw; bottom: 6.5cqw; width: 16cqw; aspect-ratio: 1; overflow: hidden; border-radius: .8cqw; box-shadow: 0 0 0 .3cqw rgb(255 255 255 / .22) }
-.hc-holo img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.75); transform-origin: 50% 52% }
-.hc-holo::after {
-  content: ''; position: absolute; inset: 0; mix-blend-mode: color-dodge; opacity: .4;
-  background: linear-gradient(115deg, #ff5f6d, #ffc371, #7cffcb, #6ec8ff, #b98bff, #ff5f6d) calc(50% + var(--x, 0) * 50%) calc(50% + var(--y, 0) * 50%) / 300% 300%;
+/* The logo twice: hard-light turns its splatter into the card's red, then the figure cut out of it
+   (public/hello/figure.webp, same framing) goes on top in its own colours. */
+.hc-logo { right: 0; top: 0; height: 100%; aspect-ratio: 1; mix-blend-mode: hard-light; mask-image: linear-gradient(90deg, transparent, #000 30%); -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%) }
+.hc-logo.hc-fig { mix-blend-mode: normal; mask-image: none; -webkit-mask-image: none }
+.hc-brand { left: 7cqw; top: 6.5cqw; font-size: 3.6cqw; font-weight: 600; letter-spacing: -.02em; color: rgb(255 255 255 / .92) }
+.hc-name {
+  left: 6.6cqw; bottom: 13cqw; font-size: 9.6cqw; line-height: .92; font-weight: 600; letter-spacing: -.045em;
+  color: transparent; -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 .25cqw .2cqw rgb(80 0 0 / .45));
+  background-image: linear-gradient(105deg, #fff 30%, #ffd9d4 45%, #fff 50%, #f3c9c3 60%, #fff 75%);
+  background-size: 300% 100%; background-position: calc(50% - var(--x, 0) * 50%) 0;
 }
-.hc-stripe { left: 0; right: 0; top: 7cqw; height: 12cqw; background: linear-gradient(#09090a, #1c1c1e 50%, #09090a) }
-.hc-sig {
-  left: 7cqw; top: 26cqw; width: 50cqw; height: 10cqw; padding-left: 3cqw; font: italic 500 6cqw/10cqw var(--font-sans); color: var(--accent);
-  background: repeating-linear-gradient(-45deg, #ebe8df 0 .8cqw, #dedad0 .8cqw 1.6cqw);
-}
-.hc-qr { right: 7cqw; top: 26cqw; width: 26cqw; height: 26cqw; padding: 1.6cqw; background: #fff; border-radius: .6cqw }
-.hc-url { left: 7cqw; bottom: 8cqw; font: 3cqw/1.6 var(--font-mono); color: #b9bcc2 }
+.hc-role { left: 7cqw; bottom: 6.8cqw; font: 400 2.8cqw var(--font-mono); letter-spacing: .02em; color: rgb(255 255 255 / .78) }
+.hc-mark { left: -14cqw; top: -10cqw; width: 78cqw; fill: none; stroke: rgb(0 0 0 / .12); stroke-width: 11; stroke-linecap: square }
+.hc-qr { right: 7cqw; top: 50%; translate: 0 -50%; width: 30cqw; height: 30cqw; padding: 1.8cqw; background: #fff; border-radius: 1cqw }
+.hc-url { left: 7cqw; bottom: 6.8cqw; font: 500 3cqw/1.5 var(--font-sans); color: rgb(255 255 255 / .9) }
 .hello-hint { margin-top: 20px; font-size: 14px; color: var(--muted) }
 .hello-bio, .hello-links { width: min(100%, 460px) }
 .hello-bio { margin-top: 48px }
