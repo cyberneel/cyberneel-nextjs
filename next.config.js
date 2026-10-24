@@ -42,5 +42,12 @@ module.exports = {
     ]
   },
 
+  // hello.cyberneel.com is the /hello card
+  async rewrites() {
+    return {
+      beforeFiles: [{ source: '/', has: [{ type: 'host', value: 'hello.cyberneel.com' }], destination: '/hello' }],
+    };
+  },
+
   allowedDevOrigins: ['archlinux'],
 }

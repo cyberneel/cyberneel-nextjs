@@ -18,16 +18,34 @@ const PROJECTS = [
     cta: 'Meet Friday',
   },
   {
-    name: 'indrajaal',
-    blurb: 'Tasks and calendars as one graph, with readiness from Apple Health.',
-    href: 'https://systems.cyberneel.com/handbook#tasks',
-    cta: 'See indrajaal',
+    name: 'Race car telemetry',
+    blurb: 'The data path for Longhorn Racing Electric: Kafka ingest, a live trackside dashboard and logs pulled off the car.',
+    href: 'https://github.com/LonghornRacingElectric/lhre',
+    cta: 'See the code',
+  },
+  {
+    name: 'xtool-on-linux',
+    blurb: 'Build, sign and ship an iPhone app with widgets, a watch app, Siri and TestFlight, without a Mac on the desk.',
+    href: 'https://github.com/cyberneel/xtool-on-linux',
+    cta: 'Get the scripts',
   },
   {
     name: 'Polymux',
-    blurb: 'Run and steer coding agents across your machines. Free and open source.',
+    blurb: 'Run and steer coding agents across your machines from one browser tab. Free and open source.',
     href: 'https://github.com/cyberneel/polymux',
     cta: 'Get Polymux',
+  },
+  {
+    name: 'InfiniSleep',
+    blurb: 'A smart alarm and sleep tracking for the PineTime smartwatch, plus iPhone notifications over ANCS.',
+    href: 'https://github.com/InfiniTimeOrg/InfiniTime/pull/2174',
+    cta: 'See the pull request',
+  },
+  {
+    name: 'CyberPad',
+    blurb: 'A macropad with an OLED and a knob: my own PCB in KiCad, a case modeled in Blender, QMK firmware on an RP2040.',
+    href: 'https://github.com/cyberneel/CyberPad',
+    cta: 'See the build',
   },
 ];
 
@@ -70,8 +88,8 @@ export default function Home({ featured }) {
       <section className="band projects">
         <div className="wrap wide projects-in" style={{ padding: 0 }}>
           <div className="projects-l">
-            <h2 className="sec-h">Things I&apos;m building</h2>
-            <p>A personal AI, the task graph behind it and a way to run coding agents. They work as one.</p>
+            <h2 className="sec-h">Things I&apos;ve built</h2>
+            <p>From a race car&apos;s telemetry to a smartwatch&apos;s alarm. Most of it is open source.</p>
           </div>
           <div className="ruled">
             {PROJECTS.map((p) => (

@@ -1,4 +1,4 @@
-import { getArticleSlug, getPostSlug, getAllArticles, tagSlug } from '../src/utils/mdx';
+import { getAllArticles, getAllPosts, tagSlug } from '../src/utils/mdx';
 
 const SITE = 'https://cyberneel.com';
 
@@ -7,20 +7,18 @@ function url(loc, priority = '0.7') {
 }
 
 export async function getServerSideProps({ res }) {
-  const [articles, posts, allArticles] = [
-    await getArticleSlug(),
-    await getPostSlug(),
-    await getAllArticles(),
-  ];
+  // drafts are reachable by URL for previews, but not listed
+  const articles = (await getAllArticles()).filter((a) => !a.draft);
+  const posts = (await getAllPosts()).filter((a) => !a.draft);
 
   const tags = new Set();
-  allArticles.forEach((a) => (a.tags || []).forEach((t) => tags.add(tagSlug(t))));
+  articles.forEach((a) => (a.tags || []).forEach((t) => tags.add(tagSlug(t))));
 
   const staticRoutes = ['/', '/about', '/experience', '/blog', '/posts', '/contact', '/uses', '/now', '/resume', '/guides', '/guides/funko-pop'];
   const entries = [
     ...staticRoutes.map((r) => url(r, r === '/' ? '1.0' : '0.8')),
-    ...articles.map((slug) => url(`/blog/${slug}`)),
-    ...posts.map((slug) => url(`/posts/${slug}`)),
+    ...articles.map((a) => url(`/blog/${a.slug}`)),
+    ...posts.map((a) => url(`/posts/${a.slug}`)),
     ...[...tags].map((t) => url(`/blog/tag/${t}`, '0.5')),
   ];
 

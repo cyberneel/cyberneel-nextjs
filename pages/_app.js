@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import Head from 'next/head';
 import { Schibsted_Grotesk, Martian_Mono } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
@@ -9,8 +10,9 @@ const sans = Schibsted_Grotesk({ subsets: ['latin'], weight: ['400', '500', '600
 const mono = Martian_Mono({ subsets: ['latin'], weight: ['300', '400'] });
 
 export default function App({ Component, pageProps }) {
+  const Shell = Component.bare ? Fragment : Layout;
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange forcedTheme={Component.theme}>
       <Head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -29,9 +31,9 @@ export default function App({ Component, pageProps }) {
       <style jsx global>{`
         :root { --ff-sans: ${sans.style.fontFamily}; --ff-mono: ${mono.style.fontFamily}; }
       `}</style>
-      <Layout>
+      <Shell>
         <Component {...pageProps} />
-      </Layout>
+      </Shell>
       <Analytics />
     </ThemeProvider>
   );
