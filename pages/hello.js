@@ -17,14 +17,87 @@ const LINKS = [
 
 const clamp = (v) => Math.max(-1, Math.min(1, v));
 
+// Brushed red aluminium. Grooves run along the card, so each light becomes a streak across them (Ward's
+// anisotropic highlight), and the grain breaks that streak into fine lines. Same tilt as the CSS, eye at
+// the stage's perspective, so the light stays put while the card moves under it.
+const FRAG = `precision highp float;
+uniform vec2 res, tilt;
+uniform float dist;
+varying vec2 uv;
+float h(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float n(vec2 p) {
+  vec2 i = floor(p), f = fract(p);
+  f *= f * (3. - 2. * f);
+  return mix(mix(h(i), h(i + vec2(1, 0)), f.x), mix(h(i + vec2(0, 1)), h(i + 1.), f.x), f.y);
+}
+mat3 ry(float a) { float c = cos(a), s = sin(a); return mat3(c, 0, -s, 0, 1, 0, s, 0, c); }
+mat3 rx(float a) { float c = cos(a), s = sin(a); return mat3(1, 0, 0, 0, c, s, 0, -s, c); }
+float ward(vec3 L, vec3 V, vec3 N) {
+  vec3 H = normalize(L + V);
+  float nl = max(dot(N, L), 0.);
+  return exp(-(H.x * H.x / .0036 + H.y * H.y / .2) / (H.z * H.z)) * nl;
+}
+void main() {
+  vec3 P = vec3(uv.x - .5, (uv.y - .5) * res.y / res.x, 0);
+  mat3 inv = rx(radians(tilt.y * 14.)) * ry(radians(-tilt.x * 18.));
+  vec3 V = normalize(inv * vec3(0, 0, dist) - P);
+  float y = uv.y * res.y;
+  float g = n(vec2(uv.x * 2.5, y * .7)) * .6 + n(vec2(uv.x * 8., y * 1.6)) * .4;
+  vec3 N = normalize(vec3(0, (g - .5) * .1, 1));
+  vec3 K = normalize(inv * vec3(-.55, -1, 1.8) - P), F = normalize(inv * vec3(.75, .2, 1.8) - P);
+  float spec = (ward(K, V, N) + ward(F, V, N) * .6) * (.6 + .8 * g);
+  vec3 col = vec3(.66, .03, .03) * (.94 + .12 * g) * (.35 + .65 * max(dot(N, K), 0.)) + spec * vec3(1, .42, .38);
+  gl_FragColor = vec4(pow(col, vec3(1. / 2.2)), 1);
+}`;
+
+function metal(c) {
+  const gl = c.getContext('webgl');
+  if (!gl) return () => {};
+  const p = gl.createProgram();
+  for (const [type, src] of [
+    [gl.VERTEX_SHADER, 'attribute vec2 a;varying vec2 uv;void main(){uv=vec2(a.x,-a.y)*.5+.5;gl_Position=vec4(a,0,1);}'],
+    [gl.FRAGMENT_SHADER, FRAG],
+  ]) {
+    const sh = gl.createShader(type);
+    gl.shaderSource(sh, src);
+    gl.compileShader(sh);
+    gl.attachShader(p, sh);
+  }
+  gl.bindAttribLocation(p, 0, 'a');
+  gl.linkProgram(p);
+  gl.useProgram(p);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(0);
+  gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+  const [res, tilt, dist] = ['res', 'tilt', 'dist'].map((u) => gl.getUniformLocation(p, u));
+  // A canvas that never draws stays transparent, so the CSS red behind it is the fallback.
+  return (x, y) => {
+    const dpr = Math.min(devicePixelRatio, 2);
+    const w = Math.round(c.clientWidth * dpr);
+    const h = Math.round(c.clientHeight * dpr);
+    if (c.width !== w || c.height !== h) {
+      c.width = w;
+      c.height = h;
+      gl.viewport(0, 0, w, h);
+    }
+    gl.uniform2f(res, w, h);
+    gl.uniform2f(tilt, x, y);
+    gl.uniform1f(dist, 1100 / c.clientWidth); // .hc-stage perspective, in card widths
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  };
+}
+
 function Card() {
   const ref = useRef(null);
   const [back, setBack] = useState(false);
 
   // Tilt toward the pointer; with no pointer (phones, idle) sway slowly so the metal still glints.
   useEffect(() => {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const el = ref.current;
+    const draws = [...el.querySelectorAll('.hc-metal')].map(metal);
+    draws.forEach((d) => d(0, 0));
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const cur = { x: 0, y: 0 };
     const tgt = { x: 0, y: 0 };
     let last = -1e4;
@@ -46,6 +119,7 @@ function Card() {
       cur.y += (tgt.y - cur.y) * 0.07;
       el.style.setProperty('--x', cur.x.toFixed(4));
       el.style.setProperty('--y', cur.y.toFixed(4));
+      draws.forEach((d) => d(cur.x, cur.y));
       raf = requestAnimationFrame(loop);
     };
     window.addEventListener('pointermove', move, { passive: true });
@@ -66,6 +140,7 @@ function Card() {
           aria-label={back ? 'Show the front of the card' : 'Show the QR code on the back of the card'}
         >
           <span className="hc-face hc-front" aria-hidden={back}>
+            <canvas className="hc-metal" />
             <img className="hc-logo" src={LOGO} alt="" />
             <img className="hc-logo hc-fig" src="/hello/figure.webp" alt="" />
             <span className="hc-brand">CyberNeel</span>
@@ -77,6 +152,7 @@ function Card() {
             <span className="hc-role">Firmware, full stack, 3D</span>
           </span>
           <span className="hc-face hc-back" aria-hidden={!back}>
+            <canvas className="hc-metal" />
             <svg className="hc-mark" viewBox="0 0 100 100" aria-hidden>
               <path d="M65.56 34.44 A22 22 0 1 0 65.56 65.56" />
             </svg>

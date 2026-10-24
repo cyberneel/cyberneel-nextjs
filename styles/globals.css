@@ -202,15 +202,11 @@ footer.band { border-top: 1px solid var(--band-line) }
   position: absolute; inset: 0; overflow: hidden; container-type: inline-size; border-radius: 4% / 7%;
   backface-visibility: hidden; -webkit-backface-visibility: hidden; color: #fff;
   background:
-    radial-gradient(circle at calc(50% + var(--x, 0) * 45%) calc(40% + var(--y, 0) * 45%), rgb(255 255 255 / .16), transparent 55%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),
     linear-gradient(135deg, #e04a40, #c02b2c 40%, #8a171c);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / .3), inset 0 -1px 0 rgb(0 0 0 / .35);
 }
-.hc-face::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(105deg, transparent 42%, rgb(255 255 255 / .2) 50%, transparent 58%) calc(50% + var(--x, 0) * 35%) 0 / 300% 100% no-repeat;
-}
+.hc-metal { inset: 0; width: 100%; height: 100% }
 .hc-face > * { position: absolute }
 .hc-back { transform: rotateY(180deg) }
 /* The logo twice: hard-light turns its splatter into the card's red, then the figure cut out of it

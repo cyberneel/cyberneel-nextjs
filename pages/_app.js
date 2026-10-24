@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import Head from 'next/head';
 import { Schibsted_Grotesk, Martian_Mono } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
@@ -8,9 +7,11 @@ import '../styles/globals.css';
 
 const sans = Schibsted_Grotesk({ subsets: ['latin'], weight: ['400', '500', '600'], style: ['normal', 'italic'] });
 const mono = Martian_Mono({ subsets: ['latin'], weight: ['300', '400'] });
+// Not Fragment: styled-jsx hands the shell a className, which Fragment warns about.
+const Bare = ({ children }) => children;
 
 export default function App({ Component, pageProps }) {
-  const Shell = Component.bare ? Fragment : Layout;
+  const Shell = Component.bare ? Bare : Layout;
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange forcedTheme={Component.theme}>
       <Head>
