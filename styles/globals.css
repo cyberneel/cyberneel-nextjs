@@ -201,6 +201,7 @@ footer.band { border-top: 1px solid var(--band-line) }
 .hc-face {
   position: absolute; inset: 0; overflow: hidden; container-type: inline-size; border-radius: 4% / 7%;
   backface-visibility: hidden; -webkit-backface-visibility: hidden; color: #fff;
+  isolation: isolate; /* keeps the logo's blend in here, or Firefox flattens the whole flip to blend it */
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),
     linear-gradient(135deg, #e04a40, #c02b2c 40%, #8a171c);
