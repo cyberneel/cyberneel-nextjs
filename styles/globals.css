@@ -207,7 +207,7 @@ footer.band { border-top: 1px solid var(--band-line) }
     linear-gradient(135deg, #e04a40, #c02b2c 40%, #8a171c);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / .3), inset 0 -1px 0 rgb(0 0 0 / .35);
 }
-.hc-metal { inset: 0; width: 100%; height: 100% }
+.hc-metal { inset: 0; width: 100%; height: 100%; border-radius: inherit } /* Firefox skips the face's clip on the turned face */
 .hc-face > * { position: absolute }
 .hc-back { transform: rotateY(180deg) }
 /* Safari ignores backface-visibility for the WebGL canvas, so also hide the turned-away face once the flip
