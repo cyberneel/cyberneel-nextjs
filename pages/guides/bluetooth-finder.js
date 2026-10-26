@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Check } from 'lucide-react';
+import { Check, ExternalLink } from 'lucide-react';
 import Seo from '../../components/Seo';
 
 // The guidebook behind the "find anything Bluetooth" reel (comment RADAR).
@@ -8,18 +8,32 @@ import Seo from '../../components/Seo';
 
 const KEY = 'guide:bluetooth-finder';
 
+function Out({ href, children }) {
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer">
+      {children}
+      <ExternalLink size={13} className="ml-1 inline align-[-1px]" />
+    </a>
+  );
+}
+
 const STEPS = [
   {
-    title: 'Get a scanner app',
-    tool: 'Any free "BLE scanner" app',
+    title: 'Get nRF Connect',
+    tool: 'Free, on iPhone and Android',
     body: (
       <>
         <p>
-          A Bluetooth gadget that is switched on keeps calling out a few times a second, so phones can find it. A
-          scanner app lists every call it hears and how loud each one arrives.
+          A Bluetooth gadget that is switched on keeps calling out a few times a second, so phones can find it. nRF
+          Connect is a free Bluetooth scanner: it lists every call it hears and how loud each one arrives.
         </p>
         <ol>
-          <li>Search your app store for <strong>BLE scanner</strong>. Any free one works.</li>
+          <li>
+            Install nRF Connect for Mobile from the{' '}
+            <Out href="https://apps.apple.com/us/app/nrf-connect-for-mobile/id1054362403">App Store</Out> or{' '}
+            <Out href="https://play.google.com/store/apps/details?id=no.nordicsemi.android.mcp">Google Play</Out>. Any other
+            free BLE scanner works the same way.
+          </li>
           <li>Allow the Bluetooth permission it asks for. Android may call it <strong>Nearby devices</strong> or <strong>Location</strong>.</li>
           <li>Make sure the lost gadget is switched on and has some battery left. Off or dead, it stays silent.</li>
         </ol>
@@ -28,10 +42,10 @@ const STEPS = [
   },
   {
     title: 'Find your gadget in the list',
-    tool: 'The scanner app',
+    tool: 'The Scanner tab',
     body: (
       <ol>
-        <li>Start a scan. Everything nearby that is calling out shows up, often dozens of entries.</li>
+        <li>Open the Scanner tab and start a scan. Everything nearby that is calling out shows up, often dozens of entries.</li>
         <li>Look for your gadget's name, the same one your phone shows in Bluetooth settings. Ignore the unnamed rows.</li>
         <li>
           Not there? It may be off, out of battery, or connected to another phone or console. Some gadgets go quiet
@@ -45,7 +59,7 @@ const STEPS = [
     tool: 'Signal strength, in dBm',
     body: (
       <>
-        <p>The number next to the name is how loud the call arrives. It is negative, and closer to zero means closer to you.</p>
+        <p>The number in dBm on each row is how loud the call arrives. It is negative, and closer to zero means closer to you.</p>
         <ul>
           <li><strong>Around −80</strong>: across the room, or further.</li>
           <li><strong>Around −60</strong>: a few steps away.</li>
