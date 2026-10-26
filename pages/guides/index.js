@@ -10,7 +10,7 @@ const GUIDES = [
     title: 'Find anything Bluetooth',
     blurb: 'Lost earbuds or a controller? A free scanner app, the signal number, and the turn trick.',
     cover: '/guides/bluetooth-finder/cover.webp',
-    reel: null,
+    reel: 'https://www.instagram.com/reel/De-GNycE3Ra/',
   },
   {
     slug: 'funko-pop',
