@@ -6,6 +6,13 @@ import Seo from '../../components/Seo';
 // reel: the Instagram permalink once the reel is posted (null until then).
 const GUIDES = [
   {
+    slug: 'bluetooth-finder',
+    title: 'Find anything Bluetooth',
+    blurb: 'Lost earbuds or a controller? A free scanner app, the signal number, and the turn trick.',
+    cover: '/guides/bluetooth-finder/cover.webp',
+    reel: null,
+  },
+  {
     slug: 'funko-pop',
     title: 'Make your own Funko Pop',
     blurb: 'Photo to printed figure in four free steps: ChatGPT, TRELLIS, Blender, a 3D printer.',
